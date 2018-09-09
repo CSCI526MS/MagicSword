@@ -8,7 +8,6 @@ public class Player : MonoBehaviour {
     private Animator animator;
     private FixedJoystick joystick;
     private bool isMove;
-    private float THRESHHOLD = 0.5f;
 
     // moveDirection == 1 -> Up
     // moveDirection == 2 -> Down
@@ -33,7 +32,7 @@ public class Player : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-        GetInput();
+        direction = joystick.Direction;
         Move();
 
     }
@@ -47,7 +46,6 @@ public class Player : MonoBehaviour {
         }
         else
         {
-            //animator.SetLayerWeight(1, 0);
             isMove = false;
         }
 
@@ -93,37 +91,9 @@ public class Player : MonoBehaviour {
 
     }
 
-    private void GetInput()
-    {
-
-        direction = joystick.Direction;
-        /*
-        direction = Vector2.zero;
-        if (Input.GetKey(KeyCode.W))
-        {
-            direction += Vector2.up;
-        }
-        if (Input.GetKey(KeyCode.A))
-        {
-            direction += Vector2.left;
-        }
-        if (Input.GetKey(KeyCode.S))
-        {
-            direction += Vector2.down;
-        }
-        if (Input.GetKey(KeyCode.D))
-        {
-            direction += Vector2.right;
-        }
-        */
-    }
 
     private void MovementAnimation()
     {
-        // animator.SetLayerWeight(1, 1);
-
-        animator.SetFloat("x", direction.x);
-        animator.SetFloat("y", direction.y);
         animator.SetBool("move", isMove);
         animator.SetInteger("moveDirection", moveDirection);
     }

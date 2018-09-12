@@ -9,6 +9,8 @@ public class Player : MonoBehaviour {
     private FixedJoystick joystick;
     private bool isMove;
 
+    public ParticleSystem FlashEffect;
+
     // moveDirection == 1 -> Up
     // moveDirection == 2 -> Down
     // moveDirection == 3 -> Left
@@ -22,6 +24,7 @@ public class Player : MonoBehaviour {
   
 	// Use this for initialization
 	void Start () {
+        FlashEffect.Stop();
         joystick = FindObjectOfType<FixedJoystick>();
         direction = Vector2.up;
         animator = GetComponent<Animator>();
@@ -89,6 +92,19 @@ public class Player : MonoBehaviour {
             }
         }
 
+    }
+
+    public void Dash() {
+        // this.speed = 30;
+    }
+
+    public void Flash() {
+        transform.Translate(direction*10);
+        if (FlashEffect.isPlaying) {
+            FlashEffect.Stop();
+        } else {
+            FlashEffect.Play();
+        }
     }
 
 

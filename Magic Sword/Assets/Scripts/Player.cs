@@ -4,10 +4,14 @@ using UnityEngine;
 
 public class Player : MonoBehaviour {
 
-    private float speed = 10;
+    [SerializeField]
+    private readonly float DEFAULT_SPEED = 10;
+    private float speed;
     private Animator animator;
     private FixedJoystick joystick;
     private bool isMove;
+    private bool isAttack;
+    private int health;
 
     public ParticleSystem FlashEffect;
 
@@ -16,34 +20,57 @@ public class Player : MonoBehaviour {
     // moveDirection == 3 -> Left
     // moveDirection == 4 -> Right
     private int moveDirection;
-
-    private float sin;
+    private float tan;
     
 
     private Vector2 direction;
-  
-	// Use this for initialization
-	void Start () {
+
+    private readonly float ATTACK_COOLDOWN_TIME = 0.5f;
+    private float attackCooldown;
+    
+    public Transform attackPos;
+    public float attackRange;
+    public LayerMask enemyLayer;
+    private Vector2 attackPosUp = new Vector2(0, 0.1f);
+    private Vector2 attackPosDown = new Vector2(0, -0.1f);
+    private Vector2 attackPosRight = new Vector2(0.1f, 0);
+    private Vector2 attackPosLeft = new Vector2(-0.1f, 0);
+
+    public Camera camera;
+
+    // Use this for initialization
+    void Start () {
         FlashEffect.Stop();
         joystick = FindObjectOfType<FixedJoystick>();
-        direction = Vector2.up;
+        direction = Vector2.down;
+        speed = DEFAULT_SPEED;
         animator = GetComponent<Animator>();
         isMove = false;
         moveDirection = 2;
-
+        attackCooldown = ATTACK_COOLDOWN_TIME;
+        health = 100;
     }
 	
 	// Update is called once per frame
 	void Update () {
         direction = joystick.Direction;
+        Animation();
         Move();
-
+        Attack();
+        AttackDirection();
+        if (isAttack)
+        {
+            speed = 0;
+        }
+        else
+        {
+            speed = DEFAULT_SPEED;
+        }
     }
 
-    public void Move(){
+    private void Move(){
         transform.Translate(direction*speed*Time.deltaTime);
-        MovementAnimation();
-        if (direction.x != 0 || direction.y != 0)
+        if ((direction.x != 0 || direction.y != 0) && !isAttack)
         {
             isMove = true;
         }
@@ -52,20 +79,20 @@ public class Player : MonoBehaviour {
             isMove = false;
         }
 
-        sin = direction.y / direction.x;
+        tan = direction.y / direction.x;
         if(direction.x > 0)
         {
-            if(sin <= 1 && sin >= -1)
+            if(tan <= 1 && tan >= -1)
             {
                 // Go right 
                 moveDirection = 4;
             }
-            if(sin > 1)
+            if(tan > 1)
             {
                 // Go up
                 moveDirection = 1;
             }
-            if(sin < -1)
+            if(tan < -1)
             {
                 // Go down
                 moveDirection = 2;
@@ -75,17 +102,17 @@ public class Player : MonoBehaviour {
         }
         else if(direction.x < 0)
         {
-            if (sin <= 1 && sin >= -1)
+            if (tan <= 1 && tan >= -1)
             {
                 // Go left 
                 moveDirection = 3;
             }
-            if (sin > 1)
+            if (tan > 1)
             {
                 // Go down
                 moveDirection = 2;
             }
-            if (sin < -1)
+            if (tan < -1)
             {
                 // Go up
                 moveDirection = 1;
@@ -94,23 +121,90 @@ public class Player : MonoBehaviour {
 
     }
 
-    public void Dash() {
-        // this.speed = 30;
-    }
-
-    public void Flash() {
-        transform.Translate(direction*10);
-        if (FlashEffect.isPlaying) {
-            FlashEffect.Stop();
-        } else {
-            FlashEffect.Play();
+    private void Attack()
+    {
+        
+        if (isAttack)
+        {
+            attackCooldown -= Time.deltaTime;
+            if(attackCooldown < 0)
+            {
+                isAttack = false;
+                attackCooldown = ATTACK_COOLDOWN_TIME;
+            }
         }
     }
 
+    private void AttackDirection()
+    {
+        switch (moveDirection)
+        {
+            case 1:
+                attackPos.localPosition = attackPosUp;
+                break;
+            case 2:
+                attackPos.localPosition = attackPosDown;
+                break;
+            case 3:
+                attackPos.localPosition = attackPosLeft;
+                break;
+            case 4:
+                attackPos.localPosition = attackPosRight;
+                break;
+        }
+    }
 
-    private void MovementAnimation()
+    void OnCollisionEnter2D(Collision2D collision)
+    {
+        TakeDamage(10);
+    }
+
+    private void Dash() {
+        // this.speed = 30;
+    }
+
+    private void Flash() {
+        //transform.Translate(direction*10);
+        //if (FlashEffect.isPlaying) {
+        //    FlashEffect.Stop();
+        //} else {
+        //    FlashEffect.Play();
+        //}
+
+        if (!isAttack)
+        {
+            isAttack = true;
+            Collider2D[] enemies = Physics2D.OverlapCircleAll(attackPos.position, attackRange, enemyLayer);
+            for (int i = 0; i < enemies.Length; i++)
+            {
+                enemies[i].GetComponent<Enemy>().TakeDamage(30);
+            }
+
+            Vector3 deltaPosition = Vector3.zero;
+            camera.transform.localPosition -= deltaPosition;
+            deltaPosition = Random.insideUnitCircle * 0.5f;
+            camera.transform.position += deltaPosition;
+
+        }
+    }
+
+    public void TakeDamage(int damage)
+    {
+        health -= damage;
+        Debug.Log("Player taken damage " + damage);
+    }
+
+    private void Animation()
     {
         animator.SetBool("move", isMove);
         animator.SetInteger("moveDirection", moveDirection);
+        animator.SetBool("attack", isAttack);
     }
+
+    private void OnDrawGizmosSelected()
+    {
+        Gizmos.color = Color.red;
+        Gizmos.DrawWireSphere(attackPos.position, attackRange);
+    }
+
 }

@@ -715,9 +715,9 @@ PlayerSettings:
     UNet: 1
   facebookSdkVersion: 7.9.4
   apiCompatibilityLevel: 2
-  cloudProjectId: 5dd27179-8cb7-483c-aa6f-e5f688ee3b20
+  cloudProjectId: 8dcc1e3f-63d9-4ecd-b42b-409622c4bbc2
   projectName: Magic Sword
-  organizationId: raygu612
+  organizationId: anqi531
   cloudEnabled: 0
   enableNativePlatformBackendsForNewInputSystem: 0
   disableOldInputManagerSupport: 0

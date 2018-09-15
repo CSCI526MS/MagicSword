@@ -156,7 +156,9 @@ public class Player : MonoBehaviour {
 
     void OnCollisionEnter2D(Collision2D collision)
     {
-        TakeDamage(10);
+        if (collision.gameObject.tag == "Enemy") {
+            TakeDamage(10);
+        }
     }
 
     private void Dash() {

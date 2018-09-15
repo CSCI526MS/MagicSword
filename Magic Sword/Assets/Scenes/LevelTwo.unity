@@ -26110,7 +26110,6 @@ GameObject:
   - component: {fileID: 1396763660}
   - component: {fileID: 1396763662}
   - component: {fileID: 1396763661}
-  - component: {fileID: 1396763663}
   m_Layer: 0
   m_Name: Map 2 up
   m_TagString: Untagged
@@ -28047,20 +28046,3 @@ Tilemap:
     e31: 0
     e32: 0
     e33: 1
---- !u!68 &1396763663
-EdgeCollider2D:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 1396763659}
-  m_Enabled: 1
-  m_Density: 1
-  m_Material: {fileID: 0}
-  m_IsTrigger: 0
-  m_UsedByEffector: 0
-  m_UsedByComposite: 0
-  m_Offset: {x: 0, y: 0}
-  m_EdgeRadius: 0
-  m_Points:
-  - {x: -472, y: 25.5}
-  - {x: 465, y: 25.5}

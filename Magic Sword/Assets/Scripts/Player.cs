@@ -165,7 +165,7 @@ public class Player : MonoBehaviour {
         // this.speed = 30;
     }
 
-    private void Flash() {
+    public void MeleeAttack() {
         //transform.Translate(direction*10);
         //if (FlashEffect.isPlaying) {
         //    FlashEffect.Stop();

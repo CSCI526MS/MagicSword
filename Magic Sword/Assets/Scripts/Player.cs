@@ -11,7 +11,9 @@ public class Player : MonoBehaviour {
     private FixedJoystick joystick;
     private bool isMove;
     private bool isAttack;
-    private int health;
+
+    [SerializeField]
+    private Stat playerStatus;
 
     public ParticleSystem FlashEffect;
 
@@ -48,7 +50,8 @@ public class Player : MonoBehaviour {
         isMove = false;
         moveDirection = 2;
         attackCooldown = ATTACK_COOLDOWN_TIME;
-        health = 100;
+        playerStatus.MaxHP = 100;
+        playerStatus.CurrentHP = 100;
     }
 	
 	// Update is called once per frame
@@ -192,7 +195,7 @@ public class Player : MonoBehaviour {
 
     public void TakeDamage(int damage)
     {
-        health -= damage;
+        playerStatus.CurrentHP -= damage;
         Debug.Log("Player taken damage " + damage);
     }
 

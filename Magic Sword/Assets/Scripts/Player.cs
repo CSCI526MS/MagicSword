@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class Player : MonoBehaviour {
 
+    private SpriteRenderer sRenderer;
     [SerializeField]
     private readonly float DEFAULT_SPEED = 10;
     private float speed;
@@ -11,9 +12,12 @@ public class Player : MonoBehaviour {
     private FixedJoystick joystick;
     private bool isMove;
     private bool isAttack;
+    private bool isImmune;
+    
 
     [SerializeField]
     private Stat playerStatus;
+
 
     public ParticleSystem FlashEffect;
 
@@ -28,7 +32,9 @@ public class Player : MonoBehaviour {
     private Vector2 direction;
 
     private readonly float ATTACK_COOLDOWN_TIME = 0.5f;
+    private readonly float IMMUNE_TIME = 2f;
     private float attackCooldown;
+    private float immuneTimer = 0;
     
     public Transform attackPos;
     public float attackRange;
@@ -40,8 +46,14 @@ public class Player : MonoBehaviour {
 
     public Camera camera;
 
+    // for sprite flash (while immune)
+    float flashTimer = 0;
+    bool toggle = true;
+
     // Use this for initialization
     void Start () {
+        sRenderer = GetComponent<SpriteRenderer>();
+        PopupTextController.Initialize();
         FlashEffect.Stop();
         joystick = FindObjectOfType<FixedJoystick>();
         direction = Vector2.down;
@@ -52,6 +64,7 @@ public class Player : MonoBehaviour {
         attackCooldown = ATTACK_COOLDOWN_TIME;
         playerStatus.MaxHP = 100;
         playerStatus.CurrentHP = 100;
+        isImmune = false;
     }
 	
 	// Update is called once per frame
@@ -69,6 +82,25 @@ public class Player : MonoBehaviour {
         {
             speed = DEFAULT_SPEED;
         }
+
+        if (immuneTimer<0 && isImmune)
+        {
+            isImmune = false;
+
+            // turn on renderer in case the renderer is disabled at the last frame of flash.
+            sRenderer.enabled = true;
+        }
+
+        if (isImmune)
+        {
+            FlashSprite();
+        }
+
+        if (immuneTimer > 0)
+        {
+            immuneTimer -= Time.deltaTime;
+        }
+        
     }
 
     private void Move(){
@@ -157,9 +189,11 @@ public class Player : MonoBehaviour {
         }
     }
 
-    void OnCollisionEnter2D(Collision2D collision)
+    void OnCollisionStay2D(Collision2D collision)
     {
-        if (collision.gameObject.tag == "Enemy") {
+        if (collision.gameObject.tag == "Enemy" && !isImmune) {
+            isImmune = true;
+            immuneTimer = IMMUNE_TIME;
             TakeDamage(10);
         }
     }
@@ -195,8 +229,33 @@ public class Player : MonoBehaviour {
 
     public void TakeDamage(int damage)
     {
+
         playerStatus.CurrentHP -= damage;
         Debug.Log("Player taken damage " + damage);
+        PopupTextController.CreatePopupText(damage.ToString(), transform, Color.red);
+
+        
+    }
+
+    private void FlashSprite()
+    {
+        if (flashTimer > 0.05)
+        {
+            flashTimer = 0;
+            toggle = !toggle;
+            if (toggle)
+            {
+                sRenderer.enabled = true;
+            }
+            else
+            {
+                sRenderer.enabled = false;
+            }
+        }
+        else
+        {
+            flashTimer += Time.deltaTime;
+        }
     }
 
     private void Animation()

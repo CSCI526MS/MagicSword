@@ -1,6 +1,7 @@
-﻿using System.Collections;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class Player : MonoBehaviour {
 
@@ -196,6 +197,10 @@ public class Player : MonoBehaviour {
             immuneTimer = IMMUNE_TIME;
             TakeDamage(10);
         }
+if (collision.gameObject.tag == "floor") {
+StartCoroutine(LoadYourAsyncScene());
+}
+
     }
 
     private void Dash() {
@@ -257,7 +262,17 @@ public class Player : MonoBehaviour {
             flashTimer += Time.deltaTime;
         }
     }
+IEnumerator LoadYourAsyncScene()
+{
 
+
+AsyncOperation asyncLoad = SceneManager.LoadSceneAsync("LevelOne");
+
+while (!asyncLoad.isDone)
+{
+yield return null;
+}
+}
     private void Animation()
     {
         animator.SetBool("move", isMove);
@@ -272,3 +287,6 @@ public class Player : MonoBehaviour {
     }
 
 }
+
+
+

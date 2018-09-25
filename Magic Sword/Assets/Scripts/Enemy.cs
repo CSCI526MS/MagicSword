@@ -4,36 +4,36 @@ using UnityEngine;
 
 public class Enemy : MonoBehaviour {
 
-    private Animator animator;
-
     private int health;
     private float speed;
-    private bool move;
+    public GameObject drop;
 
-    private Vector2 direction;
-    private int moveDirection;
+    private Animator animator;
+    private bool move;
     // 1 -> Up
     // 2 -> Down
     // 3 -> Left
     // 4 -> Right
-
     private Transform target;
 
+    private Vector2 direction;
+    private int moveDirection;
 	// Use this for initialization
+    private string testId = "00000";
 	void Start () {
-	    animator = GetComponent<Animator>();
+        animator = GetComponent<Animator>();
         health = 100;
         speed = 1;
         move = true;
         direction = Vector2.down;
         moveDirection = 2;
         target = GameObject.FindGameObjectWithTag("Player").GetComponent<Transform>();
+        drop = GameObject.Find("Drop");
 	}
 	
 	// Update is called once per frame
 	void Update () {
-
-	    Animation();
+        Animation();
 
         direction = target.position - transform.position;
         float distanceSquare = direction.x*direction.x + direction.y*direction.y;
@@ -46,13 +46,21 @@ public class Enemy : MonoBehaviour {
         
         if (health <= 0)
         {
+            dropItems();
             Destroy(gameObject);
-        }	
+        }
 	}
 
-    public void TakeDamage(int damage) {
+    public void TakeDamage(int damage)
+    {
         health -= damage;
         Debug.Log("taken damage!");
+    }
+
+    public void dropItems() {
+        GameObject newDrop = Instantiate(drop) as GameObject;
+        FindObjectsOfType<Drops>()[0].setId(testId);
+        newDrop.transform.position = gameObject.transform.position;
     }
 
     private void Animation() {
@@ -60,7 +68,7 @@ public class Enemy : MonoBehaviour {
         animator.SetInteger("moveDirection", moveDirection);
     }
 
-    private int getMoveDirection(Vector2 direction) {
+     private int getMoveDirection(Vector2 direction) {
         float tan = direction.y / direction.x;
         int moveDirection = 2;
         if(direction.x > 0) {

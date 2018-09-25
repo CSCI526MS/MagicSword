@@ -2,10 +2,9 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Remote : MonoBehaviour {
+public class ThunderBall : MonoBehaviour {
 
-	[SerializeField]
-	private float destroyTime = 1f;
+	private float destroyTime = .5f;
 	// Use this for initialization
 	void Start () {
 		
@@ -13,6 +12,14 @@ public class Remote : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-		Destroy (gameObject, destroyTime);
+		Destroy(gameObject, destroyTime);
+	}
+
+	private void OnCollisionEnter2D(Collision2D collision) {
+		//if (collision.gameObject.tag == "Enemy") {
+        //    Debug.Log("attack.....");
+
+        //}
+        Destroy(gameObject);
 	}
 }

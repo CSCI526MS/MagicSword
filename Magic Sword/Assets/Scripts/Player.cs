@@ -13,11 +13,9 @@ public class Player : MonoBehaviour {
     private bool isMove;
     private bool isAttack;
     private bool isImmune;
-    
 
     [SerializeField]
     private Stat playerStatus;
-
 
     public ParticleSystem FlashEffect;
 
@@ -30,6 +28,7 @@ public class Player : MonoBehaviour {
     
 
     private Vector2 direction;
+    private Vector2 touchDirection;
 
     private readonly float ATTACK_COOLDOWN_TIME = 0.5f;
     private readonly float IMMUNE_TIME = 2f;
@@ -49,6 +48,9 @@ public class Player : MonoBehaviour {
     // for sprite flash (while immune)
     float flashTimer = 0;
     bool toggle = true;
+
+    // thunderball
+    public GameObject thunderBall;
 
     // Use this for initialization
     void Start () {
@@ -83,7 +85,7 @@ public class Player : MonoBehaviour {
             speed = DEFAULT_SPEED;
         }
 
-        if (immuneTimer<0 && isImmune)
+        if (immuneTimer < 0 && isImmune)
         {
             isImmune = false;
 
@@ -100,7 +102,27 @@ public class Player : MonoBehaviour {
         {
             immuneTimer -= Time.deltaTime;
         }
-        
+
+        //if (Input.touchCount > 0) {
+
+        //    touchDirection = Input.GetTouch(0).position - direction;
+        //    RemoteAttack();
+        //}
+        if (Input.GetMouseButtonDown(0)) {
+            //Debug.Log(Input.mousePosition);
+            //touchDirection = new Vector2(Input.mousePosition.x, Input.mousePosition.y) - new Vector2(gameObject.transform.position.x, gameObject.transform.position.y);
+            //touchDirection.Normalize();
+            //Debug.Log(touchDirection);
+            Vector3 shootDirection;
+            shootDirection = Input.mousePosition;
+            shootDirection.z = 0.0f;
+            shootDirection = Camera.main.ScreenToWorldPoint(shootDirection);
+            shootDirection = shootDirection - transform.position;
+            touchDirection = shootDirection;
+            touchDirection.Normalize();
+            RemoteAttack();
+        }
+
     }
 
     private void Move(){
@@ -158,7 +180,6 @@ public class Player : MonoBehaviour {
 
     private void Attack()
     {
-        
         if (isAttack)
         {
             attackCooldown -= Time.deltaTime;
@@ -227,14 +248,20 @@ public class Player : MonoBehaviour {
         }
     }
 
+    public void RemoteAttack()
+    {
+        //touchDirection = new Vector2();
+        var clone = Instantiate(thunderBall, gameObject.transform.position + new Vector3(touchDirection.x, touchDirection.y,0), gameObject.transform.rotation);
+        //clone.velocity = direction * 10;
+        clone.GetComponent<Rigidbody2D>().velocity = touchDirection * 10f;
+        
+    }
+
     public void TakeDamage(int damage)
     {
-
         playerStatus.CurrentHP -= damage;
         Debug.Log("Player taken damage " + damage);
-        PopupTextController.CreatePopupText(damage.ToString(), transform, Color.red);
-
-        
+        PopupTextController.CreatePopupText(damage.ToString(), transform, Color.red);   
     }
 
     private void FlashSprite()

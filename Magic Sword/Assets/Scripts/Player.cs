@@ -51,6 +51,10 @@ public class Player : MonoBehaviour {
     float flashTimer = 0;
     bool toggle = true;
 
+    private Vector3 touchDirection;
+
+    public GameObject meteor;
+
     // Use this for initialization
     void Start () {
         sRenderer = GetComponent<SpriteRenderer>();
@@ -66,6 +70,7 @@ public class Player : MonoBehaviour {
         playerStatus.MaxHP = 100;
         playerStatus.CurrentHP = 100;
         isImmune = false;
+        meteor = (GameObject)Resources.Load("Prefabs/Meteor");
     }
 	
 	// Update is called once per frame
@@ -101,6 +106,8 @@ public class Player : MonoBehaviour {
         {
             immuneTimer -= Time.deltaTime;
         }
+
+        MeteorAttack();
         
     }
 
@@ -286,7 +293,31 @@ yield return null;
         Gizmos.DrawWireSphere(attackPos.position, attackRange);
     }
 
+    private void MeteorAttack()
+    {
+        if (Input.GetMouseButtonDown(0))
+        {
+            //Debug.Log(Input.mousePosition);
+            //touchDirection = new Vector2(Input.mousePosition.x, Input.mousePosition.y) - new Vector2(gameObject.transform.position.x, gameObject.transform.position.y);
+            //touchDirection.Normalize();
+            //Debug.Log(touchDirection);
+            Vector3 shootDirection;
+            shootDirection = Input.mousePosition;
+            shootDirection.z = 0.0f;
+            shootDirection = Camera.main.ScreenToWorldPoint(shootDirection);
+            shootDirection = shootDirection - transform.position;
+            //touchDirection = shootDirection;
+            //touchDirection.Normalize();
+
+            GameObject newMeteor = Instantiate(meteor) as GameObject;
+            FindObjectOfType<Meteor>().Create(shootDirection);
+            newMeteor.transform.position = new Vector3(shootDirection.x + 15, shootDirection.y + 15, 0);
+        }
+    }
+
 }
+
+
 
 
 

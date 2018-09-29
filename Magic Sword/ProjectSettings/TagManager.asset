@@ -6,6 +6,7 @@ TagManager:
   tags:
   - Enemy
   - floor
+  - Fire
   layers:
   - Default
   - TransparentFX
@@ -17,7 +18,7 @@ TagManager:
   - 
   - Drop
   - Enemy
-  - 
+  - FireLayer
   - 
   - 
   - 

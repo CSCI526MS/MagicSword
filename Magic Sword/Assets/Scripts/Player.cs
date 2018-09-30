@@ -305,7 +305,7 @@ yield return null;
             shootDirection = Input.mousePosition;
             shootDirection.z = 0.0f;
             shootDirection = Camera.main.ScreenToWorldPoint(shootDirection);
-            shootDirection = shootDirection - transform.position;
+            //shootDirection = shootDirection - transform.position;
             //touchDirection = shootDirection;
             //touchDirection.Normalize();
 

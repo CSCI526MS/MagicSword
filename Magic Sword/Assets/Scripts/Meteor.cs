@@ -11,6 +11,9 @@ public class Meteor : MonoBehaviour
     private bool initialized = false;
 
     private GameObject fireExplosion;
+    //private GameObject smallFires;
+
+    public LayerMask enemyLayer; 
 
     void Start()
     {
@@ -27,6 +30,7 @@ public class Meteor : MonoBehaviour
             {
                 Destroy(gameObject);
                 ExplosionEffect();
+                CauseDamage();
             }
         }
         
@@ -45,5 +49,18 @@ public class Meteor : MonoBehaviour
         fireExplosion = (GameObject) Resources.Load("Prefabs/FireExplosion");
         GameObject newExplosion = Instantiate(fireExplosion) as GameObject;
         newExplosion.transform.position = transform.position;
+        //smallFires = (GameObject)Resources.Load("Prefabs/SmallFires");
+        //GameObject newSmallFires = Instantiate(smallFires) as GameObject;
+        //newSmallFires.transform.position = transform.position;
+        //Destroy(newSmallFires, 5);
+    }
+
+    private void CauseDamage()
+    {
+        Collider2D[] enemies = Physics2D.OverlapCircleAll(transform.position, 1, enemyLayer);
+        for (int i = 0; i < enemies.Length; i++)
+        {
+            enemies[i].GetComponent<Enemy>().TakeDamage(100);
+        }
     }
 }

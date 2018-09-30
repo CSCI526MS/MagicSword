@@ -3,8 +3,9 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
-public class Player : MonoBehaviour {
 
+public class Player : MonoBehaviour {
+    Touch touch;
     private SpriteRenderer sRenderer;
     [SerializeField]
     private readonly float DEFAULT_SPEED = 10;
@@ -53,6 +54,9 @@ public class Player : MonoBehaviour {
 
     private Vector3 touchDirection;
 
+    private Rect noTouchArea = new Rect(0, (int)(Screen.height*0.66), (int)(Screen.width*0.25), (int)(Screen.height*0.33));
+
+
     public GameObject meteor;
 
     // Use this for initialization
@@ -70,11 +74,12 @@ public class Player : MonoBehaviour {
         playerStatus.MaxHP = 100;
         playerStatus.CurrentHP = 100;
         isImmune = false;
-        meteor = (GameObject)Resources.Load("Prefabs/Meteor");
+        
     }
 	
 	// Update is called once per frame
 	void Update () {
+        touch = Input.GetTouch(0);
         direction = joystick.Direction;
         Animation();
         Move();
@@ -301,23 +306,28 @@ yield return null;
     private void MeteorAttack()
     {
         
-        if (Input.GetMouseButtonDown(0))
+        if (!joystick.isTouched())
         {
             if (!isAttack)
             {
-                
-                
-                Vector3 touchPoint;
-                touchPoint = Input.mousePosition;
+
+                Vector3 touchPoint = touch.position;
                 touchPoint.z = 0.0f;
-                touchPoint = Camera.main.ScreenToWorldPoint(touchPoint);
+                if (!noTouchArea.Contains(touchPoint))
+                {
+                    touchPoint = Camera.main.ScreenToWorldPoint(touchPoint);
 
-                DirectionUpdate(touchPoint);
-                isAttack = true;
+                    DirectionUpdate(touchPoint);
+                    isAttack = true;
 
-                GameObject newMeteor = Instantiate(meteor) as GameObject;
-                FindObjectOfType<Meteor>().Create(touchPoint);
-                newMeteor.transform.position = new Vector3(touchPoint.x + 15, touchPoint.y + 15, 0);
+                    GameObject newMeteor = Instantiate(meteor) as GameObject;
+                    FindObjectOfType<Meteor>().Create(touchPoint);
+                    newMeteor.transform.position = new Vector3(touchPoint.x + 15, touchPoint.y + 15, 0);
+                }
+                
+
+                
+                
             }
             
         }

@@ -5,10 +5,12 @@ public class FixedJoystick : Joystick
 {
     Vector2 joystickPosition = Vector2.zero;
     private Camera cam = new Camera();
+    private bool touch;
 
     void Start()
     {
         joystickPosition = RectTransformUtility.WorldToScreenPoint(cam, background.position);
+        touch = false;
     }
 
     public override void OnDrag(PointerEventData eventData)
@@ -22,11 +24,18 @@ public class FixedJoystick : Joystick
     public override void OnPointerDown(PointerEventData eventData)
     {
         OnDrag(eventData);
+        touch = true;
     }
 
     public override void OnPointerUp(PointerEventData eventData)
     {
         inputVector = Vector2.zero;
         handle.anchoredPosition = Vector2.zero;
+        touch = false;
+    }
+
+    public bool isTouched()
+    {
+        return touch;
     }
 }

@@ -10,6 +10,7 @@ public class Meteor : MonoBehaviour
     public Vector3 targetPosition;
     private bool initialized = false;
 
+    private GameObject circle;
     private GameObject fireExplosion;
     //private GameObject smallFires;
 
@@ -25,12 +26,15 @@ public class Meteor : MonoBehaviour
     {
         if (initialized)
         {
+            
+
             transform.position = Vector3.MoveTowards(transform.position, targetPosition, speed * Time.deltaTime);
             if(transform.position.x == targetPosition.x && transform.position.y == targetPosition.y)
             {
                 Destroy(gameObject);
                 ExplosionEffect();
                 CauseDamage();
+                Destroy(circle);
             }
         }
         
@@ -41,14 +45,17 @@ public class Meteor : MonoBehaviour
     {
         targetPosition = target;
         initialized = true;
-        
+        circle = (GameObject)Resources.Load("Prefabs/Circle");
+        circle = Instantiate(circle) as GameObject;
+        circle.transform.position = target;
+
     }
 
     private void ExplosionEffect()
     {
         fireExplosion = (GameObject) Resources.Load("Prefabs/FireExplosion");
-        GameObject newExplosion = Instantiate(fireExplosion) as GameObject;
-        newExplosion.transform.position = transform.position;
+        fireExplosion = Instantiate(fireExplosion) as GameObject;
+        fireExplosion.transform.position = transform.position;
         //smallFires = (GameObject)Resources.Load("Prefabs/SmallFires");
         //GameObject newSmallFires = Instantiate(smallFires) as GameObject;
         //newSmallFires.transform.position = transform.position;

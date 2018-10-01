@@ -310,26 +310,31 @@ yield return null;
                 Vector3 touchPoint;
                 touchPoint = Input.mousePosition;
                 touchPoint.z = 0.0f;
-                DirectionUpdate(new Vector2(touchPoint.x-Screen.width/2, touchPoint.y-Screen.height/2));
-                touchPoint = Camera.main.ScreenToWorldPoint(touchPoint);
+                Debug.DrawLine(transform.position, Camera.main.ScreenToWorldPoint(touchPoint), Color.red, 3);
+                Vector2 castPoint;
+                RaycastHit2D barrier = Physics2D.Linecast(transform.position, Camera.main.ScreenToWorldPoint(touchPoint), 1 << LayerMask.NameToLayer("Wall"));
+                
+                if (barrier.collider) // if there is a barrier between player and cast point;
+                {
+                    castPoint = Camera.main.WorldToScreenPoint(barrier.point);
+                }
+                else
+                {
+                    castPoint = touchPoint;
+                }
+                DirectionUpdate(new Vector2(castPoint.x - Screen.width / 2, castPoint.y - Screen.height / 2));
+                castPoint = Camera.main.ScreenToWorldPoint(castPoint);
                 isAttack = true;
 
                 GameObject newMeteor = Instantiate(meteor) as GameObject;
-                FindObjectOfType<Meteor>().Create(touchPoint);
-                newMeteor.transform.position = new Vector3(touchPoint.x + 15, touchPoint.y + 15, 0);
+                FindObjectOfType<Meteor>().Create(castPoint);
+                newMeteor.transform.position = new Vector3(castPoint.x + 15, castPoint.y + 15, 0);
 
                 
 
-                
-                
             }
             
         }
     }
 
 }
-
-
-
-
-

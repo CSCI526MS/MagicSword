@@ -196,10 +196,9 @@ public class Player : MonoBehaviour {
             isImmune = true;
             immuneTimer = IMMUNE_TIME;
             TakeDamage(10);
+        } else if (collision.gameObject.tag == "floor") {
+            StartCoroutine(LoadYourAsyncScene());
         }
-if (collision.gameObject.tag == "floor") {
-StartCoroutine(LoadYourAsyncScene());
-}
 
     }
 

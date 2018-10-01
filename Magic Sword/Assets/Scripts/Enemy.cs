@@ -18,8 +18,17 @@ public class Enemy : MonoBehaviour {
 
     private Vector2 direction;
     private int moveDirection;
-	// Use this for initialization
-    private string testId = "00000";
+    private string legendary = "Meat";
+    private int legendaryBar = 75;
+    private string epic = "mp";
+    private int epicBar = 50;
+    private string rare = "apple";
+    private int rareBar = 25;
+    private string common = "hp";
+    private int commonBar = -1;
+
+    private float deviation = 0.1f;
+
 	void Start () {
         animator = GetComponent<Animator>();
         health = 100;
@@ -51,15 +60,29 @@ public class Enemy : MonoBehaviour {
         }
 	}
 
-    public void TakeDamage(int damage)
-    {
+    public void TakeDamage(int damage) {
         health -= damage;
         Debug.Log("taken damage!");
     }
 
     public void dropItems() {
+        int random = Random.Range(0, 100);
+        Debug.Log("random" + random);
+        string id;
+        if (random<commonBar) {
+            return;
+        } else if (random<rareBar) {
+            id = common;
+        } else if (random<epicBar) {
+            id = rare;
+        } else if (random<legendaryBar) {
+            id = epic;
+        } else {
+            id = legendary;
+        }
+        Debug.Log("id"+id);
         GameObject newDrop = Instantiate(drop) as GameObject;
-        FindObjectsOfType<Drops>()[0].setId(testId);
+        FindObjectsOfType<Drops>()[0].setItem(id, deviation);
         newDrop.transform.position = gameObject.transform.position;
     }
 

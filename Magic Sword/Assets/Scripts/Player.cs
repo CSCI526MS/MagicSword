@@ -310,8 +310,6 @@ yield return null;
                 Vector3 touchPoint;
                 touchPoint = Input.mousePosition;
                 touchPoint.z = 0.0f;
-                print(Screen.width);
-                print(Screen.height);
                 DirectionUpdate(new Vector2(touchPoint.x-Screen.width/2, touchPoint.y-Screen.height/2));
                 touchPoint = Camera.main.ScreenToWorldPoint(touchPoint);
                 isAttack = true;

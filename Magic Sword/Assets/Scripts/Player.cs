@@ -5,7 +5,6 @@ using UnityEngine.SceneManagement;
 
 
 public class Player : MonoBehaviour {
-    Touch touch;
     private SpriteRenderer sRenderer;
     [SerializeField]
     private readonly float DEFAULT_SPEED = 10;
@@ -79,7 +78,6 @@ public class Player : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-        touch = Input.GetTouch(0);
         direction = joystick.Direction;
         Animation();
         Move();
@@ -306,12 +304,12 @@ yield return null;
     private void MeteorAttack()
     {
         
-        if (!joystick.isTouched())
+        if (Input.touchCount>0 && !joystick.isTouched())
         {
             if (!isAttack)
             {
 
-                Vector3 touchPoint = touch.position;
+                Vector3 touchPoint = Input.GetTouch(0).position;
                 touchPoint.z = 0.0f;
                 if (!noTouchArea.Contains(touchPoint))
                 {

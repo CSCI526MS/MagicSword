@@ -5,6 +5,7 @@ using UnityEngine.SceneManagement;
 
 
 public class Player : MonoBehaviour {
+
     private SpriteRenderer sRenderer;
     [SerializeField]
     private readonly float DEFAULT_SPEED = 10;
@@ -52,8 +53,6 @@ public class Player : MonoBehaviour {
     bool toggle = true;
 
     private Vector3 touchDirection;
-
-    private Rect noTouchArea = new Rect(0, (int)(Screen.height*0.66), (int)(Screen.width*0.25), (int)(Screen.height*0.33));
 
 
     public GameObject meteor;
@@ -303,25 +302,24 @@ yield return null;
 
     private void MeteorAttack()
     {
-        
-        if (Input.touchCount>0 && !joystick.isTouched())
+
+        if (Input.GetMouseButtonDown(0) && !joystick.isTouched())
         {
             if (!isAttack)
             {
-
-                Vector3 touchPoint = Input.GetTouch(0).position;
+                Vector3 touchPoint;
+                touchPoint = Input.mousePosition;
                 touchPoint.z = 0.0f;
-                if (!noTouchArea.Contains(touchPoint))
-                {
-                    touchPoint = Camera.main.ScreenToWorldPoint(touchPoint);
+                print(Screen.width);
+                print(Screen.height);
+                DirectionUpdate(new Vector2(touchPoint.x-Screen.width/2, touchPoint.y-Screen.height/2));
+                touchPoint = Camera.main.ScreenToWorldPoint(touchPoint);
+                isAttack = true;
 
-                    DirectionUpdate(touchPoint);
-                    isAttack = true;
+                GameObject newMeteor = Instantiate(meteor) as GameObject;
+                FindObjectOfType<Meteor>().Create(touchPoint);
+                newMeteor.transform.position = new Vector3(touchPoint.x + 15, touchPoint.y + 15, 0);
 
-                    GameObject newMeteor = Instantiate(meteor) as GameObject;
-                    FindObjectOfType<Meteor>().Create(touchPoint);
-                    newMeteor.transform.position = new Vector3(touchPoint.x + 15, touchPoint.y + 15, 0);
-                }
                 
 
                 

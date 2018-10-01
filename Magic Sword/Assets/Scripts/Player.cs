@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
+
 public class Player : MonoBehaviour {
 
     private SpriteRenderer sRenderer;
@@ -32,7 +33,7 @@ public class Player : MonoBehaviour {
 
     private Vector2 direction;
 
-    private readonly float ATTACK_COOLDOWN_TIME = 0.5f;
+    private readonly float ATTACK_COOLDOWN_TIME = 0.7f;
     private readonly float IMMUNE_TIME = 2f;
     private float attackCooldown;
     private float immuneTimer = 0;
@@ -51,6 +52,11 @@ public class Player : MonoBehaviour {
     float flashTimer = 0;
     bool toggle = true;
 
+    private Vector3 touchDirection;
+
+
+    public GameObject meteor;
+
     // Use this for initialization
     void Start () {
         sRenderer = GetComponent<SpriteRenderer>();
@@ -66,6 +72,7 @@ public class Player : MonoBehaviour {
         playerStatus.MaxHP = 100;
         playerStatus.CurrentHP = 100;
         isImmune = false;
+        
     }
 	
 	// Update is called once per frame
@@ -101,6 +108,8 @@ public class Player : MonoBehaviour {
         {
             immuneTimer -= Time.deltaTime;
         }
+
+        MeteorAttack();
         
     }
 
@@ -115,28 +124,34 @@ public class Player : MonoBehaviour {
             isMove = false;
         }
 
+        DirectionUpdate(direction);
+
+    }
+
+    private void DirectionUpdate(Vector2 direction)
+    {
         tan = direction.y / direction.x;
-        if(direction.x > 0)
+        if (direction.x > 0)
         {
-            if(tan <= 1 && tan >= -1)
+            if (tan <= 1 && tan >= -1)
             {
                 // Go right 
                 moveDirection = 4;
             }
-            if(tan > 1)
+            if (tan > 1)
             {
                 // Go up
                 moveDirection = 1;
             }
-            if(tan < -1)
+            if (tan < -1)
             {
                 // Go down
                 moveDirection = 2;
             }
-            
-            
+
+
         }
-        else if(direction.x < 0)
+        else if (direction.x < 0)
         {
             if (tan <= 1 && tan >= -1)
             {
@@ -154,7 +169,6 @@ public class Player : MonoBehaviour {
                 moveDirection = 1;
             }
         }
-
     }
 
     private void Attack()
@@ -217,12 +231,13 @@ public class Player : MonoBehaviour {
         if (!isAttack)
         {
             isAttack = true;
-            Collider2D[] enemies = Physics2D.OverlapCircleAll(attackPos.position, attackRange, enemyLayer);
+            Collider2D[] enemies = Physics2D.OverlapCircleAll(attackPos.position, attackRange, 9);
             for (int i = 0; i < enemies.Length; i++)
             {
                 enemies[i].GetComponent<Enemy>().TakeDamage(30);
             }
 
+            // Camera shake effect
             Vector3 deltaPosition = Vector3.zero;
             camera.transform.localPosition -= deltaPosition;
             deltaPosition = Random.insideUnitCircle * 0.5f;
@@ -235,7 +250,6 @@ public class Player : MonoBehaviour {
     {
 
         playerStatus.CurrentHP -= damage;
-        Debug.Log("Player taken damage " + damage);
         PopupTextController.CreatePopupText(damage.ToString(), transform, Color.red);
 
         
@@ -285,7 +299,41 @@ yield return null;
         Gizmos.DrawWireSphere(attackPos.position, attackRange);
     }
 
+    private void MeteorAttack()
+    {
+
+        if (Input.GetMouseButtonDown(0) && !joystick.isTouched())
+        {
+            if (!isAttack)
+            {
+                Vector3 touchPoint;
+                touchPoint = Input.mousePosition;
+                touchPoint.z = 0.0f;
+                Debug.DrawLine(transform.position, Camera.main.ScreenToWorldPoint(touchPoint), Color.red, 3);
+                Vector2 castPoint;
+                RaycastHit2D barrier = Physics2D.Linecast(transform.position, Camera.main.ScreenToWorldPoint(touchPoint), 1 << LayerMask.NameToLayer("Wall"));
+                
+                if (barrier.collider) // if there is a barrier between player and cast point;
+                {
+                    castPoint = Camera.main.WorldToScreenPoint(barrier.point);
+                }
+                else
+                {
+                    castPoint = touchPoint;
+                }
+                DirectionUpdate(new Vector2(castPoint.x - Screen.width / 2, castPoint.y - Screen.height / 2));
+                castPoint = Camera.main.ScreenToWorldPoint(castPoint);
+                isAttack = true;
+
+                GameObject newMeteor = Instantiate(meteor) as GameObject;
+                FindObjectOfType<Meteor>().Create(castPoint);
+                newMeteor.transform.position = new Vector3(castPoint.x + 15, castPoint.y + 15, 0);
+
+                
+
+            }
+            
+        }
+    }
+
 }
-
-
-

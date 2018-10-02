@@ -103,37 +103,6 @@ public class Player : MonoBehaviour {
             immuneTimer -= Time.deltaTime;
         }
 
-        //if (Input.touchCount > 0) {
-
-        //    touchDirection = Input.GetTouch(0).position - direction;
-        //    RemoteAttack();
-        //}
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
         if (Input.GetMouseButtonDown(0)) {
             //Debug.Log(Input.mousePosition);
             //touchDirection = new Vector2(Input.mousePosition.x, Input.mousePosition.y) - new Vector2(gameObject.transform.position.x, gameObject.transform.position.y);
@@ -148,6 +117,21 @@ public class Player : MonoBehaviour {
             touchDirection.Normalize();
             RemoteAttack();
         }
+        //if (Input.touchCount > 0)
+        //{
+        //    int numOfTouches = Input.touches.Length;
+        //    if (Input.touches[numOfTouches - 1].phase == TouchPhase.Ended)
+        //    {
+        //        Vector3 shootDirection;
+        //        shootDirection = Input.GetTouch(numOfTouches - 1).position;
+        //        shootDirection = Camera.main.ScreenToWorldPoint(shootDirection);
+        //        shootDirection = shootDirection - transform.position;
+        //        touchDirection = shootDirection;
+        //        touchDirection.Normalize();
+        //        RemoteAttack();
+        //    }
+        //}
+ 
 
     }
 

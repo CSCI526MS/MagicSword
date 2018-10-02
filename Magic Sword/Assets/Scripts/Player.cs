@@ -108,20 +108,31 @@ public class Player : MonoBehaviour {
         //    touchDirection = Input.GetTouch(0).position - direction;
         //    RemoteAttack();
         //}
-        if (Input.GetMouseButtonDown(0)) {
-            //Debug.Log(Input.mousePosition);
-            //touchDirection = new Vector2(Input.mousePosition.x, Input.mousePosition.y) - new Vector2(gameObject.transform.position.x, gameObject.transform.position.y);
-            //touchDirection.Normalize();
-            //Debug.Log(touchDirection);
-            Vector3 shootDirection;
-            shootDirection = Input.mousePosition;
-            shootDirection.z = 0.0f;
-            shootDirection = Camera.main.ScreenToWorldPoint(shootDirection);
-            shootDirection = shootDirection - transform.position;
-            touchDirection = shootDirection;
-            touchDirection.Normalize();
-            RemoteAttack();
-        }
+
+
+        if (Input.touchCount > 0) {
+            int numOfTouches = Input.touches.Length;
+            if (Input.touches[numOfTouches - 1].phase == TouchPhase.Ended) {
+                Vector3 shootDirection;
+                shootDirection = Input.GetTouch(numOfTouches - 1).position;
+                shootDirection = Camera.main.ScreenToWorldPoint(shootDirection);
+                shootDirection = shootDirection - transform.position;
+                touchDirection = shootDirection;
+                touchDirection.Normalize();
+                RemoteAttack();
+            }
+      }
+
+        //if (Input.GetMouseButtonDown(0)) {
+        //    Vector3 shootDirection;
+        //    shootDirection = Input.mousePosition;
+        //    shootDirection.z = 0.0f;
+        //    shootDirection = Camera.main.ScreenToWorldPoint(shootDirection);
+        //    shootDirection = shootDirection - transform.position;
+        //    touchDirection = shootDirection;
+        //    touchDirection.Normalize();
+        //    RemoteAttack();
+        //}
 
     }
 

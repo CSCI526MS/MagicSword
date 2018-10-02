@@ -21,8 +21,8 @@ GameObject:
   - component: {fileID: 4819095335145258}
   - component: {fileID: 212388913086806244}
   - component: {fileID: 58662240875858780}
-  - component: {fileID: 114259577911243526}
   - component: {fileID: 50309989229065860}
+  - component: {fileID: 114628466876712406}
   m_Layer: 0
   m_Name: ThunderBall
   m_TagString: Skill1
@@ -38,7 +38,7 @@ Transform:
   m_GameObject: {fileID: 1366802986155998}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 0.1, y: 0.1, z: 0.1}
+  m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 0
@@ -62,7 +62,7 @@ Rigidbody2D:
   m_Interpolate: 0
   m_SleepingMode: 1
   m_CollisionDetection: 1
-  m_Constraints: 0
+  m_Constraints: 4
 --- !u!58 &58662240875858780
 CircleCollider2D:
   m_ObjectHideFlags: 1
@@ -77,8 +77,8 @@ CircleCollider2D:
   m_UsedByComposite: 0
   m_Offset: {x: 0, y: 0}
   serializedVersion: 2
-  m_Radius: 2.56
---- !u!114 &114259577911243526
+  m_Radius: 0.34
+--- !u!114 &114628466876712406
 MonoBehaviour:
   m_ObjectHideFlags: 1
   m_CorrespondingSourceObject: {fileID: 0}
@@ -86,7 +86,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 1366802986155998}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 4a6398e75aa561b4ebac1cec09f895c0, type: 3}
+  m_Script: {fileID: 11500000, guid: dfe5655e7f1ea5d43bf7ff16733f6f3a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!212 &212388913086806244
@@ -124,7 +124,7 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 10
-  m_Sprite: {fileID: 21300000, guid: 84487d73ca4b791498332d8f6858417f, type: 3}
+  m_Sprite: {fileID: 21300000, guid: d24138df2cd83be49862d91731826c7d, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0

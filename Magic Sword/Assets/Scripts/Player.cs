@@ -263,8 +263,26 @@ public class Player : MonoBehaviour {
         //touchDirection = new Vector2();
         var clone = Instantiate(thunderBall, gameObject.transform.position + new Vector3(touchDirection.x, touchDirection.y,0), gameObject.transform.rotation);
         //clone.velocity = direction * 10;
+
+        float degree = (float)((Mathf.Atan2(touchDirection.x, touchDirection.y) / Mathf.PI) * 180f);
+        if (degree < -90)
+        {
+            degree = -degree - 90;
+        } else if (degree > 0 && degree < 90)
+        {
+            degree = -(degree + 90);
+        } else if (degree > 90)
+        {
+            degree = 90 + (190 - degree);
+        } else
+        {
+            degree = -90 - degree;
+        }
+
+        Vector3 temp = clone.transform.eulerAngles;
+        temp.z = degree;
+        clone.transform.eulerAngles = temp;
         clone.GetComponent<Rigidbody2D>().velocity = touchDirection * 10f;
-        
     }
 
     public void TakeDamage(int damage)

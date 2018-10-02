@@ -116,7 +116,6 @@ public class Enemy : MonoBehaviour
         {
             Debug.Log("attack.....");
             TakeDamage(30);
-
         }
     }
 }

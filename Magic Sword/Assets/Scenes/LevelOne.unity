@@ -29583,7 +29583,7 @@ Rigidbody2D:
   m_Interpolate: 0
   m_SleepingMode: 1
   m_CollisionDetection: 0
-  m_Constraints: 0
+  m_Constraints: 4
 --- !u!1 &1070922984
 GameObject:
   m_ObjectHideFlags: 0
@@ -29677,7 +29677,12 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 512
   camera: {fileID: 425941199}
+<<<<<<< HEAD
   meteor: {fileID: 164416, guid: 8aeb2c0224fe763499eed3ec0587162b, type: 2}
+=======
+  thunderBall: {fileID: 1366802986155998, guid: 481095f4bc8b64d8da38b6131a97150a,
+    type: 2}
+>>>>>>> feature-ability_remote-week05
 --- !u!212 &1070922989
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -29882,7 +29887,7 @@ Rigidbody2D:
   m_Interpolate: 0
   m_SleepingMode: 1
   m_CollisionDetection: 0
-  m_Constraints: 0
+  m_Constraints: 4
 --- !u!1 &1197523969
 GameObject:
   m_ObjectHideFlags: 0

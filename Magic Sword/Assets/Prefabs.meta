@@ -1,5 +1,9 @@
 fileFormatVersion: 2
+<<<<<<< HEAD
 guid: 654e096f3293d4864a54de0f8ce8ad6c
+=======
+guid: 24c9c7ae962124b8380d9efcc5ce13b9
+>>>>>>> feature-ability_remote-week05
 folderAsset: yes
 DefaultImporter:
   externalObjects: {}

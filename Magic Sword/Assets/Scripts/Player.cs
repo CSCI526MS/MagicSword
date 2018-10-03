@@ -15,11 +15,9 @@ public class Player : MonoBehaviour {
     private bool isMove;
     private bool isAttack;
     private bool isImmune;
-    
 
     [SerializeField]
     private Stat playerStatus;
-
 
     public ParticleSystem FlashEffect;
 
@@ -32,6 +30,7 @@ public class Player : MonoBehaviour {
     
 
     private Vector2 direction;
+    private Vector2 touchDirection;
 
     private readonly float ATTACK_COOLDOWN_TIME = 0.7f;
     private readonly float IMMUNE_TIME = 2f;
@@ -52,10 +51,10 @@ public class Player : MonoBehaviour {
     float flashTimer = 0;
     bool toggle = true;
 
-    private Vector3 touchDirection;
-
-
     public GameObject meteor;
+
+    // thunderball
+    public GameObject thunderBall;
 
     // Use this for initialization
     void Start () {
@@ -91,7 +90,7 @@ public class Player : MonoBehaviour {
             speed = DEFAULT_SPEED;
         }
 
-        if (immuneTimer<0 && isImmune)
+        if (immuneTimer < 0 && isImmune)
         {
             isImmune = false;
 
@@ -111,6 +110,34 @@ public class Player : MonoBehaviour {
 
         MeteorAttack();
         
+        if (Input.GetMouseButtonDown(0)) {
+            //Debug.Log(Input.mousePosition);
+            //touchDirection = new Vector2(Input.mousePosition.x, Input.mousePosition.y) - new Vector2(gameObject.transform.position.x, gameObject.transform.position.y);
+            //touchDirection.Normalize();
+            //Debug.Log(touchDirection);
+            Vector3 shootDirection;
+            shootDirection = Input.mousePosition;
+            shootDirection.z = 0.0f;
+            shootDirection = Camera.main.ScreenToWorldPoint(shootDirection);
+            shootDirection = shootDirection - transform.position;
+            touchDirection = shootDirection;
+            touchDirection.Normalize();
+            RemoteAttack();
+        }
+        //if (Input.touchCount > 0)
+        //{
+        //    int numOfTouches = Input.touches.Length;
+        //    if (Input.touches[numOfTouches - 1].phase == TouchPhase.Ended)
+        //    {
+        //        Vector3 shootDirection;
+        //        shootDirection = Input.GetTouch(numOfTouches - 1).position;
+        //        shootDirection = Camera.main.ScreenToWorldPoint(shootDirection);
+        //        shootDirection = shootDirection - transform.position;
+        //        touchDirection = shootDirection;
+        //        touchDirection.Normalize();
+        //        RemoteAttack();
+        //    }
+        //}
     }
 
     private void Move(){
@@ -173,7 +200,6 @@ public class Player : MonoBehaviour {
 
     private void Attack()
     {
-        
         if (isAttack)
         {
             attackCooldown -= Time.deltaTime;
@@ -246,13 +272,37 @@ public class Player : MonoBehaviour {
         }
     }
 
+    public void RemoteAttack()
+    {
+        //touchDirection = new Vector2();
+        var clone = Instantiate(thunderBall, gameObject.transform.position + new Vector3(touchDirection.x, touchDirection.y,0), gameObject.transform.rotation);
+        //clone.velocity = direction * 10;
+
+        float degree = (float)((Mathf.Atan2(touchDirection.x, touchDirection.y) / Mathf.PI) * 180f);
+        if (degree < -90)
+        {
+            degree = -degree - 90;
+        } else if (degree > 0 && degree < 90)
+        {
+            degree = -(degree + 90);
+        } else if (degree > 90)
+        {
+            degree = 90 + (190 - degree);
+        } else
+        {
+            degree = -90 - degree;
+        }
+
+        Vector3 temp = clone.transform.eulerAngles;
+        temp.z = degree;
+        clone.transform.eulerAngles = temp;
+        clone.GetComponent<Rigidbody2D>().velocity = touchDirection * 10f;
+    }
+
     public void TakeDamage(int damage)
     {
-
         playerStatus.CurrentHP -= damage;
         PopupTextController.CreatePopupText(damage.ToString(), transform, Color.red);
-
-        
     }
 
     private void FlashSprite()

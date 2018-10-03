@@ -29677,12 +29677,9 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 512
   camera: {fileID: 425941199}
-
   meteor: {fileID: 164416, guid: 8aeb2c0224fe763499eed3ec0587162b, type: 2}
-
   thunderBall: {fileID: 1366802986155998, guid: 481095f4bc8b64d8da38b6131a97150a,
     type: 2}
-
 --- !u!212 &1070922989
 SpriteRenderer:
   m_ObjectHideFlags: 0

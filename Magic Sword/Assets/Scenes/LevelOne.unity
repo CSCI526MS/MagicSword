@@ -1320,7 +1320,7 @@ GameObject:
   - component: {fileID: 332487947}
   - component: {fileID: 332487949}
   - component: {fileID: 332487948}
-  m_Layer: 0
+  m_Layer: 12
   m_Name: base1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -27133,7 +27133,7 @@ GameObject:
   m_Component:
   - component: {fileID: 436878643}
   - component: {fileID: 436878644}
-  m_Layer: 0
+  m_Layer: 11
   m_Name: AttackPos
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -27402,7 +27402,7 @@ GameObject:
   - component: {fileID: 557432897}
   - component: {fileID: 557432896}
   - component: {fileID: 557432898}
-  m_Layer: 0
+  m_Layer: 12
   m_Name: Grid
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -27803,7 +27803,7 @@ GameObject:
   - component: {fileID: 627157311}
   - component: {fileID: 627157313}
   - component: {fileID: 627157312}
-  m_Layer: 0
+  m_Layer: 12
   m_Name: top
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -29598,7 +29598,7 @@ Rigidbody2D:
   m_Interpolate: 0
   m_SleepingMode: 1
   m_CollisionDetection: 0
-  m_Constraints: 0
+  m_Constraints: 4
 --- !u!1 &1070922984
 GameObject:
   m_ObjectHideFlags: 0
@@ -29612,7 +29612,7 @@ GameObject:
   - component: {fileID: 1070922987}
   - component: {fileID: 1070922986}
   - component: {fileID: 1070922985}
-  m_Layer: 0
+  m_Layer: 11
   m_Name: Player
   m_TagString: Player
   m_Icon: {fileID: 0}
@@ -29687,11 +29687,14 @@ MonoBehaviour:
     hearlthBar: {fileID: 1761933217}
   FlashEffect: {fileID: 2091072219}
   attackPos: {fileID: 436878643}
-  attackRange: 0.5
+  attackRange: 0
   enemyLayer:
     serializedVersion: 2
     m_Bits: 512
   camera: {fileID: 425941199}
+  meteor: {fileID: 164416, guid: 8aeb2c0224fe763499eed3ec0587162b, type: 2}
+  thunderBall: {fileID: 1366802986155998, guid: 481095f4bc8b64d8da38b6131a97150a,
+    type: 2}
 --- !u!212 &1070922989
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -29745,7 +29748,7 @@ Transform:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 1070922984}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0.06, y: 0.07, z: 0}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 7.5, y: 7.5, z: 7.5}
   m_Children:
   - {fileID: 2091072221}
@@ -29897,7 +29900,7 @@ Rigidbody2D:
   m_Interpolate: 0
   m_SleepingMode: 1
   m_CollisionDetection: 0
-  m_Constraints: 0
+  m_Constraints: 4
 --- !u!1 &1197523969
 GameObject:
   m_ObjectHideFlags: 0
@@ -31815,7 +31818,7 @@ GameObject:
   - component: {fileID: 2091072221}
   - component: {fileID: 2091072219}
   - component: {fileID: 2091072220}
-  m_Layer: 0
+  m_Layer: 11
   m_Name: Flash
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -36497,7 +36500,7 @@ Transform:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 2091072218}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: 0.198, y: 0.71, z: 0}
   m_LocalScale: {x: 0.1, y: 0.1, z: 0.1}
   m_Children: []
   m_Father: {fileID: 1070922990}

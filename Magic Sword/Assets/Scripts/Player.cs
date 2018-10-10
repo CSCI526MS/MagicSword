@@ -27,7 +27,7 @@ public class Player : MonoBehaviour {
     // moveDirection == 4 -> Right
     private int moveDirection;
     private float tan;
-    
+
 
     private Vector2 direction;
     private Vector2 touchDirection;
@@ -36,7 +36,7 @@ public class Player : MonoBehaviour {
     private readonly float IMMUNE_TIME = 2f;
     private float attackCooldown;
     private float immuneTimer = 0;
-    
+
     public Transform attackPos;
     public float attackRange;
     public LayerMask enemyLayer;
@@ -71,9 +71,9 @@ public class Player : MonoBehaviour {
         playerStatus.MaxHP = 100;
         playerStatus.CurrentHP = 100;
         isImmune = false;
-        
+
     }
-	
+
 	// Update is called once per frame
 	void Update () {
         direction = joystick.Direction;
@@ -108,8 +108,8 @@ public class Player : MonoBehaviour {
             immuneTimer -= Time.deltaTime;
         }
 
-        MeteorAttack();
-        
+        // MeteorAttack();
+
         if (Input.GetMouseButtonDown(0)) {
             //Debug.Log(Input.mousePosition);
             //touchDirection = new Vector2(Input.mousePosition.x, Input.mousePosition.y) - new Vector2(gameObject.transform.position.x, gameObject.transform.position.y);
@@ -162,7 +162,7 @@ public class Player : MonoBehaviour {
         {
             if (tan <= 1 && tan >= -1)
             {
-                // Go right 
+                // Go right
                 moveDirection = 4;
             }
             if (tan > 1)
@@ -182,7 +182,7 @@ public class Player : MonoBehaviour {
         {
             if (tan <= 1 && tan >= -1)
             {
-                // Go left 
+                // Go left
                 moveDirection = 3;
             }
             if (tan > 1)
@@ -236,7 +236,13 @@ public class Player : MonoBehaviour {
             isImmune = true;
             immuneTimer = IMMUNE_TIME;
             TakeDamage(10);
-        } else if (collision.gameObject.tag == "floor") {
+        }
+        if (collision.gameObject.tag == "Slime" && !isImmune) {
+            isImmune = true;
+            immuneTimer = IMMUNE_TIME;
+            TakeDamage(5);
+        }
+        if (collision.gameObject.tag == "floor") {
             StartCoroutine(LoadYourAsyncScene());
         }
 
@@ -362,7 +368,7 @@ yield return null;
                 Debug.DrawLine(transform.position, Camera.main.ScreenToWorldPoint(touchPoint), Color.red, 3);
                 Vector2 castPoint;
                 RaycastHit2D barrier = Physics2D.Linecast(transform.position, Camera.main.ScreenToWorldPoint(touchPoint), 1 << LayerMask.NameToLayer("Wall"));
-                
+
                 if (barrier.collider) // if there is a barrier between player and cast point;
                 {
                     castPoint = Camera.main.WorldToScreenPoint(barrier.point);
@@ -379,10 +385,10 @@ yield return null;
                 FindObjectOfType<Meteor>().Create(castPoint);
                 newMeteor.transform.position = new Vector3(castPoint.x + 15, castPoint.y + 15, 0);
 
-                
+
 
             }
-            
+
         }
     }
 

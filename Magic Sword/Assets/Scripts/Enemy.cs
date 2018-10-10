@@ -1,41 +1,53 @@
-﻿using System.Collections;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
 public class Enemy : MonoBehaviour
 {
 
-    private int health;
+    protected int health;
     private float speed;
     public GameObject drop;
-
+    private float MonsterAttackCooldown;
     private Animator animator;
     private bool move;
+    private bool isMonsterAttack;
+    private bool MonsterAttackRange;
+    private bool MonsterAttack;
+
     // 1 -> Up
     // 2 -> Down
     // 3 -> Left
     // 4 -> Right
     private Transform target;
+    private float attackCooldown;
 
-
+    private readonly float ATTACK_COOLDOWN_TIME = 0.7f;
     private Vector2 direction;
     private int moveDirection;
-    private string legendary = "Meat";
+    private string legendary = "helmets";
+    // private string legendary = "eat";
     private int legendaryBar = 75;
-    private string epic = "mp";
+    private string epic = "helmets";
+    // private string epic = "mp";
     private int epicBar = 50;
-    private string rare = "apple";
+    private string rare = "axe";
+    // private string rare = "apple";
     private int rareBar = 25;
-    private string common = "hp";
+    private string common = "axe";
+    // private string common = "hp";
     private int commonBar = -1;
 
     private float deviation = 0.1f;
 
-
     void Start()
     {
+        MonsterAttackCooldown = ATTACK_COOLDOWN_TIME;
+        isMonsterAttack = true;
         animator = GetComponent<Animator>();
-        health = 100;
+        attackCooldown = ATTACK_COOLDOWN_TIME;
+        setHealth();
+        MonsterAttack=true;
         speed = 1;
         move = true;
         direction = Vector2.down;
@@ -43,32 +55,54 @@ public class Enemy : MonoBehaviour
         target = GameObject.FindGameObjectWithTag("Player").GetComponent<Transform>();
         drop = GameObject.Find("Drop");
 	}
-	
+
 
     // Update is called once per frame
     void Update()
     {
 
         Animation();
+        MonsterAttacks();
 
         direction = target.position - transform.position;
         float distanceSquare = direction.x * direction.x + direction.y * direction.y;
-        move = distanceSquare < 64 ? true : false;
+        move = (distanceSquare < 64 && distanceSquare > 2) ? true : false;
+        MonsterAttackRange = distanceSquare < 2 ? true : false;
         moveDirection = getMoveDirection(direction);
-
         if (move)
         {
             transform.position = Vector2.MoveTowards(transform.position, target.position, speed * Time.deltaTime);
         }
 
+        MonsterAttack = (MonsterAttackRange)? true : false;
+
         if (health <= 0)
         {
+
             dropItems();
             Destroy(gameObject);
         }
 
+
+
 	}
 
+    public virtual void setHealth(){
+        health = 100;
+    }
+
+    public void MonsterAttacks(){
+        if (isMonsterAttack)
+        {
+            attackCooldown -= Time.deltaTime;
+            if (attackCooldown < 0)
+            {
+                isMonsterAttack = false;
+                attackCooldown = ATTACK_COOLDOWN_TIME;
+            }
+        }
+
+    }
     public void TakeDamage(int damage)
     {
         health -= damage;
@@ -90,16 +124,21 @@ public class Enemy : MonoBehaviour
         } else {
             id = legendary;
         }
+
         Debug.Log("id"+id);
-        GameObject newDrop = Instantiate(drop) as GameObject;
+        GameObject loot = (GameObject)Resources.Load("Prefabs/loot");
+        loot = Instantiate(loot) as GameObject;
         FindObjectsOfType<Drops>()[0].setItem(id, deviation);
-        newDrop.transform.position = gameObject.transform.position;
+        loot.transform.position = gameObject.transform.position;
     }
 
     private void Animation()
     {
         animator.SetBool("move", move);
         animator.SetInteger("moveDirection", moveDirection);
+
+        animator.SetBool("MonsterAttack", MonsterAttack);
+
     }
 
     private int getMoveDirection(Vector2 direction)

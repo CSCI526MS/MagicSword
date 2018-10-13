@@ -23,7 +23,7 @@ GameObject:
   - component: {fileID: 58662240875858780}
   - component: {fileID: 50309989229065860}
   - component: {fileID: 114201919614518176}
-  m_Layer: 0
+  m_Layer: 14
   m_Name: EnemyFireBall
   m_TagString: Skill1
   m_Icon: {fileID: 0}

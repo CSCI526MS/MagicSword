@@ -20,11 +20,12 @@ public class FireBall : MonoBehaviour
 
     private void OnCollisionEnter2D(Collision2D collision)
     {
-        //if (collision.gameObject.tag == "Enemy")
-        //{
-        //    Debug.Log("attack.....");
+        if (collision.gameObject.layer == LayerMask.NameToLayer("Enemy"))
+        {
+            collision.gameObject.GetComponent<Enemy>().TakeDamage(GameObject.Find("Player").GetComponent<Player>().getPlayerDamage()+10);
+        }
 
-        //}
         Destroy(gameObject);
+        
     }
 }

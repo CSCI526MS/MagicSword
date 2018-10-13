@@ -22,9 +22,9 @@ GameObject:
   - component: {fileID: 212388913086806244}
   - component: {fileID: 58662240875858780}
   - component: {fileID: 50309989229065860}
-  - component: {fileID: 114628466876712406}
-  m_Layer: 13
-  m_Name: FireBall
+  - component: {fileID: 114201919614518176}
+  m_Layer: 0
+  m_Name: EnemyFireBall
   m_TagString: Skill1
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -78,7 +78,7 @@ CircleCollider2D:
   m_Offset: {x: 0, y: 0}
   serializedVersion: 2
   m_Radius: 0.34
---- !u!114 &114628466876712406
+--- !u!114 &114201919614518176
 MonoBehaviour:
   m_ObjectHideFlags: 1
   m_CorrespondingSourceObject: {fileID: 0}
@@ -86,7 +86,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 1366802986155998}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: dfe5655e7f1ea5d43bf7ff16733f6f3a, type: 3}
+  m_Script: {fileID: 11500000, guid: 9e916aa2898b5fd46a54b2be55e5bb37, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!212 &212388913086806244

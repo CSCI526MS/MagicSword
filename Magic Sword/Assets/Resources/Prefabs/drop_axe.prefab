@@ -20,7 +20,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4695922754643232}
   - component: {fileID: 212720296088905284}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: drop_axe
   m_TagString: Untagged
   m_Icon: {fileID: 0}

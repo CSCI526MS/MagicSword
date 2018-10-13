@@ -20,7 +20,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4897373171221504}
   - component: {fileID: 212055979139699942}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: drop_shield
   m_TagString: Untagged
   m_Icon: {fileID: 0}

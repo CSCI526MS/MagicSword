@@ -56,6 +56,8 @@ public class Player : MonoBehaviour {
     // thunderball
     public GameObject thunderBall;
 
+    private int damage;
+
     // Use this for initialization
     void Start () {
         sRenderer = GetComponent<SpriteRenderer>();
@@ -71,7 +73,7 @@ public class Player : MonoBehaviour {
         playerStatus.MaxHP = 100;
         playerStatus.CurrentHP = 100;
         isImmune = false;
-
+        damage = 10;
     }
 
 	// Update is called once per frame
@@ -155,6 +157,11 @@ public class Player : MonoBehaviour {
 
     }
 
+    public int getPlayerDamage()
+    {
+        return damage;
+    }
+
     private void DirectionUpdate(Vector2 direction)
     {
         tan = direction.y / direction.x;
@@ -232,16 +239,16 @@ public class Player : MonoBehaviour {
 
     void OnCollisionStay2D(Collision2D collision)
     {
-        if (collision.gameObject.tag == "Enemy" && !isImmune) {
-            isImmune = true;
-            immuneTimer = IMMUNE_TIME;
-            TakeDamage(10);
-        }
-        if (collision.gameObject.tag == "Slime" && !isImmune) {
-            isImmune = true;
-            immuneTimer = IMMUNE_TIME;
-            TakeDamage(5);
-        }
+        //if (collision.gameObject.tag == "Enemy" && !isImmune) {
+        //    isImmune = true;
+        //    immuneTimer = IMMUNE_TIME;
+        //    TakeDamage(10);
+        //}
+        //if (collision.gameObject.tag == "Slime" && !isImmune) {
+        //    isImmune = true;
+        //    immuneTimer = IMMUNE_TIME;
+        //    TakeDamage(5);
+        //}
         if (collision.gameObject.tag == "floor") {
             StartCoroutine(LoadYourAsyncScene());
         }
@@ -307,8 +314,14 @@ public class Player : MonoBehaviour {
 
     public void TakeDamage(int damage)
     {
-        playerStatus.CurrentHP -= damage;
-        PopupTextController.CreatePopupText(damage.ToString(), transform, Color.red);
+        if (!isImmune)
+        {
+            immuneTimer = IMMUNE_TIME;
+            playerStatus.CurrentHP -= damage;
+            PopupTextController.CreatePopupText(damage.ToString(), transform, Color.red);
+            isImmune = true;
+        }
+        
     }
 
     private void FlashSprite()

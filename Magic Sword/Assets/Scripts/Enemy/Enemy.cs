@@ -15,6 +15,8 @@ public class Enemy : MonoBehaviour
     private bool MonsterAttackRange;
     private bool MonsterAttack;
 
+    protected bool rangedAttackType;
+
     // 1 -> Up
     // 2 -> Down
     // 3 -> Left
@@ -40,6 +42,9 @@ public class Enemy : MonoBehaviour
 
     private float deviation = 0.1f;
 
+    public GameObject projectile;
+
+
     void Start()
     {
         MonsterAttackCooldown = ATTACK_COOLDOWN_TIME;
@@ -54,6 +59,8 @@ public class Enemy : MonoBehaviour
         moveDirection = 2;
         target = GameObject.FindGameObjectWithTag("Player").GetComponent<Transform>();
         drop = GameObject.Find("Drop");
+
+        setAttackType();
 	}
 
 
@@ -83,23 +90,46 @@ public class Enemy : MonoBehaviour
             Destroy(gameObject);
         }
 
+        if (!isMonsterAttack)
+        {
+            attackCooldown -= Time.deltaTime;
+        }
+        if (attackCooldown < 0)
+        {
+            isMonsterAttack = true;
+        }
 
 
-	}
+    }
 
     public virtual void setHealth(){
         health = 100;
     }
 
+    protected virtual void setAttackType()
+    {
+
+    }
+
+
+    protected virtual void RangedAttack()
+    {
+
+
+
+    }
+
+
     public void MonsterAttacks(){
         if (isMonsterAttack)
         {
-            attackCooldown -= Time.deltaTime;
-            if (attackCooldown < 0)
+            isMonsterAttack = false;
+            attackCooldown = ATTACK_COOLDOWN_TIME;
+            if (rangedAttackType)
             {
-                isMonsterAttack = false;
-                attackCooldown = ATTACK_COOLDOWN_TIME;
+                RangedAttack();
             }
+                
         }
 
     }
@@ -187,10 +217,10 @@ public class Enemy : MonoBehaviour
 
     private void OnCollisionEnter2D(Collision2D collision)
     {
-        if (collision.gameObject.tag == "Skill1")
-        {
-            Debug.Log("attack.....");
-            TakeDamage(30);
-        }
+        //if (collision.gameObject.tag == "Skill1")
+        //{
+        //    Debug.Log("attack.....");
+        //    TakeDamage(30);
+        //}
     }
 }

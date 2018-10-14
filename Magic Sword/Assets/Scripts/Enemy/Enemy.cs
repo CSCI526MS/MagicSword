@@ -2,12 +2,10 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Enemy : MonoBehaviour
-{
+public class Enemy : MonoBehaviour {
 
     protected int health;
     private float speed;
-    public GameObject drop;
     private float MonsterAttackCooldown;
     private Animator animator;
     private bool move;
@@ -30,13 +28,13 @@ public class Enemy : MonoBehaviour
     private string legendary = "helmets";
     // private string legendary = "eat";
     private int legendaryBar = 75;
-    private string epic = "helmets";
+    private string epic = "axe";
     // private string epic = "mp";
     private int epicBar = 50;
-    private string rare = "axe";
+    private string rare = "hp";
     // private string rare = "apple";
     private int rareBar = 25;
-    private string common = "axe";
+    private string common = "hp";
     // private string common = "hp";
     private int commonBar = -1;
 
@@ -45,8 +43,7 @@ public class Enemy : MonoBehaviour
     public GameObject projectile;
 
 
-    void Start()
-    {
+    void Start() {
         MonsterAttackCooldown = ATTACK_COOLDOWN_TIME;
         isMonsterAttack = true;
         animator = GetComponent<Animator>();
@@ -58,15 +55,14 @@ public class Enemy : MonoBehaviour
         direction = Vector2.down;
         moveDirection = 2;
         target = GameObject.FindGameObjectWithTag("Player").GetComponent<Transform>();
-        drop = GameObject.Find("Drop");
+        new Drops(); // call static constructor
 
         setAttackType();
 	}
 
 
     // Update is called once per frame
-    void Update()
-    {
+    void Update() {
 
         Animation();
         MonsterAttacks();
@@ -75,27 +71,21 @@ public class Enemy : MonoBehaviour
         float distanceSquare = direction.x * direction.x + direction.y * direction.y;
         move = (distanceSquare < 64 && distanceSquare > 2) ? true : false;
         MonsterAttackRange = distanceSquare < 2 ? true : false;
-        moveDirection = getMoveDirection(direction);
-        if (move)
-        {
+        moveDirection = getMoveDirection(direction); {
             transform.position = Vector2.MoveTowards(transform.position, target.position, speed * Time.deltaTime);
         }
 
         MonsterAttack = (MonsterAttackRange)? true : false;
 
-        if (health <= 0)
-        {
-
+        if (health <= 0) {
             dropItems();
             Destroy(gameObject);
         }
 
-        if (!isMonsterAttack)
-        {
+        if (!isMonsterAttack) {
             attackCooldown -= Time.deltaTime;
         }
-        if (attackCooldown < 0)
-        {
+        if (attackCooldown < 0) {
             isMonsterAttack = true;
         }
 
@@ -106,14 +96,12 @@ public class Enemy : MonoBehaviour
         health = 100;
     }
 
-    protected virtual void setAttackType()
-    {
+    protected virtual void setAttackType() {
 
     }
 
 
-    protected virtual void RangedAttack()
-    {
+    protected virtual void RangedAttack() {
 
 
 
@@ -121,20 +109,18 @@ public class Enemy : MonoBehaviour
 
 
     public void MonsterAttacks(){
-        if (isMonsterAttack)
-        {
+        if (isMonsterAttack) {
             isMonsterAttack = false;
             attackCooldown = ATTACK_COOLDOWN_TIME;
-            if (rangedAttackType)
-            {
+            if (rangedAttackType) {
                 RangedAttack();
             }
                 
         }
 
     }
-    public void TakeDamage(int damage)
-    {
+
+    public void TakeDamage(int damage) {
         health -= damage;
         PopupTextController.CreatePopupText(damage.ToString(), transform, Color.white);
     }
@@ -162,8 +148,7 @@ public class Enemy : MonoBehaviour
         loot.transform.position = gameObject.transform.position;
     }
 
-    private void Animation()
-    {
+    private void Animation() {
         animator.SetBool("move", move);
         animator.SetInteger("moveDirection", moveDirection);
 
@@ -171,42 +156,33 @@ public class Enemy : MonoBehaviour
 
     }
 
-    private int getMoveDirection(Vector2 direction)
-    {
+    private int getMoveDirection(Vector2 direction) {
         float tan = direction.y / direction.x;
         int moveDirection = 2;
-        if (direction.x > 0)
-        {
-            if (tan <= 1 && tan >= -1)
-            {
+        if (direction.x > 0) {
+            if (tan <= 1 && tan >= -1) {
                 // Go right
                 moveDirection = 4;
             }
-            else if (tan > 1)
-            {
+            else if (tan > 1) {
                 // Go up
                 moveDirection = 1;
             }
-            else
-            {
+            else {
                 // Go down
                 moveDirection = 2;
             }
         }
-        else
-        {
-            if (tan <= 1 && tan >= -1)
-            {
+        else {
+            if (tan <= 1 && tan >= -1) {
                 // Go left
                 moveDirection = 3;
             }
-            else if (tan > 1)
-            {
+            else if (tan > 1) {
                 // Go down
                 moveDirection = 2;
             }
-            else
-            {
+            else {
                 // Go up
                 moveDirection = 1;
             }
@@ -215,8 +191,7 @@ public class Enemy : MonoBehaviour
         return moveDirection;
     }
 
-    private void OnCollisionEnter2D(Collision2D collision)
-    {
+    private void OnCollisionEnter2D(Collision2D collision) {
         //if (collision.gameObject.tag == "Skill1")
         //{
         //    Debug.Log("attack.....");

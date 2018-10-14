@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class Enemy : MonoBehaviour
 {
@@ -45,7 +46,6 @@ public class Enemy : MonoBehaviour
     private float wanderTimer;
     private Vector3 lastSpot;
     protected bool aware;
-    private bool lastAwareStatus;
 
     void Start()
     {
@@ -64,7 +64,6 @@ public class Enemy : MonoBehaviour
         setAttackType();
         lastSpot = transform.position;
         aware = false;
-        lastAwareStatus = false;
 
     }
 
@@ -90,7 +89,6 @@ public class Enemy : MonoBehaviour
         if (!aware && Vector2.Distance(transform.position, GameObject.Find("Player").transform.position) < 5 && !Physics2D.Linecast(transform.position, player.position, 1 << LayerMask.NameToLayer("Wall")).collider)
         {
             aware = true;
-            AwareSign(true);
             lastSpot = player.position;
         }
 
@@ -99,7 +97,7 @@ public class Enemy : MonoBehaviour
             lastSpot = player.position;
         }
 
-        if (Vector2.Distance(transform.position, lastSpot) > 0) 
+        if (Vector2.Distance(transform.position, lastSpot) > 1) 
         {
             transform.position = Vector2.MoveTowards(transform.position, lastSpot, speed * Time.deltaTime);
             direction = lastSpot - transform.position;
@@ -108,7 +106,6 @@ public class Enemy : MonoBehaviour
         else
         {
             aware = false;
-            AwareSign(false);
             Wander();
         }
 
@@ -153,22 +150,17 @@ public class Enemy : MonoBehaviour
 
     }
 
-    private void AwareSign(bool aware)
-    {
-        if(lastAwareStatus !=aware)
-        {
-            if (aware)
-            {
-                
-            }
-            else
-            {
-               
-            }
-        }
-        lastAwareStatus = aware;
-        
 
+    private void CreateText(string msg, Color color, int fontSize, Transform parent,float x, float y, float time)
+    {
+        GameObject UItext = (GameObject)Resources.Load("Prefabs/UI/Text");
+        UItext.transform.SetParent(parent);
+
+        UItext.GetComponent<Text>().text = msg;
+        UItext.GetComponent<Text>().fontSize = fontSize;
+        UItext.GetComponent<Text>().color = color;
+
+        //Destroy(UItext, time);
     }
 
     private void Wander()

@@ -117,14 +117,20 @@ public class Player : MonoBehaviour {
             //touchDirection = new Vector2(Input.mousePosition.x, Input.mousePosition.y) - new Vector2(gameObject.transform.position.x, gameObject.transform.position.y);
             //touchDirection.Normalize();
             //Debug.Log(touchDirection);
-            Vector3 shootDirection;
-            shootDirection = Input.mousePosition;
-            shootDirection.z = 0.0f;
-            shootDirection = Camera.main.ScreenToWorldPoint(shootDirection);
+            Vector3 castPoint;
+            castPoint = Input.mousePosition;
+            castPoint.z = 0.0f;
+            Vector3 shootDirection = Camera.main.ScreenToWorldPoint(castPoint);
             shootDirection = shootDirection - transform.position;
             touchDirection = shootDirection;
             touchDirection.Normalize();
-            RemoteAttack();
+            if (!isAttack)
+            {
+                RemoteAttack();
+                DirectionUpdate(new Vector2(castPoint.x - Screen.width / 2, castPoint.y - Screen.height / 2));
+                isAttack = true;
+            }
+            
         }
         //if (Input.touchCount > 0)
         //{
@@ -287,21 +293,25 @@ public class Player : MonoBehaviour {
 
     public void RemoteAttack()
     {
+
         //touchDirection = new Vector2();
-        var clone = Instantiate(thunderBall, gameObject.transform.position + new Vector3(touchDirection.x, touchDirection.y,0), gameObject.transform.rotation);
+        var clone = Instantiate(thunderBall, gameObject.transform.position + new Vector3(touchDirection.x, touchDirection.y, 0), gameObject.transform.rotation);
         //clone.velocity = direction * 10;
 
         float degree = (float)((Mathf.Atan2(touchDirection.x, touchDirection.y) / Mathf.PI) * 180f);
         if (degree < -90)
         {
             degree = -degree - 90;
-        } else if (degree > 0 && degree < 90)
+        }
+        else if (degree > 0 && degree < 90)
         {
             degree = -(degree + 90);
-        } else if (degree > 90)
+        }
+        else if (degree > 90)
         {
             degree = 90 + (190 - degree);
-        } else
+        }
+        else
         {
             degree = -90 - degree;
         }
@@ -310,6 +320,7 @@ public class Player : MonoBehaviour {
         temp.z = degree;
         clone.transform.eulerAngles = temp;
         clone.GetComponent<Rigidbody2D>().velocity = touchDirection * 10f;
+
     }
 
     public void TakeDamage(int damage)

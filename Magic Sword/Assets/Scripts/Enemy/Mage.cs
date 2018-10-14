@@ -15,8 +15,10 @@ public class Mage : Enemy {
         Vector3 playerPosition = GameObject.Find("Player").transform.position;
         RaycastHit2D barrier = Physics2D.Linecast(transform.position, playerPosition, 1 << LayerMask.NameToLayer("Wall"));
 
-        if (!barrier && Vector2.Distance(transform.position, playerPosition)<8)
+        if (!barrier && Vector2.Distance(transform.position, playerPosition)<8 && aware)
         {
+            isAttack = true;
+            attackCooldown = ATTACK_COOLDOWN_TIME;
             GameObject missile = Instantiate(projectile, transform.position, transform.rotation);
             Vector3 diff = playerPosition - transform.position;
             diff.Normalize();

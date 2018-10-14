@@ -112,7 +112,7 @@ public class Player : MonoBehaviour {
 
         // MeteorAttack();
 
-        if (Input.GetMouseButtonDown(0)) {
+        if (Input.GetMouseButtonDown(0) && !joystick.isTouched()) {
             //Debug.Log(Input.mousePosition);
             //touchDirection = new Vector2(Input.mousePosition.x, Input.mousePosition.y) - new Vector2(gameObject.transform.position.x, gameObject.transform.position.y);
             //touchDirection.Normalize();

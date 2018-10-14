@@ -11,9 +11,7 @@ public class Enemy : MonoBehaviour
     private float MonsterAttackCooldown;
     private Animator animator;
     private bool move;
-    private bool isMonsterAttack;
-    private bool MonsterAttackRange;
-    private bool MonsterAttack;
+    protected bool isAttack;
 
     protected bool rangedAttackType;
 
@@ -21,10 +19,10 @@ public class Enemy : MonoBehaviour
     // 2 -> Down
     // 3 -> Left
     // 4 -> Right
-    private Transform target;
-    private float attackCooldown;
+    private Transform player;
+    protected float attackCooldown;
 
-    private readonly float ATTACK_COOLDOWN_TIME = 0.7f;
+    protected readonly float ATTACK_COOLDOWN_TIME = 1f;
     private Vector2 direction;
     private int moveDirection;
     private string legendary = "helmets";
@@ -44,24 +42,31 @@ public class Enemy : MonoBehaviour
 
     public GameObject projectile;
 
+    private float wanderTimer;
+    private Vector3 lastSpot;
+    protected bool aware;
+    private bool lastAwareStatus;
 
     void Start()
     {
         MonsterAttackCooldown = ATTACK_COOLDOWN_TIME;
-        isMonsterAttack = true;
+        isAttack = false;
         animator = GetComponent<Animator>();
-        attackCooldown = ATTACK_COOLDOWN_TIME;
+        attackCooldown = 0;
         setHealth();
-        MonsterAttack=true;
         speed = 1;
         move = true;
         direction = Vector2.down;
         moveDirection = 2;
-        target = GameObject.FindGameObjectWithTag("Player").GetComponent<Transform>();
+        player = GameObject.FindGameObjectWithTag("Player").GetComponent<Transform>();
         drop = GameObject.Find("Drop");
 
         setAttackType();
-	}
+        lastSpot = transform.position;
+        aware = false;
+        lastAwareStatus = false;
+
+    }
 
 
     // Update is called once per frame
@@ -71,17 +76,42 @@ public class Enemy : MonoBehaviour
         Animation();
         MonsterAttacks();
 
-        direction = target.position - transform.position;
-        float distanceSquare = direction.x * direction.x + direction.y * direction.y;
-        move = (distanceSquare < 64 && distanceSquare > 2) ? true : false;
-        MonsterAttackRange = distanceSquare < 2 ? true : false;
-        moveDirection = getMoveDirection(direction);
-        if (move)
+        //direction = target.position - transform.position;
+        //float distanceSquare = direction.x * direction.x + direction.y * direction.y;
+        //move = (distanceSquare < 64 && distanceSquare > 2) ? true : false;
+
+        //moveDirection = getMoveDirection(direction);
+        //if (move)
+        //{
+        //    transform.position = Vector2.MoveTowards(transform.position, target.position, speed * Time.deltaTime);
+        //}
+        Debug.Log(lastSpot);
+
+        if (!aware && Vector2.Distance(transform.position, GameObject.Find("Player").transform.position) < 5 && !Physics2D.Linecast(transform.position, player.position, 1 << LayerMask.NameToLayer("Wall")).collider)
         {
-            transform.position = Vector2.MoveTowards(transform.position, target.position, speed * Time.deltaTime);
+            aware = true;
+            AwareSign(true);
+            lastSpot = player.position;
         }
 
-        MonsterAttack = (MonsterAttackRange)? true : false;
+        if(aware && !Physics2D.Linecast(transform.position, player.position, 1 << LayerMask.NameToLayer("Wall")).collider)
+        {
+            lastSpot = player.position;
+        }
+
+        if (Vector2.Distance(transform.position, lastSpot) > 0) 
+        {
+            transform.position = Vector2.MoveTowards(transform.position, lastSpot, speed * Time.deltaTime);
+            direction = lastSpot - transform.position;
+            moveDirection = getMoveDirection(direction);
+        }
+        else
+        {
+            aware = false;
+            AwareSign(false);
+            Wander();
+        }
+
 
         if (health <= 0)
         {
@@ -90,13 +120,18 @@ public class Enemy : MonoBehaviour
             Destroy(gameObject);
         }
 
-        if (!isMonsterAttack)
+        if (attackCooldown>=0)
         {
             attackCooldown -= Time.deltaTime;
         }
-        if (attackCooldown < 0)
+        if (attackCooldown < 0.5)
         {
-            isMonsterAttack = true;
+            isAttack = false;
+        }
+
+        if (wanderTimer >= 0)
+        {
+            wanderTimer -= Time.deltaTime;
         }
 
 
@@ -116,18 +151,78 @@ public class Enemy : MonoBehaviour
     {
 
 
+    }
 
+    private void AwareSign(bool aware)
+    {
+        if(lastAwareStatus !=aware)
+        {
+            if (aware)
+            {
+                
+            }
+            else
+            {
+               
+            }
+        }
+        lastAwareStatus = aware;
+        
+
+    }
+
+    private void Wander()
+    {
+        if (wanderTimer > 0)
+        {
+            switch (moveDirection)
+            {
+                case 1:
+                    transform.position += new Vector3(0, speed * Time.deltaTime, 0);
+                    break;
+                case 2:
+                    transform.position += new Vector3(0, -speed * Time.deltaTime, 0);
+                    break;
+                case 3:
+                    transform.position += new Vector3(-speed * Time.deltaTime, 0, 0);
+                    break;
+                case 4:
+                    transform.position += new Vector3(speed * Time.deltaTime, 0, 0);
+                    break;
+            }
+        }
+        else
+        {
+            wanderTimer = Random.Range(1, 3);
+            moveDirection = Random.Range(1, 5);
+        }
+
+
+    }
+
+    private void MeleeAttack()
+    {
+        if (Vector2.Distance(transform.position, GameObject.Find("Player").transform.position) <= 1.5)
+        {
+            isAttack = true;
+            attackCooldown = ATTACK_COOLDOWN_TIME;
+            FindObjectOfType<Player>().TakeDamage(10);
+        }
+        
     }
 
 
     public void MonsterAttacks(){
-        if (isMonsterAttack)
+        if (!isAttack && attackCooldown <= 0)
         {
-            isMonsterAttack = false;
-            attackCooldown = ATTACK_COOLDOWN_TIME;
+            
             if (rangedAttackType)
             {
                 RangedAttack();
+            }
+            else
+            {
+                MeleeAttack();
             }
                 
         }
@@ -167,7 +262,7 @@ public class Enemy : MonoBehaviour
         animator.SetBool("move", move);
         animator.SetInteger("moveDirection", moveDirection);
 
-        animator.SetBool("MonsterAttack", MonsterAttack);
+        animator.SetBool("MonsterAttack", isAttack);
 
     }
 
@@ -215,6 +310,7 @@ public class Enemy : MonoBehaviour
         return moveDirection;
     }
 
+
     private void OnCollisionEnter2D(Collision2D collision)
     {
         //if (collision.gameObject.tag == "Skill1")
@@ -223,4 +319,5 @@ public class Enemy : MonoBehaviour
         //    TakeDamage(30);
         //}
     }
+
 }

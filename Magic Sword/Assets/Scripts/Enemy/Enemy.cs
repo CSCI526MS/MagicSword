@@ -97,7 +97,7 @@ public class Enemy : MonoBehaviour
             lastSpot = player.position;
         }
 
-        if (Vector2.Distance(transform.position, lastSpot) > 1) 
+        if (Vector2.Distance(transform.position, lastSpot) > 0.5) 
         {
             transform.position = Vector2.MoveTowards(transform.position, lastSpot, speed * Time.deltaTime);
             direction = lastSpot - transform.position;

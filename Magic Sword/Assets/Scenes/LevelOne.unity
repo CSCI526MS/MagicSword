@@ -27945,6 +27945,11 @@ Prefab:
       propertyPath: m_RootOrder
       value: 6
       objectReference: {fileID: 0}
+    - target: {fileID: 50063542021197806, guid: 7a85fb2661545ef4587fb2da2f92038f,
+        type: 2}
+      propertyPath: m_CollisionDetection
+      value: 1
+      objectReference: {fileID: 0}
     m_RemovedComponents:
     - {fileID: 61752175285480042, guid: 7a85fb2661545ef4587fb2da2f92038f, type: 2}
   m_SourcePrefab: {fileID: 100100000, guid: 7a85fb2661545ef4587fb2da2f92038f, type: 2}

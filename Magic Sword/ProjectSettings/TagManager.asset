@@ -8,6 +8,7 @@ TagManager:
   - Skill1
   - Slime
   - InventoryPanel
+  - Loot
   layers:
   - Default
   - TransparentFX

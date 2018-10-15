@@ -2,14 +2,25 @@ using UnityEngine;
 
 public enum EquipmentType
 {
+	Consume,
 	Helmet,
-	Weapon,
+	Weapon
 }
 
 [CreateAssetMenu]
 public class EquippableItem : Item {
 
 	public EquipmentType EquipmentType;
+
+	public EquippableItem(string itemId, EquipmentType EquipmentType, float hp, float speed, float attack, float defense, Sprite icon) {
+		this.itemId = itemId;
+		this.EquipmentType = EquipmentType;
+        this.hp = hp;
+        this.speed = speed;
+        this.attack = attack;
+        this.defense = defense;
+        this.icon = icon;
+	}
 
 	public void Equip(InventoryUI c)
 	{

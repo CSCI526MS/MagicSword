@@ -2,12 +2,14 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Mage : Enemy {
+public class GoblinSniper : Enemy {
 
-    protected override void setAttackType()
+    protected override void Initialize()
     {
+        health = 50;
         rangedAttackType = true;
     }
+
 
 
     protected override void RangedAttack()
@@ -24,8 +26,8 @@ public class Mage : Enemy {
             diff.Normalize();
 
             float rot_z = Mathf.Atan2(diff.y, diff.x) * Mathf.Rad2Deg;
-            missile.transform.rotation = Quaternion.Euler(0f, 0f, rot_z - 180);
-            FindObjectOfType<EnemyFireBall>().setPosition(playerPosition);
+            missile.transform.rotation = Quaternion.Euler(0f, 0f, rot_z );
+            FindObjectOfType<EnemyArrow>().setPosition(playerPosition);
             //missile.GetComponent<EnemyFireBall>().setPosition(playerPosition);
         }
 

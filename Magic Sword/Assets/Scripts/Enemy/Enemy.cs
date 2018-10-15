@@ -50,7 +50,7 @@ public class Enemy : MonoBehaviour {
         isAttack = false;
         animator = GetComponent<Animator>();
         attackCooldown = 0;
-        setHealth();
+        Initialize();
         speed = 1;
         move = true;
         direction = Vector2.down;
@@ -61,7 +61,6 @@ public class Enemy : MonoBehaviour {
         //target = GameObject.FindGameObjectWithTag("Player").GetComponent<Transform>();
         new Drops(); // call static constructor
 
-        setAttackType();
         lastSpot = transform.position;
         aware = false;
 
@@ -118,7 +117,7 @@ public class Enemy : MonoBehaviour {
         {
             attackCooldown -= Time.deltaTime;
         }
-        if (attackCooldown < 0.5)
+        if (attackCooldown < ATTACK_COOLDOWN_TIME-0.3)
         {
             isAttack = false;
         }
@@ -131,13 +130,13 @@ public class Enemy : MonoBehaviour {
 
     }
 
-    public virtual void setHealth(){
-        health = 100;
+    protected virtual void Initialize(){
+        //health = 
+        //speed = 
+        //TODO: damage = 
+        //rangedAttackType =
     }
 
-    protected virtual void setAttackType() {
-
-    }
 
 
     protected virtual void RangedAttack() {

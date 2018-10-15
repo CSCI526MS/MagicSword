@@ -11,6 +11,7 @@ public class CameraFollow : MonoBehaviour {
 	// Use this for initialization
 	void Start () {
         target = GameObject.Find("Player").transform;
+        Application.targetFrameRate = 60;
 	}
 	
 	// Update is called once per frame

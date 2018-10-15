@@ -5,7 +5,7 @@ AnimatorController:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
-  m_Name: Slime
+  m_Name: GoblinSniper
   serializedVersion: 5
   m_AnimatorParameters:
   - m_Name: move
@@ -525,7 +525,7 @@ AnimatorState:
   m_ObjectHideFlags: 1
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
-  m_Name: slime_attack_up
+  m_Name: attack_up
   m_Speed: 1
   m_CycleOffset: 0
   m_Transitions:
@@ -539,7 +539,7 @@ AnimatorState:
   m_MirrorParameterActive: 0
   m_CycleOffsetParameterActive: 0
   m_TimeParameterActive: 0
-  m_Motion: {fileID: 7400000, guid: 6b67a3de407c24ac2a086ca2d4795d04, type: 2}
+  m_Motion: {fileID: 7400000, guid: 814c5c21baf3949f3a8b5e6aa3eedff8, type: 2}
   m_Tag: 
   m_SpeedParameter: 
   m_MirrorParameter: 
@@ -551,7 +551,7 @@ AnimatorState:
   m_ObjectHideFlags: 1
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
-  m_Name: slime_move_down
+  m_Name: move_down
   m_Speed: 1
   m_CycleOffset: 0
   m_Transitions:
@@ -568,7 +568,7 @@ AnimatorState:
   m_MirrorParameterActive: 0
   m_CycleOffsetParameterActive: 0
   m_TimeParameterActive: 0
-  m_Motion: {fileID: 7400000, guid: 5112529da0c7844cd97cea6da0447490, type: 2}
+  m_Motion: {fileID: 7400000, guid: 80422b519f54845f88dc8313fdf8d1de, type: 2}
   m_Tag: 
   m_SpeedParameter: 
   m_MirrorParameter: 
@@ -580,7 +580,7 @@ AnimatorState:
   m_ObjectHideFlags: 1
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
-  m_Name: slime_move_up
+  m_Name: move_up
   m_Speed: 1
   m_CycleOffset: 0
   m_Transitions:
@@ -597,7 +597,7 @@ AnimatorState:
   m_MirrorParameterActive: 0
   m_CycleOffsetParameterActive: 0
   m_TimeParameterActive: 0
-  m_Motion: {fileID: 7400000, guid: d7da10b89518b432dad5705bd49d93b9, type: 2}
+  m_Motion: {fileID: 7400000, guid: 69cbc2c46739644fa8b40d90ca852d59, type: 2}
   m_Tag: 
   m_SpeedParameter: 
   m_MirrorParameter: 
@@ -609,7 +609,7 @@ AnimatorState:
   m_ObjectHideFlags: 1
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
-  m_Name: slime_move_right
+  m_Name: move_right
   m_Speed: 1
   m_CycleOffset: 0
   m_Transitions:
@@ -626,7 +626,7 @@ AnimatorState:
   m_MirrorParameterActive: 0
   m_CycleOffsetParameterActive: 0
   m_TimeParameterActive: 0
-  m_Motion: {fileID: 7400000, guid: 51d6570cc8e074c2a847e850a5b829bf, type: 2}
+  m_Motion: {fileID: 7400000, guid: a76162da3cb424bd2bdebeeb323316d1, type: 2}
   m_Tag: 
   m_SpeedParameter: 
   m_MirrorParameter: 
@@ -638,7 +638,7 @@ AnimatorState:
   m_ObjectHideFlags: 1
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
-  m_Name: slime_move_left
+  m_Name: move_left
   m_Speed: 1
   m_CycleOffset: 0
   m_Transitions:
@@ -655,7 +655,7 @@ AnimatorState:
   m_MirrorParameterActive: 0
   m_CycleOffsetParameterActive: 0
   m_TimeParameterActive: 0
-  m_Motion: {fileID: 7400000, guid: cb8d2a1b335514b229683d340b6c8999, type: 2}
+  m_Motion: {fileID: 7400000, guid: 80cf3c9aa782a4847bdda8d9644e9b83, type: 2}
   m_Tag: 
   m_SpeedParameter: 
   m_MirrorParameter: 
@@ -667,7 +667,7 @@ AnimatorState:
   m_ObjectHideFlags: 1
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
-  m_Name: slime_attack_down
+  m_Name: attack_down
   m_Speed: 1
   m_CycleOffset: 0
   m_Transitions:
@@ -681,7 +681,7 @@ AnimatorState:
   m_MirrorParameterActive: 0
   m_CycleOffsetParameterActive: 0
   m_TimeParameterActive: 0
-  m_Motion: {fileID: 7400000, guid: 3bb9f14b62172411fa4f716cc36c8f55, type: 2}
+  m_Motion: {fileID: 7400000, guid: 12c9c39bffadd4eec9706ac0e5be2296, type: 2}
   m_Tag: 
   m_SpeedParameter: 
   m_MirrorParameter: 
@@ -693,7 +693,7 @@ AnimatorState:
   m_ObjectHideFlags: 1
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
-  m_Name: slime_attack_left
+  m_Name: attack_left
   m_Speed: 1
   m_CycleOffset: 0
   m_Transitions:
@@ -707,7 +707,7 @@ AnimatorState:
   m_MirrorParameterActive: 0
   m_CycleOffsetParameterActive: 0
   m_TimeParameterActive: 0
-  m_Motion: {fileID: 7400000, guid: 0a703b5c3b1cd459b89c74d7e9eec509, type: 2}
+  m_Motion: {fileID: 7400000, guid: 105c3777bc2074f5994e669715f40214, type: 2}
   m_Tag: 
   m_SpeedParameter: 
   m_MirrorParameter: 
@@ -719,7 +719,7 @@ AnimatorState:
   m_ObjectHideFlags: 1
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
-  m_Name: slime_attack_Right
+  m_Name: attack_Right
   m_Speed: 1
   m_CycleOffset: 0
   m_Transitions:
@@ -733,7 +733,7 @@ AnimatorState:
   m_MirrorParameterActive: 0
   m_CycleOffsetParameterActive: 0
   m_TimeParameterActive: 0
-  m_Motion: {fileID: 7400000, guid: c23a5c25a91a34d2c81ece7c9a1ccfbb, type: 2}
+  m_Motion: {fileID: 7400000, guid: 5f5e5c36e64a44ef6ad3a5697ca65f98, type: 2}
   m_Tag: 
   m_SpeedParameter: 
   m_MirrorParameter: 

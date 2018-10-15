@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class EnemyFireBall : MonoBehaviour {
+public class EnemyArrow : MonoBehaviour {
 
     private Vector3 normalizeDirection;
     private Vector3 targetPos;
@@ -28,8 +28,8 @@ public class EnemyFireBall : MonoBehaviour {
     {
         
         targetPos = target;
-        initialized = true;
         normalizeDirection = (targetPos - transform.position).normalized;
+        initialized = true;
     }
 
 

@@ -4,12 +4,9 @@ using UnityEngine;
 
 public class Slime : Enemy {
 
-    public override void setHealth() {
-        health = 10;
-    }
-
-    protected override void setAttackType()
-    {
+    protected override void Initialize() {
+        health = 100;
         rangedAttackType = false;
     }
+
 }

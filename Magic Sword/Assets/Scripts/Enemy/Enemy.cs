@@ -83,7 +83,7 @@ public class Enemy : MonoBehaviour {
         //{
         //    transform.position = Vector2.MoveTowards(transform.position, target.position, speed * Time.deltaTime);
         //}
-        Debug.Log(lastSpot);
+        //Debug.Log(lastSpot);
 
         if (!aware && Vector2.Distance(transform.position, GameObject.Find("Player").transform.position) < 5 && !Physics2D.Linecast(transform.position, player.position, 1 << LayerMask.NameToLayer("Wall")).collider)
         {

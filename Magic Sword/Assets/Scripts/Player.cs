@@ -296,11 +296,11 @@ public class Player : MonoBehaviour {
     }
 
     public void RestoreHealth(int health) {
-        Debug.Log("Restore 10");
         playerStatus.CurrentHP += health;
         if (playerStatus.CurrentHP > playerStatus.MaxHP) {
             playerStatus.CurrentHP = playerStatus.MaxHP;
         }
+        PopupTextController.CreatePopupText(health.ToString(), transform, Color.green);
     }
 
     public void TakeDamage(int damage) {

@@ -84,7 +84,7 @@ public class Enemy : MonoBehaviour {
         //}
         //Debug.Log(lastSpot);
 
-        if (!aware && Vector2.Distance(transform.position, GameObject.Find("Player").transform.position) < 5 && !Physics2D.Linecast(transform.position, player.position, 1 << LayerMask.NameToLayer("Wall")).collider)
+        if (!aware && Vector2.Distance(transform.position, GameObject.Find("Player").transform.position) < 10 && !Physics2D.Linecast(transform.position, player.position, 1 << LayerMask.NameToLayer("Wall")).collider)
         {
             aware = true;
             lastSpot = player.position;

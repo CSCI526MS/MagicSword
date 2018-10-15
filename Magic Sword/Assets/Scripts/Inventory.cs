@@ -27,11 +27,6 @@ public class Inventory : MonoBehaviour {
         Debug.Log("item.EquipmentType = " + item.EquipmentType);
         Debug.Log("item.hp = " + item.properties[0]);
         Debug.Log("item.itemId = " + item.itemId);
-        // if (item.itemId == "axe") {
-        //
-        // }
-        // setStat(item, 20, 5, 0, 10);
-
         for (int i = 0; i < inventorySlots.Length; i++) {
             Debug.Log(inventorySlots[i].Item);
             if (inventorySlots[i].Item == null) {

@@ -12,7 +12,7 @@ public class EquippableItem : Item {
 
 	public EquipmentType EquipmentType;
 
-	public EquippableItem(string itemId, EquipmentType EquipmentType, float hp, float speed, float attack, float defense, Sprite icon) {
+	public EquippableItem(string itemId, EquipmentType EquipmentType, int hp, int speed, int attack, int defense, Sprite icon) {
 		this.itemId = itemId;
 		this.EquipmentType = EquipmentType;
         this.properties[0] = hp;

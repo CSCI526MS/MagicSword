@@ -54,10 +54,10 @@ public class Drops : MonoBehaviour {
         EquippableItem standard = dic[id];
 
 		float variation = Random.Range(-deviation, deviation);
-        float currHp = standard.properties[0] * (1+variation);
-        float currSpeed = standard.properties[1] * (1+variation);
-        float currAttack = standard.properties[2] * (1+variation);
-        float currDefense = standard.properties[3] * (1+variation);
+        int currHp = (int)(standard.properties[0] * (1 + variation));
+        int currSpeed = (int)(standard.properties[1] * (1 + variation));
+        int currAttack = (int)(standard.properties[2] * (1 + variation));
+        int currDefense = (int)(standard.properties[3] * (1 + variation));
         this.item = new EquippableItem(id, standard.EquipmentType, currHp, currSpeed, currAttack, currDefense, imageSprite);
 	}
 }

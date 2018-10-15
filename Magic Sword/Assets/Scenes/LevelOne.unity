@@ -31319,7 +31319,7 @@ GameObject:
   - component: {fileID: 1621196105}
   - component: {fileID: 1621196104}
   m_Layer: 5
-  m_Name: Helmet Slot
+  m_Name: Weapon Slot
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -31355,7 +31355,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   image: {fileID: 1621196105}
-  EquipmentType: 1
+  EquipmentType: 2
 --- !u!114 &1621196105
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -37655,7 +37655,7 @@ GameObject:
   - component: {fileID: 2120181315}
   - component: {fileID: 2120181314}
   m_Layer: 5
-  m_Name: Consume Slot
+  m_Name: Helmet Slot
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -37691,7 +37691,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   image: {fileID: 2120181315}
-  EquipmentType: 0
+  EquipmentType: 1
 --- !u!114 &2120181315
 MonoBehaviour:
   m_ObjectHideFlags: 0

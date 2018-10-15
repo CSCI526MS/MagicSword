@@ -5,8 +5,7 @@ public class EquipmentPanel : MonoBehaviour {
 	[SerializeField] Transform equipmentSlotsParent;
 	[SerializeField] EquipmentSlot[] equipmentSlots;
 
-	public event Action<InventorySlot> OnRightClickEvent;
-    public event Action<InventorySlot> OnBeginDragEvent;
+	public event Action<InventorySlot> OnBeginDragEvent;
     public event Action<InventorySlot> OnEndDragEvent;
     public event Action<InventorySlot> OnDragEvent;
     public event Action<InventorySlot> OnDropEvent;
@@ -15,7 +14,6 @@ public class EquipmentPanel : MonoBehaviour {
 		for (int i = 0; i < equipmentSlots.Length; i++) {
 			// equipmentSlots[i].OnPointerEnterEvent += OnPointerEnterEvent;
 			// equipmentSlots[i].OnPointerExitEvent += OnPointerExitEvent;
-			equipmentSlots[i].OnRightClickEvent += OnRightClickEvent;
 			equipmentSlots[i].OnBeginDragEvent += OnBeginDragEvent;
 			equipmentSlots[i].OnEndDragEvent += OnEndDragEvent;
 			equipmentSlots[i].OnDragEvent += OnDragEvent;
@@ -52,7 +50,6 @@ public class EquipmentPanel : MonoBehaviour {
 			if (equipmentSlots[i].Item == item)
 			{
 				equipmentSlots[i].Item = null;
-				// equipmentSlots[i].Amount = 0;
 				return true;
 			}
 		}

@@ -6,6 +6,6 @@ public class Item : ScriptableObject {
 
     public string itemId;
 	public bool consume;
-    public float[] properties = new float[4];
+    public int[] properties = new int[4];
     public Sprite icon;
 }

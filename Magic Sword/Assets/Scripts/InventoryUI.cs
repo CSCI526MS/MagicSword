@@ -24,14 +24,12 @@ public class InventoryUI : MonoBehaviour {
 
 
 	private void Awake() {
-		equipmentPanel.OnRightClickEvent += EquipmentPanelRightClick;
 		equipmentPanel.OnBeginDragEvent += BeginDrag;
 		equipmentPanel.OnEndDragEvent += EndDrag;
 		equipmentPanel.OnDragEvent += Drag;
 		equipmentPanel.OnDropEvent += Drop;
 
 		for (int i = 0; i < inventory.inventorySlots.Length; i += 1){
-			inventory.inventorySlots[i].OnRightClickEvent += EquipFromInventory;
 			// Begin Drag
 			inventory.inventorySlots[i].OnBeginDragEvent += BeginDrag;
 			// End Drag
@@ -45,13 +43,6 @@ public class InventoryUI : MonoBehaviour {
 		speedText.text  = "20";
 		attackText.text  = "15";
 		defenseText.text  = "22";
-	}
-	private void EquipFromInventory(InventorySlot inventorySlot)
-	{
-		EquippableItem equippableItem = inventorySlot.Item as EquippableItem;
-		if (equippableItem != null) {
-			Equip(equippableItem);
-		}
 	}
 
 	private void EquipmentPanelRightClick(InventorySlot inventorySlot)

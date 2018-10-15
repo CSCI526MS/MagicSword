@@ -19,7 +19,6 @@ public class Player : MonoBehaviour {
     [SerializeField]
     private Stat playerStatus;
 
-    public ParticleSystem FlashEffect;
 
     // moveDirection == 1 -> Up
     // moveDirection == 2 -> Down
@@ -62,7 +61,6 @@ public class Player : MonoBehaviour {
     void Start () {
         sRenderer = GetComponent<SpriteRenderer>();
         PopupTextController.Initialize();
-        FlashEffect.Stop();
         joystick = FindObjectOfType<FixedJoystick>();
         direction = Vector2.down;
         speed = DEFAULT_SPEED;

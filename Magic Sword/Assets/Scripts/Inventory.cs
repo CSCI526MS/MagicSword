@@ -22,9 +22,16 @@ public class Inventory : MonoBehaviour {
 	// }
 
 	private int sizeLimit = 18;
-    public bool addItem (Item item) {
-		Debug.Log("item put in the bag");
-        
+    public bool addItem (EquippableItem item) {
+		// Debug.Log("item put in the bag");
+        Debug.Log("item.EquipmentType = " + item.EquipmentType);
+        Debug.Log("item.hp = " + item.properties[0]);
+        Debug.Log("item.itemId = " + item.itemId);
+        // if (item.itemId == "axe") {
+        //
+        // }
+        // setStat(item, 20, 5, 0, 10);
+
         for (int i = 0; i < inventorySlots.Length; i++) {
             Debug.Log(inventorySlots[i].Item);
             if (inventorySlots[i].Item == null) {
@@ -36,6 +43,14 @@ public class Inventory : MonoBehaviour {
 
         return false;
 	}
+
+    // private void setStat(EquippableItem item, float hp, float speed, float attack, float defense) {
+    //
+    //     item.hp = hp;
+    //     item.speed = speed;
+    //     item.attack = attack;
+    //     item.defense = defense;
+    // }
 
 
     public bool IsFull() {

@@ -4,11 +4,10 @@
 TagManager:
   serializedVersion: 2
   tags:
-  - Enemy
-  - Skill1
-  - Slime
   - InventoryPanel
-  - Loot
+  - Trap
+  - Enemy
+  - Slime
   layers:
   - Default
   - TransparentFX

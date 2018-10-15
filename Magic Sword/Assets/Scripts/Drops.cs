@@ -5,13 +5,6 @@ using UnityEngine.UI;
 
 public class Drops : MonoBehaviour {
 
-	/*
-	Catagory == -1: Undefined
-	Catagoty == 0: Armor
-	Catagory == 1: Weapon
-	Catagory == 2: Shoes
-	Catagory == 3: Potion
-	*/
 
    	private static Dictionary<string, EquippableItem> dic;
     public EquippableItem item;
@@ -47,7 +40,7 @@ public class Drops : MonoBehaviour {
 				pass the itemId to add method
 			*/
             if (item.EquipmentType == EquipmentType.Consume) {
-                coll.gameObject.SendMessage("RestoreHealth", item.hp);
+                coll.gameObject.SendMessage("RestoreHealth", item.properties[0]);
                 Destroy(gameObject);
                 return;
             }
@@ -62,16 +55,28 @@ public class Drops : MonoBehaviour {
         gameObject.tag = "Loot";
         Sprite imageSprite = Resources.Load<Sprite>("RPG_inventory_icons/"+id);
 		gameObject.GetComponent<SpriteRenderer>().sprite = imageSprite;
+        this.item = ScriptableObject.CreateInstance("EquippableItem") as EquippableItem;
 
+        this.item.itemId = id;
+        if (id == "axe") {
+            this.item.properties[0] = 100;
+            this.item.properties[3] = 30;
+            // this.item.hp = 1000;
+            this.item.EquipmentType = EquipmentType.Weapon;
+
+        } else if (id == "helmets") {
+            this.item.properties[0] = 70;
+            this.item.properties[2] = 60;
+            this.item.EquipmentType = EquipmentType.Helmet;
+        }
+        this.item.icon = imageSprite;
         EquippableItem standard = dic[id];
 
 		float variation = Random.Range(-deviation, deviation);
-		float currHp = standard.hp * (1+variation);
-		float currSpeed = standard.speed * (1+variation);
-		float currAttack = standard.attack * (1+variation);
-		float currDefense = standard.defense * (1+variation);
-
+        float currHp = standard.properties[0] * (1+variation);
+        float currSpeed = standard.properties[1] * (1+variation);
+        float currAttack = standard.properties[2] * (1+variation);
+        float currDefense = standard.properties[3] * (1+variation);
         this.item = new EquippableItem(id, standard.EquipmentType, currHp, currSpeed, currAttack, currDefense, imageSprite);
-
 	}
 }

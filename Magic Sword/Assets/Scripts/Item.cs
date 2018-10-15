@@ -5,9 +5,7 @@ using UnityEngine;
 public class Item : ScriptableObject {
 
     public string itemId;
-	public float hp;
-	public float speed;
-	public float attack;
-	public float defense;
+	public bool consume;
+    public float[] properties = new float[4];
     public Sprite icon;
 }

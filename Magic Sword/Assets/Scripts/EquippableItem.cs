@@ -13,7 +13,8 @@ public class EquippableItem : Item {
 
 	public void Equip(InventoryUI c)
 	{
-		Debug.Log("equip ");
+		Debug.Log("equip " + " ??? here ?");
+
 		// if (StrengthBonus != 0)
 		// 	c.Strength.AddModifier(new StatModifier(StrengthBonus, StatModType.Flat, this));
 		// if (AgilityBonus != 0)

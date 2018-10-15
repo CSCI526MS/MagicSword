@@ -9,10 +9,6 @@ public class Drops : MonoBehaviour {
    	private static Dictionary<string, EquippableItem> dic;
     public EquippableItem item;
 
-    public Drops() {
-
-    }
-
     static Drops() {
         Debug.Log("Static");
         dic = new Dictionary<string, EquippableItem>(); 
@@ -55,21 +51,6 @@ public class Drops : MonoBehaviour {
         gameObject.tag = "Loot";
         Sprite imageSprite = Resources.Load<Sprite>("RPG_inventory_icons/"+id);
 		gameObject.GetComponent<SpriteRenderer>().sprite = imageSprite;
-        this.item = ScriptableObject.CreateInstance("EquippableItem") as EquippableItem;
-
-        this.item.itemId = id;
-        if (id == "axe") {
-            this.item.properties[0] = 100;
-            this.item.properties[3] = 30;
-            // this.item.hp = 1000;
-            this.item.EquipmentType = EquipmentType.Weapon;
-
-        } else if (id == "helmets") {
-            this.item.properties[0] = 70;
-            this.item.properties[2] = 60;
-            this.item.EquipmentType = EquipmentType.Helmet;
-        }
-        this.item.icon = imageSprite;
         EquippableItem standard = dic[id];
 
 		float variation = Random.Range(-deviation, deviation);

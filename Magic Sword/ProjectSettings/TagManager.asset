@@ -3,7 +3,13 @@
 --- !u!78 &1
 TagManager:
   serializedVersion: 2
-  tags: []
+  tags:
+  - InventoryPanel
+  - Trap
+  - Enemy
+  - Slime
+  - Skill1
+  - Loot
   layers:
   - Default
   - TransparentFX
@@ -13,13 +19,13 @@ TagManager:
   - UI
   - 
   - 
-  - 
-  - 
-  - 
-  - 
-  - 
-  - 
-  - 
+  - Drop
+  - Enemy
+  - FireLayer
+  - Player
+  - Wall
+  - Projectile
+  - EnemyProjectile
   - 
   - 
   - 

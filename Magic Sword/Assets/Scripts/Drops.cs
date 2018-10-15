@@ -40,7 +40,7 @@ public class Drops : MonoBehaviour {
 				pass the itemId to add method
 			*/
             if (item.EquipmentType == EquipmentType.Consume) {
-                coll.gameObject.SendMessage("RestoreHealth", item.hp);
+                coll.gameObject.SendMessage("RestoreHealth", item.properties[0]);
                 Destroy(gameObject);
                 return;
             }
@@ -73,10 +73,10 @@ public class Drops : MonoBehaviour {
         EquippableItem standard = dic[id];
 
 		float variation = Random.Range(-deviation, deviation);
-		float currHp = standard.hp * (1+variation);
-		float currSpeed = standard.speed * (1+variation);
-		float currAttack = standard.attack * (1+variation);
-		float currDefense = standard.defense * (1+variation);
+        float currHp = standard.properties[0] * (1+variation);
+        float currSpeed = standard.properties[1] * (1+variation);
+        float currAttack = standard.properties[2] * (1+variation);
+        float currDefense = standard.properties[3] * (1+variation);
         this.item = new EquippableItem(id, standard.EquipmentType, currHp, currSpeed, currAttack, currDefense, imageSprite);
 	}
 }

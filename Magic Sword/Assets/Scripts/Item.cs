@@ -6,12 +6,6 @@ public class Item : ScriptableObject {
 
     public string itemId;
 	public bool consume;
-
-	// public float hp;
-	// public float speed;
-	// public float attack;
-	// public float defense;
     public float[] properties = new float[4];
-
     public Sprite icon;
 }

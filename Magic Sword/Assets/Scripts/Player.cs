@@ -56,6 +56,8 @@ public class Player : MonoBehaviour {
     // thunderball
     public GameObject thunderBall;
 
+    private int damage;
+
     // Use this for initialization
     void Start () {
         sRenderer = GetComponent<SpriteRenderer>();
@@ -71,7 +73,7 @@ public class Player : MonoBehaviour {
         playerStatus.MaxHP = 100;
         playerStatus.CurrentHP = 100;
         isImmune = false;
-
+        damage = 10;
     }
 
 	// Update is called once per frame
@@ -81,48 +83,49 @@ public class Player : MonoBehaviour {
         Move();
         Attack();
         AttackDirection();
-        if (isAttack)
-        {
+        if (isAttack) {
             speed = 0;
         }
-        else
-        {
+        else {
             speed = DEFAULT_SPEED;
         }
 
-        if (immuneTimer < 0 && isImmune)
-        {
+        if (immuneTimer < 0 && isImmune) {
             isImmune = false;
 
             // turn on renderer in case the renderer is disabled at the last frame of flash.
             sRenderer.enabled = true;
         }
 
-        if (isImmune)
-        {
+        if (isImmune) {
             FlashSprite();
         }
 
-        if (immuneTimer > 0)
-        {
+        if (immuneTimer > 0) {
             immuneTimer -= Time.deltaTime;
         }
 
         // MeteorAttack();
 
-        if (Input.GetMouseButtonDown(0)) {
+        if (Input.GetMouseButtonDown(0) && !joystick.isTouched()) {
             //Debug.Log(Input.mousePosition);
             //touchDirection = new Vector2(Input.mousePosition.x, Input.mousePosition.y) - new Vector2(gameObject.transform.position.x, gameObject.transform.position.y);
             //touchDirection.Normalize();
             //Debug.Log(touchDirection);
-            Vector3 shootDirection;
-            shootDirection = Input.mousePosition;
-            shootDirection.z = 0.0f;
-            shootDirection = Camera.main.ScreenToWorldPoint(shootDirection);
+            Vector3 castPoint;
+            castPoint = Input.mousePosition;
+            castPoint.z = 0.0f;
+            Vector3 shootDirection = Camera.main.ScreenToWorldPoint(castPoint);
             shootDirection = shootDirection - transform.position;
             touchDirection = shootDirection;
             touchDirection.Normalize();
-            RemoteAttack();
+            if (!isAttack)
+            {
+                RemoteAttack();
+                DirectionUpdate(new Vector2(castPoint.x - Screen.width / 2, castPoint.y - Screen.height / 2));
+                isAttack = true;
+            }
+            
         }
         //if (Input.touchCount > 0)
         //{
@@ -142,12 +145,10 @@ public class Player : MonoBehaviour {
 
     private void Move(){
         transform.Translate(direction*speed*Time.deltaTime);
-        if ((direction.x != 0 || direction.y != 0) && !isAttack)
-        {
+        if ((direction.x != 0 || direction.y != 0) && !isAttack) {
             isMove = true;
         }
-        else
-        {
+        else {
             isMove = false;
         }
 
@@ -155,66 +156,56 @@ public class Player : MonoBehaviour {
 
     }
 
-    private void DirectionUpdate(Vector2 direction)
-    {
+    public int getPlayerDamage() {
+        return damage;
+    }
+
+    private void DirectionUpdate(Vector2 direction) {
         tan = direction.y / direction.x;
-        if (direction.x > 0)
-        {
-            if (tan <= 1 && tan >= -1)
-            {
+        if (direction.x > 0) {
+            if (tan <= 1 && tan >= -1) {
                 // Go right
                 moveDirection = 4;
             }
-            if (tan > 1)
-            {
+            if (tan > 1) {
                 // Go up
                 moveDirection = 1;
             }
-            if (tan < -1)
-            {
+            if (tan < -1) {
                 // Go down
                 moveDirection = 2;
             }
 
 
         }
-        else if (direction.x < 0)
-        {
-            if (tan <= 1 && tan >= -1)
-            {
+        else if (direction.x < 0) {
+            if (tan <= 1 && tan >= -1) {
                 // Go left
                 moveDirection = 3;
             }
-            if (tan > 1)
-            {
+            if (tan > 1) {
                 // Go down
                 moveDirection = 2;
             }
-            if (tan < -1)
-            {
+            if (tan < -1) {
                 // Go up
                 moveDirection = 1;
             }
         }
     }
 
-    private void Attack()
-    {
-        if (isAttack)
-        {
+    private void Attack() {
+        if (isAttack) {
             attackCooldown -= Time.deltaTime;
-            if(attackCooldown < 0)
-            {
+            if(attackCooldown < 0) {
                 isAttack = false;
                 attackCooldown = ATTACK_COOLDOWN_TIME;
             }
         }
     }
 
-    private void AttackDirection()
-    {
-        switch (moveDirection)
-        {
+    private void AttackDirection() {
+        switch (moveDirection) {
             case 1:
                 attackPos.localPosition = attackPosUp;
                 break;
@@ -230,20 +221,18 @@ public class Player : MonoBehaviour {
         }
     }
 
-    void OnCollisionStay2D(Collision2D collision)
-    {
-        if (collision.gameObject.tag == "Enemy" && !isImmune) {
-            isImmune = true;
-            immuneTimer = IMMUNE_TIME;
-            TakeDamage(10);
-        }
-        if (collision.gameObject.tag == "Slime" && !isImmune) {
-            isImmune = true;
-            immuneTimer = IMMUNE_TIME;
-            TakeDamage(5);
-        }
-        if (collision.gameObject.tag == "floor") {
-            StartCoroutine(LoadYourAsyncScene());
+    void OnCollisionStay2D(Collision2D collision) {
+        //if (collision.gameObject.tag == "Enemy" && !isImmune) {
+        //    isImmune = true;
+        //    immuneTimer = IMMUNE_TIME;
+        //    TakeDamage(10);
+        //}
+        //if (collision.gameObject.tag == "Slime" && !isImmune) {
+        //    isImmune = true;
+        //    immuneTimer = IMMUNE_TIME;
+        //    TakeDamage(5);
+        //}
+        if (collision.gameObject.tag == "floor") { 
         }
 
     }
@@ -260,12 +249,10 @@ public class Player : MonoBehaviour {
         //    FlashEffect.Play();
         //}
 
-        if (!isAttack)
-        {
+        if (!isAttack) {
             isAttack = true;
             Collider2D[] enemies = Physics2D.OverlapCircleAll(attackPos.position, attackRange, 9);
-            for (int i = 0; i < enemies.Length; i++)
-            {
+            for (int i = 0; i < enemies.Length; i++) {
                 enemies[i].GetComponent<Enemy>().TakeDamage(30);
             }
 
@@ -274,27 +261,29 @@ public class Player : MonoBehaviour {
             camera.transform.localPosition -= deltaPosition;
             deltaPosition = Random.insideUnitCircle * 0.5f;
             camera.transform.position += deltaPosition;
-
         }
     }
 
     public void RemoteAttack()
     {
+
         //touchDirection = new Vector2();
-        var clone = Instantiate(thunderBall, gameObject.transform.position + new Vector3(touchDirection.x, touchDirection.y,0), gameObject.transform.rotation);
+        var clone = Instantiate(thunderBall, gameObject.transform.position + new Vector3(touchDirection.x, touchDirection.y, 0), gameObject.transform.rotation);
         //clone.velocity = direction * 10;
 
         float degree = (float)((Mathf.Atan2(touchDirection.x, touchDirection.y) / Mathf.PI) * 180f);
-        if (degree < -90)
-        {
+        if (degree < -90) {
             degree = -degree - 90;
-        } else if (degree > 0 && degree < 90)
+        }
+        else if (degree > 0 && degree < 90)
         {
             degree = -(degree + 90);
-        } else if (degree > 90)
+        }
+        else if (degree > 90)
         {
             degree = 90 + (190 - degree);
-        } else
+        }
+        else
         {
             degree = -90 - degree;
         }
@@ -303,31 +292,39 @@ public class Player : MonoBehaviour {
         temp.z = degree;
         clone.transform.eulerAngles = temp;
         clone.GetComponent<Rigidbody2D>().velocity = touchDirection * 10f;
+
     }
 
-    public void TakeDamage(int damage)
-    {
-        playerStatus.CurrentHP -= damage;
-        PopupTextController.CreatePopupText(damage.ToString(), transform, Color.red);
+    public void RestoreHealth(int health) {
+        playerStatus.CurrentHP += health;
+        if (playerStatus.CurrentHP > playerStatus.MaxHP) {
+            playerStatus.CurrentHP = playerStatus.MaxHP;
+        }
+        PopupTextController.CreatePopupText(health.ToString(), transform, Color.green);
     }
 
-    private void FlashSprite()
-    {
-        if (flashTimer > 0.05)
-        {
+    public void TakeDamage(int damage) {
+        if (!isImmune) {
+            immuneTimer = IMMUNE_TIME;
+            playerStatus.CurrentHP -= damage;
+            PopupTextController.CreatePopupText(damage.ToString(), transform, Color.red);
+            isImmune = true;
+        }
+        
+    }
+
+    private void FlashSprite() {
+        if (flashTimer > 0.05) {
             flashTimer = 0;
             toggle = !toggle;
-            if (toggle)
-            {
+            if (toggle) {
                 sRenderer.enabled = true;
             }
-            else
-            {
+            else {
                 sRenderer.enabled = false;
             }
         }
-        else
-        {
+        else {
             flashTimer += Time.deltaTime;
         }
     }
@@ -337,31 +334,25 @@ IEnumerator LoadYourAsyncScene()
 
 AsyncOperation asyncLoad = SceneManager.LoadSceneAsync("LevelOne");
 
-while (!asyncLoad.isDone)
-{
+while (!asyncLoad.isDone) {
 yield return null;
 }
 }
-    private void Animation()
-    {
+    private void Animation() {
         animator.SetBool("move", isMove);
         animator.SetInteger("moveDirection", moveDirection);
         animator.SetBool("attack", isAttack);
     }
 
-    private void OnDrawGizmosSelected()
-    {
+    private void OnDrawGizmosSelected() {
         Gizmos.color = Color.red;
         Gizmos.DrawWireSphere(attackPos.position, attackRange);
     }
 
-    private void MeteorAttack()
-    {
+    private void MeteorAttack() {
 
-        if (Input.GetMouseButtonDown(0) && !joystick.isTouched())
-        {
-            if (!isAttack)
-            {
+        if (Input.GetMouseButtonDown(0) && !joystick.isTouched()) {
+            if (!isAttack) {
                 Vector3 touchPoint;
                 touchPoint = Input.mousePosition;
                 touchPoint.z = 0.0f;
@@ -369,12 +360,10 @@ yield return null;
                 Vector2 castPoint;
                 RaycastHit2D barrier = Physics2D.Linecast(transform.position, Camera.main.ScreenToWorldPoint(touchPoint), 1 << LayerMask.NameToLayer("Wall"));
 
-                if (barrier.collider) // if there is a barrier between player and cast point;
-                {
+                if (barrier.collider) {// if there is a barrier between player and cast point;
                     castPoint = Camera.main.WorldToScreenPoint(barrier.point);
                 }
-                else
-                {
+                else{
                     castPoint = touchPoint;
                 }
                 DirectionUpdate(new Vector2(castPoint.x - Screen.width / 2, castPoint.y - Screen.height / 2));
@@ -384,9 +373,6 @@ yield return null;
                 GameObject newMeteor = Instantiate(meteor) as GameObject;
                 FindObjectOfType<Meteor>().Create(castPoint);
                 newMeteor.transform.position = new Vector3(castPoint.x + 15, castPoint.y + 15, 0);
-
-
-
             }
 
         }

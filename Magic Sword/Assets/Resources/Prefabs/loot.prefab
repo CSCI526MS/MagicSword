@@ -22,7 +22,7 @@ GameObject:
   - component: {fileID: 212192905688352980}
   - component: {fileID: 114687188391598650}
   - component: {fileID: 58703508442225620}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: loot
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -36,7 +36,7 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1568471774680236}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: -1.2318857, y: -1.9701024, z: 0}
   m_LocalScale: {x: 0.5, y: 0.5, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
@@ -68,7 +68,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0304a8eff27c247ea856320da841e90e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  itemAttr: {fileID: 0}
+  item: {fileID: 0}
 --- !u!212 &212192905688352980
 SpriteRenderer:
   m_ObjectHideFlags: 1

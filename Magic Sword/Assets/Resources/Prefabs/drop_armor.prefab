@@ -20,7 +20,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4617199225210632}
   - component: {fileID: 212942844917211004}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: drop_armor
   m_TagString: Untagged
   m_Icon: {fileID: 0}

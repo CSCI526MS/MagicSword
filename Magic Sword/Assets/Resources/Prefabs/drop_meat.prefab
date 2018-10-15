@@ -20,7 +20,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4284740304870266}
   - component: {fileID: 212587090345404344}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: drop_meat
   m_TagString: Untagged
   m_Icon: {fileID: 0}

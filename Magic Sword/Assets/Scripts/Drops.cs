@@ -5,28 +5,22 @@ using UnityEngine.UI;
 
 public class Drops : MonoBehaviour {
 
-	/*
-	Catagory == -1: Undefined
-	Catagoty == 0: Armor
-	Catagory == 1: Weapon
-	Catagory == 2: Shoes
-	Catagory == 3: Potion
-	*/
 
-   	private static Dictionary<string, Item> dic;
+   	private static Dictionary<string, EquippableItem> dic;
     public EquippableItem item;
 
-    /*
+    public Drops() {
+
+    }
+
     static Drops() {
         Debug.Log("Static");
-        dic = new Dictionary<string, Item>();
-        Item item = new Item();
-        item.itemId =
-        dic.Add("hp", new Item("hp", true, 10, 0, 0, 0, null));
-        dic.Add("apple", new Item("apple", true, 10, 0, 0, 0, null));
-        dic.Add("mp", new Item("mp", true, 10, 0, 0, 0,null));
-        dic.Add("meat", new Item("meat", true, 10, 0, 0, 0,null));
-    }*/
+        dic = new Dictionary<string, EquippableItem>(); 
+        dic.Add("hp", new EquippableItem("hp", EquipmentType.Consume, 10, 0, 0, 0, null));
+        dic.Add("axe", new EquippableItem("axe", EquipmentType.Weapon, 0, 0, 10, 0, null));
+        dic.Add("helmets", new EquippableItem("helmets", EquipmentType.Helmet, 0, 0, 0, 10, null));
+    }
+
 	// Use this for initialization
 
 	void Start () {
@@ -45,6 +39,11 @@ public class Drops : MonoBehaviour {
 				Add this drop to inventory by calling Inventory.add(itemId)
 				pass the itemId to add method
 			*/
+            if (item.EquipmentType == EquipmentType.Consume) {
+                coll.gameObject.SendMessage("RestoreHealth", item.hp);
+                Destroy(gameObject);
+                return;
+            }
 			bool success = FindObjectOfType<Inventory>().addItem(this.item);
 			if(success){
 				Destroy(gameObject);
@@ -53,28 +52,9 @@ public class Drops : MonoBehaviour {
 	}
 
 	public void setItem(string id, float deviation) {
+        gameObject.tag = "Loot";
         Sprite imageSprite = Resources.Load<Sprite>("RPG_inventory_icons/"+id);
 		gameObject.GetComponent<SpriteRenderer>().sprite = imageSprite;
-		// Item standard = ScriptableObject.CreateInstance("Item") as Item;
-        // EquippableItem standard = ScriptableObject.CreateInstance("EquippableItem") as EquippableItem;
-        // if (id == "axe") {
-        //     standard.EquipmentType = EquipmentType.Weapon;
-        // } else if (id == "helmets") {
-        //     standard.EquipmentType = EquipmentType.Helmet;
-        // }
-        // Debug.Log(id + " is  " + standard.EquipmentType);
-        //
-        // if (standard.consume) {
-        //     this.item = ScriptableObject.CreateInstance("EquippableItem") as EquippableItem;
-        //     // Debug.Log(this.item.EquipmentType);
-        //     itemModifier(id, standard.consume, 0, 0, 0, 0, imageSprite);
-		// 	return;
-		// }
-		// float variation = Random.Range(-deviation, deviation);
-		// float currHp = standard.hp * (1+variation);
-		// float currSpeed = standard.speed * (1+variation);
-		// float currAttack = standard.attack * (1+variation);
-		// float currDefense = standard.defense * (1+variation);
         this.item = ScriptableObject.CreateInstance("EquippableItem") as EquippableItem;
 
         this.item.itemId = id;
@@ -90,17 +70,13 @@ public class Drops : MonoBehaviour {
             this.item.EquipmentType = EquipmentType.Helmet;
         }
         this.item.icon = imageSprite;
-        // itemModifier(id, standard.consume, currHp, currSpeed, currAttack, currDefense, imageSprite);
+        EquippableItem standard = dic[id];
 
+		float variation = Random.Range(-deviation, deviation);
+		float currHp = standard.hp * (1+variation);
+		float currSpeed = standard.speed * (1+variation);
+		float currAttack = standard.attack * (1+variation);
+		float currDefense = standard.defense * (1+variation);
+        this.item = new EquippableItem(id, standard.EquipmentType, currHp, currSpeed, currAttack, currDefense, imageSprite);
 	}
-
-    // private void itemModifier(string itemId, bool consume, float hp, float speed, float attack, float defense, Sprite icon) {
-    //     this.item.itemId = itemId;
-    //     this.item.consume = consume;
-    //     this.item.hp = hp;
-    //     this.item.speed = speed;
-    //     this.item.attack = attack;
-    //     this.item.defense = defense;
-    //     this.item.icon = icon;
-    // }
 }

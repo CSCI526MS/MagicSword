@@ -20,7 +20,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4576493578080948}
   - component: {fileID: 212632038491959128}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: drop_helmets
   m_TagString: Untagged
   m_Icon: {fileID: 0}

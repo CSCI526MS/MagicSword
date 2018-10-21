@@ -8,7 +8,7 @@ public class Player : MonoBehaviour {
 
     private SpriteRenderer sRenderer;
     [SerializeField]
-    private readonly float DEFAULT_SPEED = 5;
+    private readonly float DEFAULT_SPEED = 10;
     private float speed;
     private Animator animator;
     private FixedJoystick joystick;

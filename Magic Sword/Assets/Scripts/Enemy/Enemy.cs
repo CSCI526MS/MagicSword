@@ -11,6 +11,9 @@ public class Enemy : MonoBehaviour {
     private Animator animator;
     private bool move;
     protected bool isAttack;
+    private bool awake;
+    private bool isImmune = false;
+    private SpriteRenderer sRenderer;
 
     protected bool rangedAttackType;
 
@@ -23,7 +26,8 @@ public class Enemy : MonoBehaviour {
 
     protected readonly float ATTACK_COOLDOWN_TIME = 1f;
     private Vector2 direction;
-    private int moveDirection;
+    protected int moveDirection;
+    protected int attackDirection;
     private string legendary = "helmets";
     // private string legendary = "eat";
     private int legendaryBar = 75;
@@ -45,7 +49,13 @@ public class Enemy : MonoBehaviour {
     private Vector3 lastSpot;
     protected bool aware;
 
+    // for sprite flash
+    bool toggle = true;
+    float flashTimer = 0;
+    float immuneTimer = 1;
+
     void Start() {
+        sRenderer = GetComponent<SpriteRenderer>();
         MonsterAttackCooldown = ATTACK_COOLDOWN_TIME;
         isAttack = false;
         animator = GetComponent<Animator>();
@@ -55,6 +65,7 @@ public class Enemy : MonoBehaviour {
         move = true;
         direction = Vector2.down;
         moveDirection = 2;
+        awake = true;
 
         player = GameObject.FindGameObjectWithTag("Player").GetComponent<Transform>();
         //drop = GameObject.Find("Drop");
@@ -70,62 +81,110 @@ public class Enemy : MonoBehaviour {
     // Update is called once per frame
     void Update() {
 
-        Animation();
-        MonsterAttacks();
-
-        //direction = target.position - transform.position;
-        //float distanceSquare = direction.x * direction.x + direction.y * direction.y;
-        //move = (distanceSquare < 64 && distanceSquare > 2) ? true : false;
-
-        //moveDirection = getMoveDirection(direction);
-        //if (move)
-        //{
-        //    transform.position = Vector2.MoveTowards(transform.position, target.position, speed * Time.deltaTime);
-        //}
-        //Debug.Log(lastSpot);
-
-        if (!aware && Vector2.Distance(transform.position, GameObject.Find("Player").transform.position) < 10 && !Physics2D.Linecast(transform.position, player.position, 1 << LayerMask.NameToLayer("Wall")).collider)
+        if (awake)
         {
-            aware = true;
-            lastSpot = player.position;
-        }
+            Animation();
+            MonsterAttacks();
 
-        if(aware && !Physics2D.Linecast(transform.position, player.position, 1 << LayerMask.NameToLayer("Wall")).collider)
-        {
-            lastSpot = player.position;
-        }
+            //direction = target.position - transform.position;
+            //float distanceSquare = direction.x * direction.x + direction.y * direction.y;
+            //move = (distanceSquare < 64 && distanceSquare > 2) ? true : false;
 
-        if (Vector2.Distance(transform.position, lastSpot) > 0.5) 
-        {
-            transform.position = Vector2.MoveTowards(transform.position, lastSpot, speed * Time.deltaTime);
-            direction = lastSpot - transform.position;
-            moveDirection = getMoveDirection(direction);
-        }
-        else
-        {
-            aware = false;
-            Wander();
-        }
+            //moveDirection = getMoveDirection(direction);
+            //if (move)
+            //{
+            //    transform.position = Vector2.MoveTowards(transform.position, target.position, speed * Time.deltaTime);
+            //}
+            //Debug.Log(lastSpot);
 
 
-        if (health <= 0) {
-            dropItems();
-            Destroy(gameObject);
+            // if enemy not aware and player is in sight
+            if (!aware && Vector2.Distance(transform.position, GameObject.Find("Player").transform.position) < 10 && !Physics2D.Linecast(transform.position, player.position, 1 << LayerMask.NameToLayer("Wall")).collider)
+            {
+                aware = true;
+                lastSpot = player.position;
+            }
+
+            // update player's last seen spot
+            if (aware && !Physics2D.Linecast(transform.position, player.position, 1 << LayerMask.NameToLayer("Wall")).collider)
+            {
+                lastSpot = player.position;
+            }
+
+            // move towards last spot
+            if (Vector2.Distance(transform.position, lastSpot) > 0.5)
+            {
+                if(rangedAttackType && !Physics2D.Linecast(transform.position, player.position, 1 << LayerMask.NameToLayer("Wall")).collider && Vector2.Distance(transform.position, player.position) < 8)
+                {
+                    moveDirection = getMoveDirection(direction);
+                    if(!isAttack && Vector2.Distance(transform.position, player.position) < 6)
+                    {
+                        Vector3 target = new Vector2(2 * transform.position.x - lastSpot.x, 2 * transform.position.y - lastSpot.y);
+                        transform.position = Vector2.MoveTowards(transform.position, target, speed * Time.deltaTime);
+                        direction = target - transform.position;
+                        moveDirection = getMoveDirection(direction);
+                        
+                    }
+                }
+                else
+                {
+                    transform.position = Vector2.MoveTowards(transform.position, lastSpot, speed * Time.deltaTime);
+                    direction = lastSpot - transform.position;
+                    moveDirection = getMoveDirection(direction);
+                }
+               
+            }
+            else
+            {
+                aware = false;
+                Wander();
+            }
+
+
+            if (health <= 0)
+            {
+                dropItems();
+                Destroy(gameObject);
+            }
+
+            if (attackCooldown >= 0)
+            {
+                attackCooldown -= Time.deltaTime;
+            }
+            if (attackCooldown < ATTACK_COOLDOWN_TIME - 0.3)
+            {
+                isAttack = false;
+            }
+
+            if (wanderTimer >= 0)
+            {
+                wanderTimer -= Time.deltaTime;
+            }
+
+
+
+          
         }
 
-        if (attackCooldown>=0)
+        if (immuneTimer < 0 && isImmune)
         {
-            attackCooldown -= Time.deltaTime;
-        }
-        if (attackCooldown < ATTACK_COOLDOWN_TIME-0.3)
-        {
-            isAttack = false;
+            isImmune = false;
+            awake = true;
+            // turn on renderer in case the renderer is disabled at the last frame of flash.
+            sRenderer.enabled = true;
         }
 
-        if (wanderTimer >= 0)
+        if (isImmune)
         {
-            wanderTimer -= Time.deltaTime;
+            awake = false;
+            FlashSprite();
         }
+
+        if (immuneTimer > 0)
+        {
+            immuneTimer -= Time.deltaTime;
+        }
+
 
 
     }
@@ -236,7 +295,6 @@ public class Enemy : MonoBehaviour {
             id = legendary;
         }
 
-        Debug.Log("id"+id);
         GameObject loot = (GameObject)Resources.Load("Prefabs/loot");
         loot = Instantiate(loot) as GameObject;
         FindObjectsOfType<Drops>()[0].setItem(id, deviation);
@@ -246,12 +304,13 @@ public class Enemy : MonoBehaviour {
     private void Animation() {
         animator.SetBool("move", move);
         animator.SetInteger("moveDirection", moveDirection);
+        animator.SetInteger("attackDirection", attackDirection);
 
         animator.SetBool("MonsterAttack", isAttack);
 
     }
 
-    private int getMoveDirection(Vector2 direction) {
+    protected int getMoveDirection(Vector2 direction) {
         float tan = direction.y / direction.x;
         int moveDirection = 2;
         if (direction.x > 0) {
@@ -295,4 +354,36 @@ public class Enemy : MonoBehaviour {
         //}
     }
 
+    public void setAwake(bool b)
+    {
+        awake = b;
+    }
+
+    public void ImmuneTrigger()
+    {
+        isImmune = true;
+        immuneTimer = 1;
+    }
+
+    private void FlashSprite()
+    {
+        if (flashTimer > 0.1)
+        {
+            flashTimer = 0;
+            toggle = !toggle;
+            if (toggle)
+            {
+                sRenderer.enabled = true;
+            }
+            else
+            {
+                sRenderer.enabled = false;
+            }
+        }
+        else
+        {
+            flashTimer += Time.deltaTime;
+        }
+        Debug.Log("FlashSprite()");
+    }
 }

@@ -8,8 +8,7 @@ public class Player : MonoBehaviour {
 
     private SpriteRenderer sRenderer;
     [SerializeField]
-    private readonly float DEFAULT_SPEED = 5;
-    private float speed;
+    private static readonly int DEFAULT_SPEED = 5;
     private Animator animator;
     private FixedJoystick joystick;
     private bool isMove;
@@ -19,7 +18,6 @@ public class Player : MonoBehaviour {
     [SerializeField]
     private Stat playerStatus;
 
-
     // moveDirection == 1 -> Up
     // moveDirection == 2 -> Down
     // moveDirection == 3 -> Left
@@ -27,12 +25,12 @@ public class Player : MonoBehaviour {
     private int moveDirection;
     private float tan;
 
-
     private Vector2 direction;
     private Vector2 touchDirection;
 
     private readonly float ATTACK_COOLDOWN_TIME = 0.7f;
     private readonly float IMMUNE_TIME = 2f;
+    private int speed;
     private float attackCooldown;
     private float immuneTimer = 0;
 
@@ -55,23 +53,24 @@ public class Player : MonoBehaviour {
     // thunderball
     public GameObject thunderBall;
 
-    private int damage;
-
     // Use this for initialization
     void Start () {
         sRenderer = GetComponent<SpriteRenderer>();
         PopupTextController.Initialize();
         joystick = FindObjectOfType<FixedJoystick>();
-        direction = Vector2.down;
-        speed = DEFAULT_SPEED;
         animator = GetComponent<Animator>();
+
+        playerStatus.MaxHP = 100;
+        playerStatus.CurrentHP = 100;
+        playerStatus.Speed = DEFAULT_SPEED;
+        playerStatus.Attack = 10;
+        playerStatus.Defense = 0;
+
+        direction = Vector2.down;
         isMove = false;
         moveDirection = 2;
         attackCooldown = ATTACK_COOLDOWN_TIME;
-        playerStatus.MaxHP = 100;
-        playerStatus.CurrentHP = 100;
         isImmune = false;
-        damage = 10;
     }
 
 	// Update is called once per frame
@@ -83,9 +82,8 @@ public class Player : MonoBehaviour {
         AttackDirection();
         if (isAttack) {
             speed = 0;
-        }
-        else {
-            speed = DEFAULT_SPEED;
+        } else {
+            speed = playerStatus.Speed;
         }
 
         if (immuneTimer < 0 && isImmune) {
@@ -155,7 +153,7 @@ public class Player : MonoBehaviour {
     }
 
     public int getPlayerDamage() {
-        return damage;
+        return playerStatus.Attack;
     }
 
     private void DirectionUpdate(Vector2 direction) {
@@ -190,6 +188,25 @@ public class Player : MonoBehaviour {
                 moveDirection = 1;
             }
         }
+    }
+
+    private void Improve(int[] properties) {
+        playerStatus.MaxHP += properties[0];
+        playerStatus.Speed += properties[1];
+        playerStatus.Attack += properties[2];
+        playerStatus.Defense += properties[3];
+        Debug.Log("Improve: MaxHp:"+playerStatus.MaxHP+" Hp:"+ playerStatus.CurrentHP+" Speed:"+playerStatus.Speed+" Attack:"+playerStatus.Attack+" Defense:"+playerStatus.Defense);
+    }
+
+    private void Decline(int[] properties) {
+        playerStatus.MaxHP -= properties[0];
+        if (playerStatus.CurrentHP > playerStatus.MaxHP) {
+            playerStatus.CurrentHP = playerStatus.MaxHP;
+        }
+        playerStatus.Speed -= properties[1];
+        playerStatus.Attack -= properties[2];
+        playerStatus.Defense -= properties[3];
+        Debug.Log("Decline: MaxHp:"+playerStatus.MaxHP+" Hp:"+ playerStatus.CurrentHP+" Speed:"+playerStatus.Speed+" Attack:"+playerStatus.Attack+" Defense:"+playerStatus.Defense);
     }
 
     private void Attack() {
@@ -251,7 +268,7 @@ public class Player : MonoBehaviour {
             isAttack = true;
             Collider2D[] enemies = Physics2D.OverlapCircleAll(attackPos.position, attackRange, 9);
             for (int i = 0; i < enemies.Length; i++) {
-                enemies[i].GetComponent<Enemy>().TakeDamage(30);
+                enemies[i].GetComponent<Enemy>().TakeDamage(playerStatus.Attack);
             }
 
             // Camera shake effect
@@ -304,6 +321,7 @@ public class Player : MonoBehaviour {
     public void TakeDamage(int damage) {
         if (!isImmune) {
             immuneTimer = IMMUNE_TIME;
+            damage = (int)(damage * (0.2+20/(float)(playerStatus.Defense+25)));
             playerStatus.CurrentHP -= damage;
             PopupTextController.CreatePopupText(damage.ToString(), transform, Color.red);
             isImmune = true;

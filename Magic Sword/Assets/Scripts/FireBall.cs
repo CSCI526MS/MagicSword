@@ -22,7 +22,7 @@ public class FireBall : MonoBehaviour
     {
         if (collision.gameObject.layer == LayerMask.NameToLayer("Enemy"))
         {
-            collision.gameObject.GetComponent<Enemy>().TakeDamage(GameObject.Find("Player").GetComponent<Player>().getPlayerDamage()+10);
+            collision.gameObject.GetComponent<Enemy>().TakeDamage(GameObject.Find("Player").GetComponent<Player>().getPlayerDamage());
         }
 
         Destroy(gameObject);

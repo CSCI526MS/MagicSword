@@ -11,45 +11,54 @@ public class Stat {
 
     private float hpValue;
     private float hpMaxValue;
+    private int speed;
+    private int attack;
+    private int defense;
 
-
-
-    // Use this for initialization
-    void Start () {
-
-	}
-	
-	// Update is called once per frame
-	void Update () {
-		
-	}
-
-    public float CurrentHP
-    {
-        get
-        {
+    public float CurrentHP {
+        get {
             return hpValue;
         }
-
-        set
-        {
+        set {
             hpValue = value;
             hearlthBar.Value = value;
-            
         }
     }
 
-    public float MaxHP
-    {
-        get
-        {
+    public float MaxHP {
+        get {
             return hpMaxValue;
         }
-
-        set
-        {
+        set {
             hpMaxValue = value;
             hearlthBar.MaxValue = value;
+        }
+    }
+
+    public int Speed {
+        get {
+            return speed;
+        }
+        set {
+            speed = value;
+        }
+    }
+
+    public int Attack {
+        get {
+            return attack;
+        }
+        set {
+            attack = value;
+        }
+    }
+
+    public int Defense {
+        get {
+            return defense;
+        }
+        set {
+            defense = value;
         }
     }
 

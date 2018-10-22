@@ -5,6 +5,11 @@ TagManager:
   serializedVersion: 2
   tags:
   - Slime
+  - InventoryPanel
+  - Trap
+  - Trigger1-1
+  - Portal
+  - Skill1
   layers:
   - Default
   - TransparentFX
@@ -14,14 +19,14 @@ TagManager:
   - UI
   - 
   - 
-  - 
-  - 
-  - 
-  - 
-  - 
-  - 
-  - 
-  - 
+  - Loot
+  - Enemy
+  - FireLayer
+  - Player
+  - Wall
+  - Projectile
+  - EnemyProjectile
+  - Trigger
   - 
   - 
   - 

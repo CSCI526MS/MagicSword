@@ -132,16 +132,21 @@ public class Player : MonoBehaviour {
             shootDirection = shootDirection - transform.position;
             touchDirection = shootDirection;
             touchDirection.Normalize();
-            if (!isAttack && playerStatus.CurrentMP >= SKILL1_MANA_COST)
+            if (!isAttack)
             {
-                RemoteAttack();
-                DirectionUpdate(new Vector2(castPoint.x - Screen.width / 2, castPoint.y - Screen.height / 2));
-                isAttack = true;
+                if(playerStatus.CurrentMP >= SKILL1_MANA_COST)
+                {
+                    RemoteAttack();
+                    DirectionUpdate(new Vector2(castPoint.x - Screen.width / 2, castPoint.y - Screen.height / 2));
+                    isAttack = true;
+                }
+                else
+                {
+                    OutOfMana();
+                }
+                
             }
-            else
-            {
-                OutOfMana();
-            }
+
             
         }
         //if (Input.touchCount > 0)
@@ -158,6 +163,13 @@ public class Player : MonoBehaviour {
         //        RemoteAttack();
         //    }
         //}
+        
+        
+
+    }
+
+    private void LateUpdate()
+    {
         if (Time.time >= nextUpdate)
         {
             // Change the next update (current second+1)
@@ -165,8 +177,6 @@ public class Player : MonoBehaviour {
 
             Regeneration();
         }
-        
-
     }
 
     private void Regeneration()
@@ -436,7 +446,7 @@ yield return null;
 
     private void OutOfMana()
     {
-        // TODO: Shake mana bar
+        playerStatus.ShakeBar();
     }
 
 }

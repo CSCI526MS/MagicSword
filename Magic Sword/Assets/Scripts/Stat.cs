@@ -120,4 +120,10 @@ public class Stat {
     }
 
     
+
+
+    public void ShakeBar()
+    {
+        manaBar.ShakeBar();
+    }
 }

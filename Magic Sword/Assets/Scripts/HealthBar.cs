@@ -10,6 +10,8 @@ public class HealthBar : MonoBehaviour {
     private float fillAmount;
     private float actualAmount;
     private readonly float waitTime = 10;
+    private Vector2 originalPosition;
+    private float shakingTimer;
 
     public float MaxValue { get; set; }
 
@@ -26,11 +28,24 @@ public class HealthBar : MonoBehaviour {
     void Start ()
     {
         fillAmount = 1;
+        actualAmount = 1;
+        originalPosition = transform.position;
     }
 	
 	// Update is called once per frame
 	void Update () {
         HandleBar();
+        if (barContent.fillAmount < 0.2)
+        {
+            if((int)Time.time % 2 == 1)
+            {
+                transform.position = originalPosition + Random.insideUnitCircle * 3;
+            }
+            else
+            {
+                transform.position = originalPosition;
+            }
+        }
     }
 
     private void HandleBar()

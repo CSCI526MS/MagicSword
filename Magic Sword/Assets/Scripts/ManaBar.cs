@@ -10,6 +10,10 @@ public class ManaBar : MonoBehaviour {
     private float fillAmount;
     private float actualAmount;
     private readonly float waitTime = 10;
+    private Vector2 originalPosition;
+    private bool shaking = false;
+    private float shakingTimer;
+
 
     public float MaxValue { get; set; }
 
@@ -27,12 +31,38 @@ public class ManaBar : MonoBehaviour {
     {
         fillAmount = 1;
         actualAmount = 1;
+        originalPosition = transform.position;
     }
 
     // Update is called once per frame
     void Update()
     {
+        if (shakingTimer > 0)
+        {
+            shakingTimer -= Time.deltaTime;
+        }
         HandleBar();
+        if(shaking)
+        {
+            if (shakingTimer>0)
+            {
+                transform.position = originalPosition + Random.insideUnitCircle * 3;
+            }
+            else
+            {
+                transform.position = originalPosition;
+                shaking = false;
+            }
+
+        }
+        
+        
+    }
+
+    public void ShakeBar()
+    {
+        shakingTimer = 0.75f;
+        shaking = true;
     }
 
     private void HandleBar()

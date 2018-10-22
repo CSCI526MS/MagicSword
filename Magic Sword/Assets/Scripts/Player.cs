@@ -6,14 +6,23 @@ using UnityEngine.SceneManagement;
 
 public class Player : MonoBehaviour {
 
+    // Next update in second
+    private int nextUpdate = 1;
+
     private SpriteRenderer sRenderer;
     [SerializeField]
+
     private static readonly int DEFAULT_SPEED = 5;
+
+    private float healthRegeneration;
+    private float manaRegeneration;
     private Animator animator;
     private FixedJoystick joystick;
     private bool isMove;
     private bool isAttack;
     private bool isImmune;
+
+    private readonly int SKILL1_MANA_COST = 10;
 
     [SerializeField]
     private Stat playerStatus;
@@ -55,22 +64,30 @@ public class Player : MonoBehaviour {
 
     // Use this for initialization
     void Start () {
+        Initialize();
         sRenderer = GetComponent<SpriteRenderer>();
         PopupTextController.Initialize();
         joystick = FindObjectOfType<FixedJoystick>();
         animator = GetComponent<Animator>();
-
-        playerStatus.MaxHP = 100;
-        playerStatus.CurrentHP = 100;
-        playerStatus.Speed = DEFAULT_SPEED;
-        playerStatus.Attack = 10;
-        playerStatus.Defense = 0;
-
         direction = Vector2.down;
         isMove = false;
         moveDirection = 2;
         attackCooldown = ATTACK_COOLDOWN_TIME;
         isImmune = false;
+    }
+
+    private void Initialize()
+    {
+        playerStatus.Speed = DEFAULT_SPEED;
+        playerStatus.Attack = 10;
+        playerStatus.Defense = 0;
+        playerStatus.CurrentHP = 100;
+        playerStatus.MaxHP = 100;
+        playerStatus.CurrentMP = 100;
+        playerStatus.MaxMP = 100;
+        healthRegeneration = 0;
+        manaRegeneration = 2;
+
     }
 
 	// Update is called once per frame
@@ -115,11 +132,15 @@ public class Player : MonoBehaviour {
             shootDirection = shootDirection - transform.position;
             touchDirection = shootDirection;
             touchDirection.Normalize();
-            if (!isAttack)
+            if (!isAttack && playerStatus.CurrentMP >= SKILL1_MANA_COST)
             {
                 RemoteAttack();
                 DirectionUpdate(new Vector2(castPoint.x - Screen.width / 2, castPoint.y - Screen.height / 2));
                 isAttack = true;
+            }
+            else
+            {
+                OutOfMana();
             }
             
         }
@@ -137,6 +158,21 @@ public class Player : MonoBehaviour {
         //        RemoteAttack();
         //    }
         //}
+        if (Time.time >= nextUpdate)
+        {
+            // Change the next update (current second+1)
+            nextUpdate = Mathf.FloorToInt(Time.time) + 1;
+
+            Regeneration();
+        }
+        
+
+    }
+
+    private void Regeneration()
+    {
+        playerStatus.CurrentHP += healthRegeneration;
+        playerStatus.CurrentMP += manaRegeneration;
     }
 
     private void Move(){
@@ -257,12 +293,6 @@ public class Player : MonoBehaviour {
     }
 
     public void MeleeAttack() {
-        //transform.Translate(direction*10);
-        //if (FlashEffect.isPlaying) {
-        //    FlashEffect.Stop();
-        //} else {
-        //    FlashEffect.Play();
-        //}
 
         if (!isAttack) {
             isAttack = true;
@@ -281,7 +311,7 @@ public class Player : MonoBehaviour {
 
     public void RemoteAttack()
     {
-
+        playerStatus.CurrentMP -= SKILL1_MANA_COST;
         //touchDirection = new Vector2();
         var clone = Instantiate(thunderBall, gameObject.transform.position + new Vector3(touchDirection.x, touchDirection.y, 0), gameObject.transform.rotation);
         //clone.velocity = direction * 10;
@@ -316,6 +346,16 @@ public class Player : MonoBehaviour {
             playerStatus.CurrentHP = playerStatus.MaxHP;
         }
         PopupTextController.CreatePopupText(health.ToString(), transform, Color.green);
+    }
+
+    public void RestoreMana(int mana)
+    {
+        playerStatus.CurrentMP += mana;
+        if (playerStatus.CurrentMP > playerStatus.MaxMP)
+        {
+            playerStatus.CurrentMP = playerStatus.MaxMP;
+        }
+        PopupTextController.CreatePopupText(mana.ToString(), transform, Color.blue);
     }
 
     public void TakeDamage(int damage) {
@@ -392,6 +432,11 @@ yield return null;
             }
 
         }
+    }
+
+    private void OutOfMana()
+    {
+        // TODO: Shake mana bar
     }
 
 }

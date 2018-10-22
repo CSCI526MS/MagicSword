@@ -10,6 +10,7 @@ TagManager:
   - Slime
   - Skill1
   - Loot
+  - Trigger1-1
   layers:
   - Default
   - TransparentFX
@@ -26,7 +27,7 @@ TagManager:
   - Wall
   - Projectile
   - EnemyProjectile
-  - 
+  - Trigger
   - 
   - 
   - 

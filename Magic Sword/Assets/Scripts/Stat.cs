@@ -15,26 +15,83 @@ public class Stat {
     private int attack;
     private int defense;
 
-    public float CurrentHP {
-        get {
+    [SerializeField]
+    private ManaBar manaBar;
+
+    private float mpValue;
+    private float mpMaxValue;
+
+
+    public float CurrentHP
+    {
+        get
+        {
             return hpValue;
         }
-        set {
-            hpValue = value;
+
+        set
+        {
+            if (hpValue > hpMaxValue)
+            {
+                hpValue = hpMaxValue;
+            }
+            else
+            {
+                hpValue = value;
+            }
             hearlthBar.Value = value;
         }
     }
 
-    public float MaxHP {
-        get {
+    public float MaxHP
+    {
+        get
+        {
             return hpMaxValue;
         }
-        set {
+        set
+        {
             hpMaxValue = value;
             hearlthBar.MaxValue = value;
         }
     }
+    public float CurrentMP
+    {
+        get
+        {
+            return mpValue;
+        }
 
+        set
+        {
+            if (mpValue > mpMaxValue)
+            {
+                mpValue = mpMaxValue;
+            }
+            else
+            {
+                mpValue = value;
+            }
+            manaBar.Value = value;
+
+        }
+    }
+
+    public float MaxMP
+    {
+        get
+        {
+            return mpMaxValue;
+        }
+
+        set
+        {
+            mpMaxValue = value;
+            manaBar.MaxValue = value;
+        }
+    }
+
+    
     public int Speed {
         get {
             return speed;
@@ -62,4 +119,5 @@ public class Stat {
         }
     }
 
+    
 }

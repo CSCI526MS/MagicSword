@@ -16,9 +16,10 @@ public class InventoryUI : MonoBehaviour {
 	[SerializeField] Image draggableItem;
 
 	private InventorySlot draggedSlot;
+	private GameObject player;
 
-	void OnEnable()
-    {
+	void OnEnable() {
+    	player = GameObject.FindWithTag("Player");
 		inventory = FindObjectOfType<Inventory>();
         Time.timeScale = 0f;
     }
@@ -45,10 +46,10 @@ public class InventoryUI : MonoBehaviour {
 			// Drop
 			inventory.inventorySlots[i].OnDropEvent += Drop;
         }
-		hpText.text = "200";
-		speedText.text  = "20";
-		attackText.text  = "15";
-		defenseText.text  = "22";
+		hpText.text = "100";
+		speedText.text  = "5";
+		attackText.text  = "10";
+		defenseText.text  = "0";
 	}
 
 	private void EquipmentPanelRightClick(InventorySlot inventorySlot)
@@ -92,6 +93,7 @@ public class InventoryUI : MonoBehaviour {
 
 			if (draggedSlot is EquipmentSlot) {
 				if (dragItem != null) {
+					player.SendMessage("Decline", dragItem.properties);
 					hpText.text = updateStat(hpText.text, -dragItem.properties[0]);
 					speedText.text = updateStat(speedText.text, -dragItem.properties[1]);
 					attackText.text = updateStat(attackText.text, -dragItem.properties[2]);
@@ -99,7 +101,7 @@ public class InventoryUI : MonoBehaviour {
 					dragItem.Unequip(this);
 				}
 				if (dropItem != null) {
-
+					player.SendMessage("Improve", dragItem.properties);
 					hpText.text = updateStat(hpText.text, dropItem.properties[0]);
 					speedText.text = updateStat(speedText.text, dropItem.properties[1]);
 					attackText.text = updateStat(attackText.text, dropItem.properties[2]);
@@ -111,7 +113,7 @@ public class InventoryUI : MonoBehaviour {
 
 			if (dropItemSlot is EquipmentSlot) {
 				if (dragItem != null) {
-
+					player.SendMessage("Improve", dragItem.properties);
 					hpText.text = updateStat(hpText.text, dragItem.properties[0]);
 					speedText.text = updateStat(speedText.text, dragItem.properties[1]);
 					attackText.text = updateStat(attackText.text, dragItem.properties[2]);
@@ -120,7 +122,7 @@ public class InventoryUI : MonoBehaviour {
 					dragItem.Equip(this);
 				}
 				if (dropItem != null) {
-
+					player.SendMessage("Decline", dragItem.properties);
 					hpText.text = updateStat(hpText.text, -dropItem.properties[0]);
 					speedText.text = updateStat(speedText.text, -dropItem.properties[1]);
 					attackText.text = updateStat(attackText.text, -dropItem.properties[2]);

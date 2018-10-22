@@ -19,7 +19,10 @@ public class GoblinSniper : Enemy {
 
         if (!barrier && Vector2.Distance(transform.position, playerPosition)<8 && aware)
         {
+            Vector3 direction = playerPosition - transform.position;
+            attackDirection = getMoveDirection(direction);
             isAttack = true;
+
             attackCooldown = ATTACK_COOLDOWN_TIME;
             GameObject missile = Instantiate(projectile, transform.position, transform.rotation);
             Vector3 diff = playerPosition - transform.position;
@@ -29,6 +32,8 @@ public class GoblinSniper : Enemy {
             missile.transform.rotation = Quaternion.Euler(0f, 0f, rot_z );
             FindObjectOfType<EnemyArrow>().setPosition(playerPosition);
             //missile.GetComponent<EnemyFireBall>().setPosition(playerPosition);
+
+            
         }
 
 

@@ -1,24 +1,29 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
 
 public class Player : MonoBehaviour {
 
+    // Next update in second
+    private int nextUpdate = 1;
+
     private SpriteRenderer sRenderer;
     [SerializeField]
-    private readonly float DEFAULT_SPEED = 5;
-    private float speed;
+
+    private static readonly int DEFAULT_SPEED = 10;
+
+    private float healthRegeneration;
+    private float manaRegeneration;
     private Animator animator;
     private FixedJoystick joystick;
     private bool isMove;
     private bool isAttack;
     private bool isImmune;
 
+    private readonly int SKILL1_MANA_COST = 5;
+
     [SerializeField]
     private Stat playerStatus;
-
 
     // moveDirection == 1 -> Up
     // moveDirection == 2 -> Down
@@ -27,12 +32,12 @@ public class Player : MonoBehaviour {
     private int moveDirection;
     private float tan;
 
-
     private Vector2 direction;
     private Vector2 touchDirection;
 
     private readonly float ATTACK_COOLDOWN_TIME = 0.7f;
     private readonly float IMMUNE_TIME = 2f;
+    private int speed;
     private float attackCooldown;
     private float immuneTimer = 0;
 
@@ -55,23 +60,19 @@ public class Player : MonoBehaviour {
     // thunderball
     public GameObject thunderBall;
 
-    private int damage;
-
     // Use this for initialization
     void Start () {
+        Initialize();
         sRenderer = GetComponent<SpriteRenderer>();
         PopupTextController.Initialize();
         joystick = FindObjectOfType<FixedJoystick>();
-        direction = Vector2.down;
-        speed = DEFAULT_SPEED;
+        Debug.Log(joystick);
         animator = GetComponent<Animator>();
+        direction = Vector2.down;
         isMove = false;
         moveDirection = 2;
         attackCooldown = ATTACK_COOLDOWN_TIME;
-        playerStatus.MaxHP = 100;
-        playerStatus.CurrentHP = 100;
         isImmune = false;
-        damage = 10;
         SceneManager.sceneLoaded += (var, var2) =>
         {
             if (var.buildIndex == 0)
@@ -85,18 +86,35 @@ public class Player : MonoBehaviour {
         };
     }
 
+    private void Initialize()
+    {
+        Debug.Log("ln 95");
+        playerStatus.Speed = DEFAULT_SPEED;
+        playerStatus.Attack = 10;
+        playerStatus.Defense = 0;
+        Debug.Log("ln 98");
+        playerStatus.CurrentHP = 100;
+        playerStatus.MaxHP = 100;
+        playerStatus.CurrentMP = 100;
+        playerStatus.MaxMP = 100;
+        healthRegeneration = 0;
+        manaRegeneration = 3;
+        Debug.Log("ln 104");
+    }
+
 	// Update is called once per frame
 	void Update () {
+        Debug.Log("222");
         direction = joystick.Direction;
+        Debug.Log("333");
         Animation();
         Move();
         Attack();
         AttackDirection();
         if (isAttack) {
             speed = 0;
-        }
-        else {
-            speed = DEFAULT_SPEED;
+        } else {
+            speed = playerStatus.Speed;
         }
 
         if (immuneTimer < 0 && isImmune) {
@@ -130,10 +148,19 @@ public class Player : MonoBehaviour {
             touchDirection.Normalize();
             if (!isAttack)
             {
-                RemoteAttack();
-                DirectionUpdate(new Vector2(castPoint.x - Screen.width / 2, castPoint.y - Screen.height / 2));
-                isAttack = true;
+                if(playerStatus.CurrentMP >= SKILL1_MANA_COST)
+                {
+                    RemoteAttack();
+                    DirectionUpdate(new Vector2(castPoint.x - Screen.width / 2, castPoint.y - Screen.height / 2));
+                    isAttack = true;
+                }
+                else
+                {
+                    OutOfMana();
+                }
+                
             }
+
             
         }
         //if (Input.touchCount > 0)
@@ -150,6 +177,26 @@ public class Player : MonoBehaviour {
         //        RemoteAttack();
         //    }
         //}
+        
+        
+
+    }
+
+    private void LateUpdate()
+    {
+        if (Time.time >= nextUpdate)
+        {
+            // Change the next update (current second+1)
+            nextUpdate = Mathf.FloorToInt(Time.time) + 1;
+
+            Regeneration();
+        }
+    }
+
+    private void Regeneration()
+    {
+        playerStatus.CurrentHP += healthRegeneration;
+        playerStatus.CurrentMP += manaRegeneration;
     }
 
     private void Move(){
@@ -166,7 +213,7 @@ public class Player : MonoBehaviour {
     }
 
     public int getPlayerDamage() {
-        return damage;
+        return playerStatus.Attack;
     }
 
     private void DirectionUpdate(Vector2 direction) {
@@ -201,6 +248,25 @@ public class Player : MonoBehaviour {
                 moveDirection = 1;
             }
         }
+    }
+
+    private void Improve(int[] properties) {
+        playerStatus.MaxHP += properties[0];
+        playerStatus.Speed += properties[1];
+        playerStatus.Attack += properties[2];
+        playerStatus.Defense += properties[3];
+        Debug.Log("Improve: MaxHp:"+playerStatus.MaxHP+" Hp:"+ playerStatus.CurrentHP+" Speed:"+playerStatus.Speed+" Attack:"+playerStatus.Attack+" Defense:"+playerStatus.Defense);
+    }
+
+    private void Decline(int[] properties) {
+        playerStatus.MaxHP -= properties[0];
+        if (playerStatus.CurrentHP > playerStatus.MaxHP) {
+            playerStatus.CurrentHP = playerStatus.MaxHP;
+        }
+        playerStatus.Speed -= properties[1];
+        playerStatus.Attack -= properties[2];
+        playerStatus.Defense -= properties[3];
+        Debug.Log("Decline: MaxHp:"+playerStatus.MaxHP+" Hp:"+ playerStatus.CurrentHP+" Speed:"+playerStatus.Speed+" Attack:"+playerStatus.Attack+" Defense:"+playerStatus.Defense);
     }
 
     private void Attack() {
@@ -251,18 +317,12 @@ public class Player : MonoBehaviour {
     }
 
     public void MeleeAttack() {
-        //transform.Translate(direction*10);
-        //if (FlashEffect.isPlaying) {
-        //    FlashEffect.Stop();
-        //} else {
-        //    FlashEffect.Play();
-        //}
 
         if (!isAttack) {
             isAttack = true;
             Collider2D[] enemies = Physics2D.OverlapCircleAll(attackPos.position, attackRange, 9);
             for (int i = 0; i < enemies.Length; i++) {
-                enemies[i].GetComponent<Enemy>().TakeDamage(30);
+                enemies[i].GetComponent<Enemy>().TakeDamage(playerStatus.Attack);
             }
 
             // Camera shake effect
@@ -275,7 +335,7 @@ public class Player : MonoBehaviour {
 
     public void RemoteAttack()
     {
-
+        playerStatus.CurrentMP -= SKILL1_MANA_COST;
         //touchDirection = new Vector2();
         var clone = Instantiate(thunderBall, gameObject.transform.position + new Vector3(touchDirection.x, touchDirection.y, 0), gameObject.transform.rotation);
         //clone.velocity = direction * 10;
@@ -312,9 +372,20 @@ public class Player : MonoBehaviour {
         PopupTextController.CreatePopupText(health.ToString(), transform, Color.green);
     }
 
+    public void RestoreMana(int mana)
+    {
+        playerStatus.CurrentMP += mana;
+        if (playerStatus.CurrentMP > playerStatus.MaxMP)
+        {
+            playerStatus.CurrentMP = playerStatus.MaxMP;
+        }
+        PopupTextController.CreatePopupText(mana.ToString(), transform, Color.blue);
+    }
+
     public void TakeDamage(int damage) {
         if (!isImmune) {
             immuneTimer = IMMUNE_TIME;
+            damage = (int)(damage * (0.2+20/(float)(playerStatus.Defense+25)));
             playerStatus.CurrentHP -= damage;
             PopupTextController.CreatePopupText(damage.ToString(), transform, Color.red);
             isImmune = true;
@@ -381,5 +452,10 @@ public class Player : MonoBehaviour {
     private void Awake()
     {
         DontDestroyOnLoad(this.gameObject);
+    }
+
+    private void OutOfMana()
+    {
+        playerStatus.ShakeBar();
     }
 }

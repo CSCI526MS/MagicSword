@@ -10,7 +10,6 @@ public class Drops : MonoBehaviour {
     public EquippableItem item;
 
     static Drops() {
-        Debug.Log("Static");
         dic = new Dictionary<string, EquippableItem>();
         EquippableItem hpItem = (EquippableItem)ScriptableObject.CreateInstance("EquippableItem");
         hpItem.itemId = "hp";

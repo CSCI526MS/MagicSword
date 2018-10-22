@@ -12,7 +12,7 @@ public class Player : MonoBehaviour {
     private SpriteRenderer sRenderer;
     [SerializeField]
 
-    private static readonly int DEFAULT_SPEED = 5;
+    private static readonly int DEFAULT_SPEED = 10;
 
     private float healthRegeneration;
     private float manaRegeneration;
@@ -22,7 +22,7 @@ public class Player : MonoBehaviour {
     private bool isAttack;
     private bool isImmune;
 
-    private readonly int SKILL1_MANA_COST = 10;
+    private readonly int SKILL1_MANA_COST = 5;
 
     [SerializeField]
     private Stat playerStatus;
@@ -86,7 +86,7 @@ public class Player : MonoBehaviour {
         playerStatus.CurrentMP = 100;
         playerStatus.MaxMP = 100;
         healthRegeneration = 0;
-        manaRegeneration = 2;
+        manaRegeneration = 3;
 
     }
 

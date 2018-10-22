@@ -9,20 +9,15 @@ public class Stat {
     [SerializeField]
     private HealthBar hearlthBar;
 
+    [SerializeField]
+    private ManaBar manaBar;
+
+
     private float hpValue;
     private float hpMaxValue;
+    private float mpValue;
+    private float mpMaxValue;
 
-
-
-    // Use this for initialization
-    void Start () {
-
-	}
-	
-	// Update is called once per frame
-	void Update () {
-		
-	}
 
     public float CurrentHP
     {
@@ -33,9 +28,38 @@ public class Stat {
 
         set
         {
-            hpValue = value;
+            if (hpValue > hpMaxValue)
+            {
+                hpValue = hpMaxValue;
+            }
+            else
+            {
+                hpValue = value;
+            }
             hearlthBar.Value = value;
             
+        }
+    }
+
+    public float CurrentMP
+    {
+        get
+        {
+            return mpValue;
+        }
+
+        set
+        {
+            if (mpValue > mpMaxValue)
+            {
+                mpValue = mpMaxValue;
+            }
+            else
+            {
+                mpValue = value;
+            }
+            manaBar.Value = value;
+
         }
     }
 
@@ -53,4 +77,17 @@ public class Stat {
         }
     }
 
+    public float MaxMP
+    {
+        get
+        {
+            return mpMaxValue;
+        }
+
+        set
+        {
+            mpMaxValue = value;
+            manaBar.MaxValue = value;
+        }
+    }
 }

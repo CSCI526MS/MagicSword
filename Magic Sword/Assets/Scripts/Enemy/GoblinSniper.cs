@@ -23,10 +23,6 @@ public class GoblinSniper : Enemy {
             attackDirection = getMoveDirection(direction);
             isAttack = true;
 
-            
-
-            Debug.Log(moveDirection);
-
             attackCooldown = ATTACK_COOLDOWN_TIME;
             GameObject missile = Instantiate(projectile, transform.position, transform.rotation);
             Vector3 diff = playerPosition - transform.position;

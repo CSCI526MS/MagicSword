@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class HealthBar : MonoBehaviour {
+public class ManaBar : MonoBehaviour {
 
     [SerializeField]
     private Image barContent;
@@ -23,19 +23,21 @@ public class HealthBar : MonoBehaviour {
 
 
     // Use this for initialization
-    void Start ()
+    void Start()
     {
         fillAmount = 1;
+        actualAmount = 1;
     }
-	
-	// Update is called once per frame
-	void Update () {
+
+    // Update is called once per frame
+    void Update()
+    {
         HandleBar();
     }
 
     private void HandleBar()
     {
-        if(barContent.fillAmount < actualAmount)
+        if (barContent.fillAmount < actualAmount)
         {
             barContent.fillAmount += 1.0f / waitTime * Time.deltaTime;
         }
@@ -43,8 +45,8 @@ public class HealthBar : MonoBehaviour {
         {
             barContent.fillAmount = actualAmount;
         }
-
     }
+
 
 
 }

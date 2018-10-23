@@ -112,7 +112,7 @@ public class Enemy : MonoBehaviour {
             }
 
             // move towards last spot
-            if (Vector2.Distance(transform.position, lastSpot) > 0.5)
+            if (!isAttack && Vector2.Distance(transform.position, lastSpot) > 0.5)
             {
                 // if it is an archer
                 if(rangedAttackType && !Physics2D.Linecast(transform.position, player.position, 1 << LayerMask.NameToLayer("Wall")).collider && Vector2.Distance(transform.position, player.position) < 8)
@@ -126,6 +126,10 @@ public class Enemy : MonoBehaviour {
                         direction = target - transform.position;
                         moveDirection = getMoveDirection(direction);
                         
+                    }
+                    else
+                    {
+                        Wander();
                     }
                 }
                 else
@@ -220,29 +224,33 @@ public class Enemy : MonoBehaviour {
 
     private void Wander()
     {
-        if (wanderTimer > 0)
+        if (!isAttack)
         {
-            switch (moveDirection)
+            if (wanderTimer > 0)
             {
-                case 1:
-                    transform.position += new Vector3(0, speed * Time.deltaTime, 0);
-                    break;
-                case 2:
-                    transform.position += new Vector3(0, -speed * Time.deltaTime, 0);
-                    break;
-                case 3:
-                    transform.position += new Vector3(-speed * Time.deltaTime, 0, 0);
-                    break;
-                case 4:
-                    transform.position += new Vector3(speed * Time.deltaTime, 0, 0);
-                    break;
+                switch (moveDirection)
+                {
+                    case 1:
+                        transform.position += new Vector3(0, speed * Time.deltaTime, 0);
+                        break;
+                    case 2:
+                        transform.position += new Vector3(0, -speed * Time.deltaTime, 0);
+                        break;
+                    case 3:
+                        transform.position += new Vector3(-speed * Time.deltaTime, 0, 0);
+                        break;
+                    case 4:
+                        transform.position += new Vector3(speed * Time.deltaTime, 0, 0);
+                        break;
+                }
+            }
+            else
+            {
+                wanderTimer = Random.Range(1, 3);
+                moveDirection = Random.Range(1, 5);
             }
         }
-        else
-        {
-            wanderTimer = Random.Range(1, 3);
-            moveDirection = Random.Range(1, 5);
-        }
+        
 
 
     }

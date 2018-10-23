@@ -88,25 +88,20 @@ public class Player : MonoBehaviour {
 
     private void Initialize()
     {
-        Debug.Log("ln 95");
         playerStatus.Speed = DEFAULT_SPEED;
         playerStatus.Attack = 10;
         playerStatus.Defense = 0;
-        Debug.Log("ln 98");
         playerStatus.CurrentHP = 100;
         playerStatus.MaxHP = 100;
         playerStatus.CurrentMP = 100;
         playerStatus.MaxMP = 100;
         healthRegeneration = 0;
         manaRegeneration = 3;
-        Debug.Log("ln 104");
     }
 
 	// Update is called once per frame
 	void Update () {
-        Debug.Log("222");
         direction = joystick.Direction;
-        Debug.Log("333");
         Animation();
         Move();
         Attack();

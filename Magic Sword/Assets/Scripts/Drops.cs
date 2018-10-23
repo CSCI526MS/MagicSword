@@ -9,7 +9,7 @@ public class Drops : MonoBehaviour {
    	private static Dictionary<string, EquippableItem> dic;
     public EquippableItem item;
 
-    static Drops() {
+    void Awake() {
         dic = new Dictionary<string, EquippableItem>();
         EquippableItem hpItem = (EquippableItem)ScriptableObject.CreateInstance("EquippableItem");
         hpItem.itemId = "hp";

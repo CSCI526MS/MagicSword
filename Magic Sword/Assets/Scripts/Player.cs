@@ -20,8 +20,6 @@ public class Player : MonoBehaviour {
     private bool isAttack;
     private bool isImmune;
 
-    private readonly int SKILL1_MANA_COST = 5;
-
     [SerializeField]
     private Stat playerStatus;
 
@@ -55,6 +53,14 @@ public class Player : MonoBehaviour {
     float flashTimer = 0;
     bool toggle = true;
 
+    // Skill
+    enum CurrentSkill { FireBall, Meteor };
+    private CurrentSkill currentSkill;
+    private Skill skill;
+    private readonly int SKILL1_MANA_COST = 5;
+    private readonly int SKILL2_MANA_COST = 20;
+
+    // meteor
     public GameObject meteor;
 
     // thunderball
@@ -73,6 +79,10 @@ public class Player : MonoBehaviour {
         moveDirection = 2;
         attackCooldown = ATTACK_COOLDOWN_TIME;
         isImmune = false;
+
+        // set init skill (just for testing right now)
+        currentSkill = CurrentSkill.FireBall;
+
         SceneManager.sceneLoaded += (var, var2) =>
         {
             if (var.buildIndex == 0)
@@ -138,22 +148,25 @@ public class Player : MonoBehaviour {
             castPoint = Input.mousePosition;
             castPoint.z = 0.0f;
             Vector3 shootDirection = Camera.main.ScreenToWorldPoint(castPoint);
-            shootDirection = shootDirection - transform.position;
-            touchDirection = shootDirection;
+            touchDirection = shootDirection - transform.position;
             touchDirection.Normalize();
             if (!isAttack)
             {
-                if(playerStatus.CurrentMP >= SKILL1_MANA_COST)
+                if (currentSkill == CurrentSkill.FireBall && playerStatus.CurrentMP >= SKILL1_MANA_COST)
                 {
-                    RemoteAttack();
-                    DirectionUpdate(new Vector2(castPoint.x - Screen.width / 2, castPoint.y - Screen.height / 2));
+                    FireBallAttack();
+                    isAttack = true;
+                }
+                else if (currentSkill == CurrentSkill.Meteor && playerStatus.CurrentMP >= SKILL2_MANA_COST)
+                {
+                    MeteorAttack();
                     isAttack = true;
                 }
                 else
                 {
                     OutOfMana();
                 }
-                
+                DirectionUpdate(new Vector2(castPoint.x - Screen.width / 2, castPoint.y - Screen.height / 2));
             }
 
             
@@ -328,37 +341,6 @@ public class Player : MonoBehaviour {
         }
     }
 
-    public void RemoteAttack()
-    {
-        playerStatus.CurrentMP -= SKILL1_MANA_COST;
-        //touchDirection = new Vector2();
-        var clone = Instantiate(thunderBall, gameObject.transform.position + new Vector3(touchDirection.x, touchDirection.y, 0), gameObject.transform.rotation);
-        //clone.velocity = direction * 10;
-
-        float degree = (float)((Mathf.Atan2(touchDirection.x, touchDirection.y) / Mathf.PI) * 180f);
-        if (degree < -90) {
-            degree = -degree - 90;
-        }
-        else if (degree > 0 && degree < 90)
-        {
-            degree = -(degree + 90);
-        }
-        else if (degree > 90)
-        {
-            degree = 90 + (190 - degree);
-        }
-        else
-        {
-            degree = -90 - degree;
-        }
-
-        Vector3 temp = clone.transform.eulerAngles;
-        temp.z = degree;
-        clone.transform.eulerAngles = temp;
-        clone.GetComponent<Rigidbody2D>().velocity = touchDirection * 10f;
-
-    }
-
     public void RestoreHealth(int health) {
         playerStatus.CurrentHP += health;
         if (playerStatus.CurrentHP > playerStatus.MaxHP) {
@@ -404,6 +386,16 @@ public class Player : MonoBehaviour {
         }
     }
 
+    private void Awake()
+    {
+        DontDestroyOnLoad(this.gameObject);
+    }
+
+    private void OutOfMana()
+    {
+        playerStatus.ShakeBar();
+    }
+
     private void Animation() {
         animator.SetBool("move", isMove);
         animator.SetInteger("moveDirection", moveDirection);
@@ -415,10 +407,35 @@ public class Player : MonoBehaviour {
         Gizmos.DrawWireSphere(attackPos.position, attackRange);
     }
 
+    // Skills
+    public void SetCurrentSkill(string skill)
+    {
+        if (skill.Equals("FireBall"))
+        {
+            currentSkill = CurrentSkill.FireBall;
+        }
+        else if (skill.Equals("Meteor"))
+        {
+            currentSkill = CurrentSkill.Meteor;
+        }
+    }
+
+    private void FireBallAttack()
+    {
+        playerStatus.CurrentMP -= SKILL1_MANA_COST;
+        var clone = Instantiate(thunderBall, gameObject.transform.position + new Vector3(touchDirection.x, touchDirection.y, 0), gameObject.transform.rotation);
+
+        float rot_z = Mathf.Atan2(touchDirection.y, touchDirection.x) * Mathf.Rad2Deg + 180f;
+        clone.transform.rotation = Quaternion.Euler(0f, 0f, rot_z);
+        clone.GetComponent<Rigidbody2D>().velocity = touchDirection * 10f;
+
+    }
+
     private void MeteorAttack() {
 
         if (Input.GetMouseButtonDown(0) && !joystick.isTouched()) {
             if (!isAttack) {
+                playerStatus.CurrentMP -= SKILL2_MANA_COST;
                 Vector3 touchPoint;
                 touchPoint = Input.mousePosition;
                 touchPoint.z = 0.0f;
@@ -442,15 +459,5 @@ public class Player : MonoBehaviour {
             }
 
         }
-    }
-
-    private void Awake()
-    {
-        DontDestroyOnLoad(this.gameObject);
-    }
-
-    private void OutOfMana()
-    {
-        playerStatus.ShakeBar();
     }
 }

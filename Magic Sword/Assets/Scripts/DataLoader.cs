@@ -13,31 +13,16 @@ public class DataLoader : MonoBehaviour
     void Start()
     {
         DontDestroyOnLoad(gameObject);
-
-        if(LoadGameData()){
-            LoadPlayerProgress();
-            switch (gameData.level){
-                case 1:
-                    SceneManager.LoadScene("LevelOne");break;
-                case 2:
-                    SceneManager.LoadScene("LevelTwo");break;
-                default:
-                    SceneManager.LoadScene("LevelOne");break;
-            }
-        }
-        else{
-            SceneManager.LoadScene("LevelOne");
-        }
-
+        SceneManager.LoadScene("MainMenu");
     }
 
-    private bool LoadGameData()
+    public bool LoadGameData(int mode)
     {
         string filePath = Path.Combine(Application.streamingAssetsPath, newGameDataFileName);
-        if (GlobalStatic.crossSceneInfo == 0) {
+        if (mode == 0) {
             filePath = Path.Combine(Application.streamingAssetsPath, newGameDataFileName);
         }
-        else if(GlobalStatic.crossSceneInfo == 1) {
+        else if(mode == 1) {
             filePath = Path.Combine(Application.streamingAssetsPath, gameDataFileName);
         }
         if (File.Exists(filePath))
@@ -53,7 +38,7 @@ public class DataLoader : MonoBehaviour
         }
     }
 
-    private void LoadPlayerProgress()
+    public void LoadPlayerProgress()
     {
         Player player = FindObjectOfType<Player>();
         player.initPosition = gameData.coordinate;
@@ -69,6 +54,14 @@ public class DataLoader : MonoBehaviour
         {
             inventorySlots[i] = gameData.inventorySlots[i];
         }
-
+        switch (gameData.level)
+        {
+            case 1:
+                GlobalStatic.crossSceneLevel = 1; break;
+            case 2:
+                GlobalStatic.crossSceneLevel = 2; break;
+            default:
+                GlobalStatic.crossSceneLevel = 1; break;
+        }
     }
 }

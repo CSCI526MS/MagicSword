@@ -1,4 +1,4 @@
 ﻿public static class GlobalStatic
 {
-    public static int crossSceneInfo{get; set;}
+    public static int crossSceneLevel {get; set;}
 }

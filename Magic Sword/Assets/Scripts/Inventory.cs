@@ -21,7 +21,7 @@ public class Inventory : MonoBehaviour {
 	// 	}
 	// }
 
-	private int sizeLimit = 18;
+	private readonly int sizeLimit = 18;
     public bool addItem (EquippableItem item) {
 		// Debug.Log("item put in the bag");
         Debug.Log("item.EquipmentType = " + item.EquipmentType);

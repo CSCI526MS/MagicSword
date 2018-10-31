@@ -11,6 +11,7 @@ TagManager:
   - Portal
   - Skill1
   - Loot
+  - Enemy
   layers:
   - Default
   - TransparentFX
@@ -28,7 +29,7 @@ TagManager:
   - Projectile
   - EnemyProjectile
   - Trigger
-  - 
+  - Portal
   - 
   - 
   - 

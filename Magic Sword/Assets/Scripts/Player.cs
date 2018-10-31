@@ -21,7 +21,7 @@ public class Player : MonoBehaviour {
     private bool isImmune;
 
     [SerializeField]
-    private Stat playerStatus;
+    public Stat playerStatus;
 
     // moveDirection == 1 -> Up
     // moveDirection == 2 -> Down
@@ -42,6 +42,7 @@ public class Player : MonoBehaviour {
     public Transform attackPos;
     public float attackRange;
     public LayerMask enemyLayer;
+    public Vector3 initPosition = new Vector3(0, 0, 0);
     private Vector2 attackPosUp = new Vector2(0, 0.1f);
     private Vector2 attackPosDown = new Vector2(0, -0.1f);
     private Vector2 attackPosRight = new Vector2(0.1f, 0);
@@ -68,6 +69,7 @@ public class Player : MonoBehaviour {
 
     // Use this for initialization
     void Start () {
+        DontDestroyOnLoad(this.gameObject);
         Initialize();
         sRenderer = GetComponent<SpriteRenderer>();
         PopupTextController.Initialize();
@@ -79,20 +81,12 @@ public class Player : MonoBehaviour {
         moveDirection = 2;
         attackCooldown = ATTACK_COOLDOWN_TIME;
         isImmune = false;
-
-        // set init skill (just for testing right now)
         currentSkill = CurrentSkill.FireBall;
 
         SceneManager.sceneLoaded += (var, var2) =>
         {
-            if (var.buildIndex == 0)
-            {
-                transform.position = new Vector3(0, 0, 0);
-            }
-            else if (var.buildIndex == 1)
-            {
-                transform.position = new Vector3(0, 0, 0);
-            }
+            transform.position = initPosition;
+            initPosition = new Vector3(0, 0, 0);
         };
     }
 
@@ -384,11 +378,6 @@ public class Player : MonoBehaviour {
         else {
             flashTimer += Time.deltaTime;
         }
-    }
-
-    private void Awake()
-    {
-        DontDestroyOnLoad(this.gameObject);
     }
 
     private void OutOfMana()

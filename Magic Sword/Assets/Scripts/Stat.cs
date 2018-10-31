@@ -6,20 +6,16 @@ using UnityEngine;
 [Serializable]
 public class Stat {
 
-    [SerializeField]
-    private HealthBar healthBar;
+    public HealthBar healthBar;
+    public ManaBar manaBar;
 
-    private float hpValue;
-    private float hpMaxValue;
-    private int speed;
-    private int attack;
-    private int defense;
-
-    [SerializeField]
-    private ManaBar manaBar;
-
-    private float mpValue;
-    private float mpMaxValue;
+    [SerializeField] public float hpValue;
+    [SerializeField] public float hpMaxValue;
+    [SerializeField] public int speed;
+    [SerializeField] public int attack;
+    [SerializeField] public int defense;
+    [SerializeField] public float mpValue;
+    [SerializeField] public float mpMaxValue;
 
 
     public float CurrentHP

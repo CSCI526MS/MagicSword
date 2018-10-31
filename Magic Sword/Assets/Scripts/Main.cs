@@ -6,12 +6,14 @@ using UnityEngine.SceneManagement;
 public class Main : MonoBehaviour {
 
 	public void PlayGame() {
-		SceneManager.LoadScene("LevelOne");
+		SceneManager.LoadScene("MainMenu");
+        GlobalStatic.crossSceneInfo = 0;
 	}
 
 	public void ContinueGame() {
 		SceneManager.LoadScene("MainMenu");
-	}
+        GlobalStatic.crossSceneInfo = 1;
+    }
 
 	public void QuitGame() {
 		Debug.Log("QUIT!");

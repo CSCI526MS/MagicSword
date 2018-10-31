@@ -8,6 +8,7 @@ public class DataLoader : MonoBehaviour
     private GameData gameData;
 
     private string gameDataFileName = "data.json";
+    private string newGameDataFileName = "data.default.json";
 
     void Start()
     {
@@ -32,7 +33,13 @@ public class DataLoader : MonoBehaviour
 
     private bool LoadGameData()
     {
-        string filePath = Path.Combine(Application.streamingAssetsPath, gameDataFileName);
+        string filePath = Path.Combine(Application.streamingAssetsPath, newGameDataFileName);
+        if (GlobalStatic.crossSceneInfo == 0) {
+            filePath = Path.Combine(Application.streamingAssetsPath, newGameDataFileName);
+        }
+        else if(GlobalStatic.crossSceneInfo == 1) {
+            filePath = Path.Combine(Application.streamingAssetsPath, gameDataFileName);
+        }
         if (File.Exists(filePath))
         {
             string dataAsJson = File.ReadAllText(filePath);

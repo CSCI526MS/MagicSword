@@ -12,6 +12,7 @@ TagManager:
   - Skill1
   - Loot
   - Enemy
+  - Transition
   layers:
   - Default
   - TransparentFX

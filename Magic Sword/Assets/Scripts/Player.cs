@@ -1,3 +1,4 @@
+using System.Collections;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
@@ -49,6 +50,8 @@ public class Player : MonoBehaviour {
     private Vector2 attackPosLeft = new Vector2(-0.1f, 0);
 
     public Camera camera;
+    public Animator transition;
+    public GameObject transitionPanel;
 
     // for sprite flash (while immune)
     float flashTimer = 0;
@@ -82,6 +85,8 @@ public class Player : MonoBehaviour {
         attackCooldown = ATTACK_COOLDOWN_TIME;
         isImmune = false;
         currentSkill = CurrentSkill.FireBall;
+        transitionPanel = GameObject.FindWithTag("Transition");
+        transitionPanel.SetActive(false);
 
         SceneManager.sceneLoaded += (var, var2) =>
         {
@@ -358,10 +363,11 @@ public class Player : MonoBehaviour {
             immuneTimer = IMMUNE_TIME;
             damage = (int)(damage * (0.2+20/(float)(playerStatus.Defense+25)));
             playerStatus.CurrentHP -= damage;
-            PopupTextController.CreatePopupText(damage.ToString(), transform, Color.red);
             if (playerStatus.CurrentHP<=0) {
-                SceneManager.LoadScene("MainMenu");
+                StartCoroutine(LoadScene("MainMenu"));
+                // SceneManager.LoadScene("MainMenu");
             }
+            PopupTextController.CreatePopupText(damage.ToString(), transform, Color.red);
             isImmune = true;
         }
         
@@ -451,5 +457,13 @@ public class Player : MonoBehaviour {
             }
 
         }
+    }
+
+    IEnumerator LoadScene(string name) {
+        transitionPanel.SetActive(true);
+        transition.SetTrigger("start");
+        yield return new WaitForSeconds(1.0f);
+        SceneManager.LoadScene(name);
+        transitionPanel.SetActive(false);
     }
 }

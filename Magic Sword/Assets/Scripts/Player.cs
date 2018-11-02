@@ -359,6 +359,9 @@ public class Player : MonoBehaviour {
             damage = (int)(damage * (0.2+20/(float)(playerStatus.Defense+25)));
             playerStatus.CurrentHP -= damage;
             PopupTextController.CreatePopupText(damage.ToString(), transform, Color.red);
+            if (playerStatus.CurrentHP<=0) {
+                SceneManager.LoadScene("MainMenu");
+            }
             isImmune = true;
         }
         

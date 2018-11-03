@@ -1,3 +1,4 @@
+using System.Collections;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
@@ -49,6 +50,8 @@ public class Player : MonoBehaviour {
     private Vector2 attackPosLeft = new Vector2(-0.1f, 0);
 
     public Camera camera;
+    public Animator transition;
+    public GameObject transitionPanel;
 
     // for sprite flash (while immune)
     float flashTimer = 0;
@@ -64,8 +67,8 @@ public class Player : MonoBehaviour {
     // meteor
     public GameObject meteor;
 
-    // thunderball
-    public GameObject thunderBall;
+    // fireball
+    public GameObject fireBall;
 
     // Use this for initialization
     void Start () {
@@ -82,6 +85,8 @@ public class Player : MonoBehaviour {
         attackCooldown = ATTACK_COOLDOWN_TIME;
         isImmune = false;
         currentSkill = CurrentSkill.FireBall;
+        transitionPanel = GameObject.FindWithTag("Transition");
+        transitionPanel.SetActive(false);
 
         SceneManager.sceneLoaded += (var, var2) =>
         {
@@ -358,6 +363,10 @@ public class Player : MonoBehaviour {
             immuneTimer = IMMUNE_TIME;
             damage = (int)(damage * (0.2+20/(float)(playerStatus.Defense+25)));
             playerStatus.CurrentHP -= damage;
+            if (playerStatus.CurrentHP<=0) {
+                StartCoroutine(LoadScene("MainMenu"));
+                // SceneManager.LoadScene("MainMenu");
+            }
             PopupTextController.CreatePopupText(damage.ToString(), transform, Color.red);
             isImmune = true;
         }
@@ -412,7 +421,7 @@ public class Player : MonoBehaviour {
     private void FireBallAttack()
     {
         playerStatus.CurrentMP -= SKILL1_MANA_COST;
-        var clone = Instantiate(thunderBall, gameObject.transform.position + new Vector3(touchDirection.x, touchDirection.y, 0), gameObject.transform.rotation);
+        var clone = Instantiate(fireBall, gameObject.transform.position + new Vector3(touchDirection.x, touchDirection.y, 0), gameObject.transform.rotation);
 
         float rot_z = Mathf.Atan2(touchDirection.y, touchDirection.x) * Mathf.Rad2Deg + 180f;
         clone.transform.rotation = Quaternion.Euler(0f, 0f, rot_z);
@@ -448,5 +457,13 @@ public class Player : MonoBehaviour {
             }
 
         }
+    }
+
+    IEnumerator LoadScene(string name) {
+        transitionPanel.SetActive(true);
+        transition.SetTrigger("start");
+        yield return new WaitForSeconds(1.0f);
+        SceneManager.LoadScene(name);
+        transitionPanel.SetActive(false);
     }
 }

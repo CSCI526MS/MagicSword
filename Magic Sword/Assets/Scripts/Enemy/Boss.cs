@@ -4,31 +4,36 @@ using UnityEngine;
 
 public class Boss : MonoBehaviour {
 
-    public GameObject flame;
-    private readonly float FLAME_DURATION = .5f;
+    float minX;
+    float maxX;
+    float minY;
+    float maxY;
+	// Use this for initialization
+	void Start () {
+        minX = GameObject.Find("TopLeft").transform.position.x;
+        maxX = GameObject.Find("BottomRight").transform.position.x;
+        minY = GameObject.Find("BottomRight").transform.position.y;
+        maxY = GameObject.Find("TopLeft").transform.position.y;
 
+        SummonMinions();
 
-    // Use this for initialization
-    void Start ()
-    {
-		
-	}
+    }
 	
 	// Update is called once per frame
-	void Update ()
-    {
-        if (Input.GetKey(KeyCode.F)) {
-            AoeAttack();
-        }
+	void Update () {
 
-        if (Input.GetKey(KeyCode.UpArrow)) {
-            gameObject.transform.position = gameObject.transform.position + new Vector3(0, .1f, 0);
-        }
 	}
 
-    private void AoeAttack()
-    {
-        var clone = Instantiate(flame, gameObject.transform.position, gameObject.transform.rotation);
-        clone.transform.parent = gameObject.transform;
+    private void SummonMinions(){
+
+        for (int i = 0; i < 5;i++){
+            GameObject slime = (GameObject)Resources.Load("Prefabs/Enemy/FallingSlime");
+
+            float randomX = Random.Range(minX, maxX);
+            float randomY = Random.Range(minY, maxY);
+            GameObject newSlime = Instantiate(slime) as GameObject;
+            newSlime.transform.position = new Vector2(randomX, randomY + 20);
+        }
+
     }
 }

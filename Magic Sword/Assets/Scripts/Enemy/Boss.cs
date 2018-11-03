@@ -21,7 +21,6 @@ public class Boss : MonoBehaviour {
         maxY = GameObject.Find("TopLeft").transform.position.y;
         
         //SummonMinions();
-
     }
 	
 	// Update is called once per frame
@@ -37,7 +36,6 @@ public class Boss : MonoBehaviour {
     private void SummonMinions(){
         //TODO: disable collision when falling
         //TODO: exclude BOSS position for spawn place
-
         for (int i = 0; i < 5;i++){
             GameObject slime = (GameObject)Resources.Load("Prefabs/Enemy/FallingSlime");
 

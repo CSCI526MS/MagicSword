@@ -35,3 +35,7 @@ sysinfo.txt
 *.apk
 *.unitypackage
 MagicSword/.DS_Store
+Magic Sword/ProjectSettings/ProjectVersion.txt
+Magic Sword/Assets/Scripts/.DS_Store
+Magic Sword/Assets/.DS_Store
+Magic Sword/.DS_Store

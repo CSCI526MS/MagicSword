@@ -15,7 +15,7 @@ public class FireBall : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        //Destroy(gameObject, destroyTime);
+        Destroy(gameObject, destroyTime);
     }
 
     private void OnCollisionEnter2D(Collision2D collision)

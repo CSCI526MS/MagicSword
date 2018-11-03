@@ -58,17 +58,21 @@ public class Player : MonoBehaviour {
     bool toggle = true;
 
     // Skill
-    enum CurrentSkill { FireBall, Meteor };
+    enum CurrentSkill { FireBall, Meteor, Flame };
     private CurrentSkill currentSkill;
     private Skill skill;
     private readonly int SKILL1_MANA_COST = 5;
     private readonly int SKILL2_MANA_COST = 20;
+    private readonly int SKILL3_MANA_COST = 15;
 
     // meteor
     public GameObject meteor;
 
     // fireball
     public GameObject fireBall;
+
+    // flame
+    public GameObject flame;
 
     // Use this for initialization
     void Start () {
@@ -426,6 +430,12 @@ public class Player : MonoBehaviour {
         float rot_z = Mathf.Atan2(touchDirection.y, touchDirection.x) * Mathf.Rad2Deg + 180f;
         clone.transform.rotation = Quaternion.Euler(0f, 0f, rot_z);
         clone.GetComponent<Rigidbody2D>().velocity = touchDirection * 10f;
+
+    }
+
+    private void FlameAttack()
+    {
+        playerStatus.CurrentMP -= SKILL3_MANA_COST;
 
     }
 

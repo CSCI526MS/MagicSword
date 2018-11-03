@@ -67,8 +67,8 @@ public class Player : MonoBehaviour {
     // meteor
     public GameObject meteor;
 
-    // thunderball
-    public GameObject thunderBall;
+    // fireball
+    public GameObject fireBall;
 
     // Use this for initialization
     void Start () {
@@ -421,7 +421,7 @@ public class Player : MonoBehaviour {
     private void FireBallAttack()
     {
         playerStatus.CurrentMP -= SKILL1_MANA_COST;
-        var clone = Instantiate(thunderBall, gameObject.transform.position + new Vector3(touchDirection.x, touchDirection.y, 0), gameObject.transform.rotation);
+        var clone = Instantiate(fireBall, gameObject.transform.position + new Vector3(touchDirection.x, touchDirection.y, 0), gameObject.transform.rotation);
 
         float rot_z = Mathf.Atan2(touchDirection.y, touchDirection.x) * Mathf.Rad2Deg + 180f;
         clone.transform.rotation = Quaternion.Euler(0f, 0f, rot_z);

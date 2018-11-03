@@ -58,17 +58,21 @@ public class Player : MonoBehaviour {
     bool toggle = true;
 
     // Skill
-    enum CurrentSkill { FireBall, Meteor };
+    enum CurrentSkill { FireBall, Meteor, Flame };
     private CurrentSkill currentSkill;
     private Skill skill;
     private readonly int SKILL1_MANA_COST = 5;
     private readonly int SKILL2_MANA_COST = 20;
+    private readonly int SKILL3_MANA_COST = 15;
 
     // meteor
     public GameObject meteor;
 
     // fireball
     public GameObject fireBall;
+
+    // flame
+    public GameObject flame;
 
     // Use this for initialization
     void Start () {
@@ -159,6 +163,11 @@ public class Player : MonoBehaviour {
                 else if (currentSkill == CurrentSkill.Meteor && playerStatus.CurrentMP >= SKILL2_MANA_COST)
                 {
                     MeteorAttack();
+                    isAttack = true;
+                }
+                else if (currentSkill == CurrentSkill.Flame && playerStatus.CurrentMP >= SKILL3_MANA_COST)
+                {
+                    FlameAttack();
                     isAttack = true;
                 }
                 else
@@ -416,6 +425,10 @@ public class Player : MonoBehaviour {
         {
             currentSkill = CurrentSkill.Meteor;
         }
+        else if (skill.Equals("Flame"))
+        {
+            currentSkill = CurrentSkill.Flame;
+        }
     }
 
     private void FireBallAttack()
@@ -427,6 +440,13 @@ public class Player : MonoBehaviour {
         clone.transform.rotation = Quaternion.Euler(0f, 0f, rot_z);
         clone.GetComponent<Rigidbody2D>().velocity = touchDirection * 10f;
 
+    }
+
+    private void FlameAttack()
+    {
+        playerStatus.CurrentMP -= SKILL3_MANA_COST;
+        var clone = Instantiate(flame, gameObject.transform.position, gameObject.transform.rotation);
+        clone.transform.parent = gameObject.transform;
     }
 
     private void MeteorAttack() {

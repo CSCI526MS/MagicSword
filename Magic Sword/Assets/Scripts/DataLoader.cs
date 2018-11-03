@@ -9,21 +9,27 @@ public class DataLoader : MonoBehaviour
 
     private string gameDataFileName = "data.json";
     private string newGameDataFileName = "data.default.json";
+    private string root;
 
     void Start()
     {
         DontDestroyOnLoad(gameObject);
         SceneManager.LoadScene("MainMenu");
+#if UNITY_IOS
+        root = Application.persistentAssetsPath;
+#else
+        root = Application.streamingAssetsPath;
+#endif
     }
 
     public bool LoadGameData(int mode)
     {
-        string filePath = Path.Combine(Application.streamingAssetsPath, newGameDataFileName);
+        string filePath = Path.Combine(root, newGameDataFileName);
         if (mode == 0) {
-            filePath = Path.Combine(Application.streamingAssetsPath, newGameDataFileName);
+            filePath = Path.Combine(root, newGameDataFileName);
         }
         else if(mode == 1) {
-            filePath = Path.Combine(Application.streamingAssetsPath, gameDataFileName);
+            filePath = Path.Combine(root, gameDataFileName);
         }
         if (File.Exists(filePath))
         {
@@ -48,12 +54,18 @@ public class DataLoader : MonoBehaviour
         player.playerStatus.manaBar = manaBar;
         player.playerStatus.healthBar = healthBar;
         Inventory inventory = FindObjectOfType<Inventory>();
-        inventory.itemList = gameData.itemList;
-        InventorySlot [] inventorySlots = FindObjectsOfType<InventorySlot>();
-        for (int i = 0; i < inventorySlots.Length; i++)
+        for (int i = 0; i < gameData.itemList.Length; i++)
         {
-            inventorySlots[i] = gameData.inventorySlots[i];
+            if (gameData.itemList[i] != null){
+                inventory.itemList[i] = new Item
+                {
+                    itemId = gameData.itemList[i].itemId,
+                    properties = gameData.itemList[i].properties,
+                    icon = gameData.itemList[i].icon
+                };
+            }
         }
+
         switch (gameData.level)
         {
             case 1:

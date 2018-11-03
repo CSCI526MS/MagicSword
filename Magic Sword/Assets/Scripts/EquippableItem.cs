@@ -1,5 +1,4 @@
 using UnityEngine;
-
 public enum EquipmentType
 {
 	Consume,

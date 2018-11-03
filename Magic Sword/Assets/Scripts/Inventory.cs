@@ -4,34 +4,20 @@ using UnityEngine;
 using System;
 public class Inventory : MonoBehaviour {
 
-	// Use this for initialization
-	// itemList
-    public List<Item> itemList = new List<Item>();
+    private static readonly int sizeLimit = GlobalStatic.sizeLimit;
+    public Item[] itemList = new Item[sizeLimit];
     [SerializeField] public InventorySlot[] inventorySlots;
     [SerializeField] GameObject itemsParent;
 
-
-	// public event Action<Item> OnItemRightClickedEvent;
-    //
-    // private void Awake() {
-    //     Debug.Log("hll");
-	// 	for (int i = 0; i < inventorySlots.Length; i++) {
-    //         Debug.Log("inside for loop");
-	// 		inventorySlots[i].OnRightClickEvent += OnItemRightClickedEvent;
-	// 	}
-	// }
-
-	private readonly int sizeLimit = 18;
     public bool addItem (EquippableItem item) {
 		// Debug.Log("item put in the bag");
         Debug.Log("item.EquipmentType = " + item.EquipmentType);
         Debug.Log("item.hp = " + item.properties[0]);
         Debug.Log("item.itemId = " + item.itemId);
         for (int i = 0; i < inventorySlots.Length; i++) {
-            Debug.Log(inventorySlots[i].Item);
             if (inventorySlots[i].Item == null) {
                 inventorySlots[i].Item = item;
-                // itemList.Add(item);
+                itemList[i]=item;
                 return true;
             }
         }
@@ -71,7 +57,7 @@ public class Inventory : MonoBehaviour {
         return false;
 	}
 
-    public List<Item> getItemList() {
+    public Item[] getItemList() {
 		return itemList;
 	}
 
@@ -90,7 +76,7 @@ public class Inventory : MonoBehaviour {
 
     private void RefreshUI() {
         int i = 0;
-		for (; i < itemList.Count && i < inventorySlots.Length; i++) {
+        for (; i < itemList.Length && i < inventorySlots.Length; i++) {
 			inventorySlots[i].Item = itemList[i];
 		}
 

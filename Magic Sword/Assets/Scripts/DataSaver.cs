@@ -5,13 +5,18 @@ using System.IO;                                                        // The S
 
 public class DataSaver : MonoBehaviour
 {
-    private GameData gameData = new GameData();
+    public GameData gameData = new GameData();
 
     private readonly string gameDataFileName = "data.json";
-
+    private string root;
     void Start()
     {
         DontDestroyOnLoad(gameObject);
+#if UNITY_IOS
+        root = Application.persistentAssetsPath;
+#else
+        root = Application.streamingAssetsPath;
+#endif
     }
 
     public void OnTrigger()
@@ -24,7 +29,7 @@ public class DataSaver : MonoBehaviour
     private void SaveGameData()
     {
         string dataAsJson = JsonUtility.ToJson(gameData);
-        string filePath = Path.Combine(Application.streamingAssetsPath, gameDataFileName);
+        string filePath = Path.Combine(root, gameDataFileName);
         if (!File.Exists(filePath))
         {
             File.Create(filePath);
@@ -38,13 +43,16 @@ public class DataSaver : MonoBehaviour
         gameData.coordinate = player.transform.position;
         gameData.playerStatus = player.playerStatus;
         Inventory inventory = FindObjectOfType<Inventory>();
-        gameData.itemList = inventory.itemList;
-        InventorySlot [] inventorySlots = FindObjectsOfType<InventorySlot>();
-        for (int i = 0; i < inventorySlots.Length; i++)
+        Debug.Log(inventory);
+        for (int i = 0; i < inventory.itemList.Length; i++)
         {
-            gameData.inventorySlots[i] = inventorySlots[i];
+            if(inventory.itemList[i] != null){
+                gameData.itemList[i].itemId = inventory.itemList[i].itemId;
+                gameData.itemList[i].properties = inventory.itemList[i].properties;
+                gameData.itemList[i].icon = inventory.itemList[i].icon;
+            }
         }
-        switch(SceneManager.GetActiveScene().name){
+        switch (SceneManager.GetActiveScene().name){
             case "LevelOne":
                 gameData.level = 1;break;
             case "LevelTwo":

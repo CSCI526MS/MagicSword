@@ -1,12 +1,11 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
+
 [System.Serializable]
 public class GameData
 {
-    public List<Item> itemList;
+    public static readonly int sizeLimit = 18;
+    public ItemData [] itemList = new ItemData[sizeLimit];
     public Stat playerStatus;
     public Vector3 coordinate;
-    public InventorySlot[] inventorySlots;
     public int level;
 }

@@ -51,7 +51,7 @@ public class Player : MonoBehaviour {
 
     public Camera camera;
     public Animator transition;
-    public GameObject transitionPanel;
+    private GameObject transitionPanel;
 
     // for sprite flash (while immune)
     float flashTimer = 0;

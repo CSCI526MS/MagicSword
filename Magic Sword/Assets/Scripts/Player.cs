@@ -165,6 +165,11 @@ public class Player : MonoBehaviour {
                     MeteorAttack();
                     isAttack = true;
                 }
+                else if (currentSkill == CurrentSkill.Flame && playerStatus.CurrentMP >= SKILL3_MANA_COST)
+                {
+                    FlameAttack();
+                    isAttack = true;
+                }
                 else
                 {
                     OutOfMana();
@@ -437,6 +442,9 @@ public class Player : MonoBehaviour {
     {
         playerStatus.CurrentMP -= SKILL3_MANA_COST;
 
+
+
+        Instantiate(fireBall, gameObject.transform.position + new Vector3(touchDirection.x, touchDirection.y, 0), gameObject.transform.rotation);
     }
 
     private void MeteorAttack() {

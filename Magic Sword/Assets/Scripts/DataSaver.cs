@@ -13,7 +13,7 @@ public class DataSaver : MonoBehaviour
     {
         DontDestroyOnLoad(gameObject);
 #if UNITY_IOS
-        root = Application.persistentAssetsPath;
+        root = Application.persistentDataPath;
 #else
         root = Application.streamingAssetsPath;
 #endif

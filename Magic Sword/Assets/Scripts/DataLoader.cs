@@ -7,8 +7,8 @@ public class DataLoader : MonoBehaviour
 {
     private GameData gameData;
 
-    private string gameDataFileName = "data.json";
-    private string newGameDataFileName = "data.default.json";
+    private readonly string gameDataFileName = "data.json";
+    private readonly string newGameDataFileName = "data.default.json";
     private string root;
 
     void Start()
@@ -16,7 +16,7 @@ public class DataLoader : MonoBehaviour
         DontDestroyOnLoad(gameObject);
         SceneManager.LoadScene("MainMenu");
 #if UNITY_IOS
-        root = Application.persistentAssetsPath;
+        root = Application.persistentDataPath;
 #else
         root = Application.streamingAssetsPath;
 #endif

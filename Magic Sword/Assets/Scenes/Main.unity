@@ -490,7 +490,7 @@ GameObject:
   - component: {fileID: 123023474}
   - component: {fileID: 123023473}
   m_Layer: 5
-  m_Name: Cooldown
+  m_Name: FlameCooldown
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -525,7 +525,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 48a47c2059468454daf75f2168f499e4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  coolDown: 2
+  coolDownTime: 5
   skill: Flame
 --- !u!114 &123023474
 MonoBehaviour:
@@ -4941,7 +4941,7 @@ GameObject:
   - component: {fileID: 1843246652}
   - component: {fileID: 1843246651}
   m_Layer: 5
-  m_Name: Cooldown
+  m_Name: FireBallCooldown
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -4976,7 +4976,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 48a47c2059468454daf75f2168f499e4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  coolDown: 2
+  coolDownTime: 2
   skill: FireBall
 --- !u!114 &1843246652
 MonoBehaviour:
@@ -5341,7 +5341,7 @@ GameObject:
   - component: {fileID: 1993042212}
   - component: {fileID: 1993042211}
   m_Layer: 5
-  m_Name: Cooldown
+  m_Name: MeteorCooldown
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -5376,7 +5376,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 48a47c2059468454daf75f2168f499e4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  coolDown: 10
+  coolDownTime: 10
   skill: Meteor
 --- !u!114 &1993042212
 MonoBehaviour:

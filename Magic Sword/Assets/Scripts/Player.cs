@@ -19,6 +19,7 @@ public class Player : MonoBehaviour {
     private FixedJoystick joystick;
     private bool isMove;
     private bool isAttack;
+    private bool isCoolDown;
     private bool isImmune;
 
     [SerializeField]
@@ -35,9 +36,11 @@ public class Player : MonoBehaviour {
     private Vector2 touchDirection;
 
     private readonly float ATTACK_COOLDOWN_TIME = 0.7f;
+    private float skillCoolDownTime = 2f;
     private readonly float IMMUNE_TIME = 2f;
     private int speed;
     private float attackCooldown;
+    private float skillCoolDown;
     private float immuneTimer = 0;
 
     public Transform attackPos;
@@ -75,7 +78,8 @@ public class Player : MonoBehaviour {
     public GameObject flame;
 
     // Use this for initialization
-    void Start () {
+    void Start ()
+    {
         DontDestroyOnLoad(this.gameObject);
         Initialize();
         sRenderer = GetComponent<SpriteRenderer>();
@@ -85,8 +89,10 @@ public class Player : MonoBehaviour {
         animator = GetComponent<Animator>();
         direction = Vector2.down;
         isMove = false;
+        isCoolDown = true;
         moveDirection = 2;
         attackCooldown = ATTACK_COOLDOWN_TIME;
+        skillCoolDown = skillCoolDownTime;
         isImmune = false;
         currentSkill = CurrentSkill.FireBall;
         transitionPanel = GameObject.FindWithTag("Transition");
@@ -113,62 +119,71 @@ public class Player : MonoBehaviour {
     }
 
 	// Update is called once per frame
-	void Update () {
+	void Update ()
+    {
         direction = joystick.Direction;
         Animation();
         Move();
         Attack();
+        CoolDown();
         AttackDirection();
-        if (isAttack) {
+        if (isAttack)
+        {
             speed = 0;
-        } else {
+        } 
+        else
+        {
             speed = playerStatus.Speed;
         }
 
-        if (immuneTimer < 0 && isImmune) {
+        if (immuneTimer < 0 && isImmune)
+        {
             isImmune = false;
 
             // turn on renderer in case the renderer is disabled at the last frame of flash.
             sRenderer.enabled = true;
         }
 
-        if (isImmune) {
+        if (isImmune)
+        {
             FlashSprite();
         }
 
-        if (immuneTimer > 0) {
+        if (immuneTimer > 0)
+        {
             immuneTimer -= Time.deltaTime;
         }
 
-        // MeteorAttack();
-
-        if (Input.GetMouseButtonDown(0) && !joystick.isTouched()) {
-            //Debug.Log(Input.mousePosition);
-            //touchDirection = new Vector2(Input.mousePosition.x, Input.mousePosition.y) - new Vector2(gameObject.transform.position.x, gameObject.transform.position.y);
-            //touchDirection.Normalize();
-            //Debug.Log(touchDirection);
+        if (Input.GetMouseButtonDown(0) && !joystick.isTouched())
+        {
             Vector3 castPoint;
             castPoint = Input.mousePosition;
             castPoint.z = 0.0f;
             Vector3 shootDirection = Camera.main.ScreenToWorldPoint(castPoint);
             touchDirection = shootDirection - transform.position;
             touchDirection.Normalize();
-            if (!isAttack)
+            if (isCoolDown)
             {
                 if (currentSkill == CurrentSkill.FireBall && playerStatus.CurrentMP >= SKILL1_MANA_COST)
                 {
                     FireBallAttack();
                     isAttack = true;
+                    isCoolDown = false;
+                    GameObject.Find("FireBallCooldown").GetComponent<SkillCoolDown>().SetCurrentCoolDown(0);
                 }
                 else if (currentSkill == CurrentSkill.Meteor && playerStatus.CurrentMP >= SKILL2_MANA_COST)
                 {
                     MeteorAttack();
                     isAttack = true;
+                    isCoolDown = false;
+                    GameObject.Find("MeteorCooldown").GetComponent<SkillCoolDown>().SetCurrentCoolDown(0);
                 }
                 else if (currentSkill == CurrentSkill.Flame && playerStatus.CurrentMP >= SKILL3_MANA_COST)
                 {
                     FlameAttack();
                     isAttack = true;
+                    isCoolDown = false;
+                    GameObject.Find("FlameCooldown").GetComponent<SkillCoolDown>().SetCurrentCoolDown(0);
                 }
                 else
                 {
@@ -176,26 +191,7 @@ public class Player : MonoBehaviour {
                 }
                 DirectionUpdate(new Vector2(castPoint.x - Screen.width / 2, castPoint.y - Screen.height / 2));
             }
-
-            
         }
-        //if (Input.touchCount > 0)
-        //{
-        //    int numOfTouches = Input.touches.Length;
-        //    if (Input.touches[numOfTouches - 1].phase == TouchPhase.Ended)
-        //    {
-        //        Vector3 shootDirection;
-        //        shootDirection = Input.GetTouch(numOfTouches - 1).position;
-        //        shootDirection = Camera.main.ScreenToWorldPoint(shootDirection);
-        //        shootDirection = shootDirection - transform.position;
-        //        touchDirection = shootDirection;
-        //        touchDirection.Normalize();
-        //        RemoteAttack();
-        //    }
-        //}
-        
-        
-
     }
 
     private void LateUpdate()
@@ -215,12 +211,15 @@ public class Player : MonoBehaviour {
         playerStatus.CurrentMP += manaRegeneration;
     }
 
-    private void Move(){
+    private void Move()
+    {
         transform.Translate(direction*speed*Time.deltaTime);
-        if ((direction.x != 0 || direction.y != 0) && !isAttack) {
+        if ((direction.x != 0 || direction.y != 0) && !isAttack)
+        {
             isMove = true;
         }
-        else {
+        else
+        {
             isMove = false;
         }
 
@@ -228,11 +227,13 @@ public class Player : MonoBehaviour {
 
     }
 
-    public int getPlayerDamage() {
+    public int getPlayerDamage()
+    {
         return playerStatus.Attack;
     }
 
-    private void DirectionUpdate(Vector2 direction) {
+    private void DirectionUpdate(Vector2 direction)
+    {
         tan = direction.y / direction.x;
         if (direction.x > 0) {
             if (tan <= 1 && tan >= -1) {
@@ -296,7 +297,7 @@ public class Player : MonoBehaviour {
     }
 
     private void AttackDirection() {
-        switch (moveDirection) {
+       switch (moveDirection) {
             case 1:
                 attackPos.localPosition = attackPosUp;
                 break;
@@ -313,16 +314,6 @@ public class Player : MonoBehaviour {
     }
 
     void OnCollisionStay2D(Collision2D collision) {
-        //if (collision.gameObject.tag == "Enemy" && !isImmune) {
-        //    isImmune = true;
-        //    immuneTimer = IMMUNE_TIME;
-        //    TakeDamage(10);
-        //}
-        //if (collision.gameObject.tag == "Slime" && !isImmune) {
-        //    isImmune = true;
-        //    immuneTimer = IMMUNE_TIME;
-        //    TakeDamage(5);
-        //}
         if (collision.gameObject.tag == "Portal") {
             SceneManager.LoadScene("LevelTwo");
         }
@@ -415,7 +406,27 @@ public class Player : MonoBehaviour {
     }
 
     // Skills
-    public void SetCurrentSkill(string skill)
+    public void ChangeSkill(string skill, float coolDownTime)
+    {
+        SetCurrentSkill(skill);
+        SetCoolDownTime(coolDownTime);
+
+    }
+
+    private void CoolDown()
+    {
+        if (!isCoolDown)
+        {
+            skillCoolDown -= Time.deltaTime;
+            if (skillCoolDown < 0)
+            {
+                isCoolDown = true;
+                skillCoolDown = skillCoolDownTime;
+            }
+        }
+    }
+
+    private void SetCurrentSkill(string skill)
     {
         if (skill.Equals("FireBall"))
         {
@@ -429,6 +440,11 @@ public class Player : MonoBehaviour {
         {
             currentSkill = CurrentSkill.Flame;
         }
+    }
+
+    private void SetCoolDownTime(float cd)
+    {
+        skillCoolDownTime = cd;
     }
 
     private void FireBallAttack()
@@ -450,33 +466,26 @@ public class Player : MonoBehaviour {
     }
 
     private void MeteorAttack() {
+        playerStatus.CurrentMP -= SKILL2_MANA_COST;
+        Vector3 touchPoint;
+        touchPoint = Input.mousePosition;
+        touchPoint.z = 0.0f;
+        Debug.DrawLine(transform.position, Camera.main.ScreenToWorldPoint(touchPoint), Color.red, 3);
+        Vector2 castPoint;
+        RaycastHit2D barrier = Physics2D.Linecast(transform.position, Camera.main.ScreenToWorldPoint(touchPoint), 1 << LayerMask.NameToLayer("Wall"));
 
-        if (Input.GetMouseButtonDown(0) && !joystick.isTouched()) {
-            if (!isAttack) {
-                playerStatus.CurrentMP -= SKILL2_MANA_COST;
-                Vector3 touchPoint;
-                touchPoint = Input.mousePosition;
-                touchPoint.z = 0.0f;
-                Debug.DrawLine(transform.position, Camera.main.ScreenToWorldPoint(touchPoint), Color.red, 3);
-                Vector2 castPoint;
-                RaycastHit2D barrier = Physics2D.Linecast(transform.position, Camera.main.ScreenToWorldPoint(touchPoint), 1 << LayerMask.NameToLayer("Wall"));
-
-                if (barrier.collider) {// if there is a barrier between player and cast point;
-                    castPoint = Camera.main.WorldToScreenPoint(barrier.point);
-                }
-                else{
-                    castPoint = touchPoint;
-                }
-                DirectionUpdate(new Vector2(castPoint.x - Screen.width / 2, castPoint.y - Screen.height / 2));
-                castPoint = Camera.main.ScreenToWorldPoint(castPoint);
-                isAttack = true;
-
-                GameObject newMeteor = Instantiate(meteor) as GameObject;
-                FindObjectOfType<Meteor>().Create(castPoint);
-                newMeteor.transform.position = new Vector3(castPoint.x + 15, castPoint.y + 15, 0);
-            }
-
+        if (barrier.collider) {// if there is a barrier between player and cast point;
+            castPoint = Camera.main.WorldToScreenPoint(barrier.point);
         }
+        else{
+            castPoint = touchPoint;
+        }
+        DirectionUpdate(new Vector2(castPoint.x - Screen.width / 2, castPoint.y - Screen.height / 2));
+        castPoint = Camera.main.ScreenToWorldPoint(castPoint);
+
+        GameObject newMeteor = Instantiate(meteor) as GameObject;
+        FindObjectOfType<Meteor>().Create(castPoint);
+        newMeteor.transform.position = new Vector3(castPoint.x + 15, castPoint.y + 15, 0);
     }
 
     IEnumerator LoadScene(string name) {

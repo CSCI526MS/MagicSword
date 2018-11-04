@@ -6,18 +6,23 @@ using UnityEngine.UI;
 
 public class SkillCoolDown : MonoBehaviour, IPointerClickHandler {
 
-    public float coolDown;
+    public float coolDownTime;
     public string skill;
     private float currentCoolDown = 0f;
     private bool isClick = false;
+
+    void Start()
+    {
+        currentCoolDown = coolDownTime;
+    }
 
     void FixedUpdate()
     {
         if(isClick)
         {
-            if (currentCoolDown >= coolDown)
+            if (currentCoolDown >= coolDownTime)
             {
-                GameObject.Find("Player").GetComponent<Player>().SetCurrentSkill(skill);
+                GameObject.Find("Player").GetComponent<Player>().ChangeSkill(skill, coolDownTime);
                 currentCoolDown = 0f;
             }
             isClick = false;
@@ -26,19 +31,24 @@ public class SkillCoolDown : MonoBehaviour, IPointerClickHandler {
 
     void Update()
     {
-        if (currentCoolDown < coolDown)
+        if (currentCoolDown < coolDownTime)
         {
             currentCoolDown += Time.deltaTime;
-            gameObject.GetComponent<Image>().fillAmount = currentCoolDown / coolDown;
+            gameObject.GetComponent<Image>().fillAmount = currentCoolDown / coolDownTime;
         }
     }
 
 
     public void OnPointerClick(PointerEventData eventData)
     {
+        //GameObject.Find("Player").GetComponent<Player>().SetCoolDownTime(coolDown);
         isClick = true;
     }
 
+    public void SetCurrentCoolDown(float ccd)
+    {
+        currentCoolDown = ccd;
+    }
 
 }
 

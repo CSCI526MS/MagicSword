@@ -331,7 +331,6 @@ public class Player : MonoBehaviour {
             for (int i = 0; i < enemies.Length; i++) {
                 enemies[i].GetComponent<Enemy>().TakeDamage(playerStatus.Attack);
             }
-
             // Camera shake effect
             Vector3 deltaPosition = Vector3.zero;
             camera.transform.localPosition -= deltaPosition;
@@ -347,6 +346,13 @@ public class Player : MonoBehaviour {
         }
         PopupTextController.CreatePopupText(health.ToString(), transform, Color.green);
     }
+
+    public void Getkey(int health)
+    {
+        Debug.Log("player371"+health);
+        PopupTextController.CreatePopupText("get the key!", transform, Color.green);
+    }
+
 
     public void RestoreMana(int mana)
     {

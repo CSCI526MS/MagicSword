@@ -43,13 +43,17 @@ public class DataSaver : MonoBehaviour
         gameData.coordinate = player.transform.position;
         gameData.playerStatus = player.playerStatus;
         Inventory inventory = FindObjectOfType<Inventory>();
-        Debug.Log(inventory);
         for (int i = 0; i < inventory.itemList.Length; i++)
         {
-            if(inventory.itemList[i] != null){
+            if (!inventory.itemList[i].itemId.Equals(""))
+            {
+                Debug.Log(i);
                 gameData.itemList[i].itemId = inventory.itemList[i].itemId;
                 gameData.itemList[i].properties = inventory.itemList[i].properties;
                 gameData.itemList[i].icon = inventory.itemList[i].icon;
+            }
+            else{
+                gameData.itemList[i] = new ItemData();
             }
         }
         switch (SceneManager.GetActiveScene().name){

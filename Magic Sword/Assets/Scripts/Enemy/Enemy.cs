@@ -293,6 +293,12 @@ public class Enemy : MonoBehaviour {
         int random = Random.Range(0, 100);
         Debug.Log("random" + random);
         string id;
+        if (GameObject.FindGameObjectsWithTag("Slime").Length == 8)
+        {
+            id = "rings";
+           // PopupTextController.CreatePopupText("get the key", transform, Color.white);
+        }
+        else     
         if (random<commonBar) {
             return;
         } else if (random<rareBar) {

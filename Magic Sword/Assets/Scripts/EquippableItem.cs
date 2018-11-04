@@ -3,7 +3,8 @@ public enum EquipmentType
 {
 	Consume,
 	Helmet,
-	Weapon
+	Weapon,
+    Ring
 }
 
 [CreateAssetMenu]

@@ -4,10 +4,10 @@ using UnityEngine;
 using UnityEngine.UI;
 
 public class Drops : MonoBehaviour {
-
-
-   	private static Dictionary<string, EquippableItem> dic;
+    public LayerMask enemyLayer;
+    private static Dictionary<string, EquippableItem> dic;
     public EquippableItem item;
+    public GameObject[] cubes;
 
     void Awake() {
         dic = new Dictionary<string, EquippableItem>();
@@ -26,19 +26,32 @@ public class Drops : MonoBehaviour {
         helmetsItem.EquipmentType = EquipmentType.Helmet;
         helmetsItem.properties = new int[] { 0, 0, 0, 10 };
         helmetsItem.icon = null;
+        //
+
+        EquippableItem ringsItem = (EquippableItem)ScriptableObject.CreateInstance("EquippableItem");
+        ringsItem.itemId = "rings";
+        ringsItem.EquipmentType = EquipmentType.Ring;
+        ringsItem.properties = new int[] { 0, 10, 0, 0 };
+        ringsItem.icon = null;
+
         dic.Add("hp", hpItem);
         dic.Add("axe", axeItem);
         dic.Add("helmets", helmetsItem);
+        dic.Add("rings", ringsItem);
+
     }
 
-	// Use this for initialization
+    // Use this for initialization
 
-	void Start () {
-		//set image according to itemId
-	}
+    void Start()
+    {
+        cubes = GameObject.FindGameObjectsWithTag("Slime");
+        Debug.Log("count" + cubes.Length);
 
-	// Update is called once per frame
-	void Update () {
+    }
+
+    // Update is called once per frame
+    void Update () {
 	}
 
 	void OnCollisionEnter2D(Collision2D coll) {
@@ -54,7 +67,17 @@ public class Drops : MonoBehaviour {
                 Destroy(gameObject);
                 return;
             }
-			bool success = FindObjectOfType<Inventory>().addItem(this.item);
+            if (item.EquipmentType ==EquipmentType.Ring)
+            {
+                Debug.Log("drop72");
+                coll.gameObject.SendMessage("Getkey", item.properties[1]);
+                Destroy(gameObject);
+                var cylinder = GameObject.Find("door");
+                Destroy(cylinder);
+                return;
+            }
+
+            bool success = FindObjectOfType<Inventory>().addItem(this.item);
 			if(success){
 				Destroy(gameObject);
 			}

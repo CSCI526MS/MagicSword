@@ -12,7 +12,10 @@ TagManager:
   - Skill1
   - Loot
   - Enemy
+  - Enemy
+  - door
   - Transition
+  - InventoryUI
   layers:
   - Default
   - TransparentFX

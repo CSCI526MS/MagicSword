@@ -5,11 +5,12 @@ using System.IO;                                                        // The S
 
 public class DataLoader : MonoBehaviour
 {
-    private GameData gameData;
+    public GameData gameData;
 
     private readonly string gameDataFileName = "data.json";
     private readonly string newGameDataFileName = "data.default.json";
     private string root;
+    private static GameObject inventoryUI;
 
     void Start()
     {
@@ -53,19 +54,33 @@ public class DataLoader : MonoBehaviour
         player.playerStatus = gameData.playerStatus;
         player.playerStatus.manaBar = manaBar;
         player.playerStatus.healthBar = healthBar;
+        if(inventoryUI == null){
+            inventoryUI = GameObject.FindWithTag("InventoryUI");
+        }
+        inventoryUI.SetActive(true);
         Inventory inventory = FindObjectOfType<Inventory>();
+        InventorySlot[] inventorySlots = FindObjectsOfType<InventorySlot>();
         for (int i = 0; i < gameData.itemList.Length; i++)
         {
-            if (gameData.itemList[i] != null){
-                inventory.itemList[i] = new Item
+            if (gameData.itemList[i].itemId != null){
+                ItemData newItemData = gameData.itemList[i];
+                inventory.itemList[i] = new EquippableItem
                 {
-                    itemId = gameData.itemList[i].itemId,
-                    properties = gameData.itemList[i].properties,
-                    icon = gameData.itemList[i].icon
+                    itemId = newItemData.itemId,
+                    properties = newItemData.properties,
+                    icon = newItemData.icon
                 };
+                if (!gameData.itemList[i].itemId.Equals(""))
+                {
+                    inventorySlots[i].Item = new EquippableItem
+                    {
+                        itemId = newItemData.itemId,
+                        properties = newItemData.properties,
+                        icon = newItemData.icon
+                    };
+                }
             }
         }
-
         switch (gameData.level)
         {
             case 1:
@@ -75,5 +90,6 @@ public class DataLoader : MonoBehaviour
             default:
                 GlobalStatic.crossSceneLevel = 1; break;
         }
+        inventoryUI.SetActive(false);
     }
 }

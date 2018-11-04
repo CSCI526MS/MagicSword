@@ -3195,6 +3195,74 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0f27afe8a368f4d5da37a2201b0d591b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  gameData:
+    itemList:
+    - itemId: 
+      properties: 00000000000000000000000000000000
+      icon: {fileID: 0}
+    - itemId: 
+      properties: 00000000000000000000000000000000
+      icon: {fileID: 0}
+    - itemId: 
+      properties: 00000000000000000000000000000000
+      icon: {fileID: 0}
+    - itemId: 
+      properties: 00000000000000000000000000000000
+      icon: {fileID: 0}
+    - itemId: 
+      properties: 00000000000000000000000000000000
+      icon: {fileID: 0}
+    - itemId: 
+      properties: 00000000000000000000000000000000
+      icon: {fileID: 0}
+    - itemId: 
+      properties: 00000000000000000000000000000000
+      icon: {fileID: 0}
+    - itemId: 
+      properties: 00000000000000000000000000000000
+      icon: {fileID: 0}
+    - itemId: 
+      properties: 00000000000000000000000000000000
+      icon: {fileID: 0}
+    - itemId: 
+      properties: 00000000000000000000000000000000
+      icon: {fileID: 0}
+    - itemId: 
+      properties: 00000000000000000000000000000000
+      icon: {fileID: 0}
+    - itemId: 
+      properties: 00000000000000000000000000000000
+      icon: {fileID: 0}
+    - itemId: 
+      properties: 00000000000000000000000000000000
+      icon: {fileID: 0}
+    - itemId: 
+      properties: 00000000000000000000000000000000
+      icon: {fileID: 0}
+    - itemId: 
+      properties: 00000000000000000000000000000000
+      icon: {fileID: 0}
+    - itemId: 
+      properties: 00000000000000000000000000000000
+      icon: {fileID: 0}
+    - itemId: 
+      properties: 00000000000000000000000000000000
+      icon: {fileID: 0}
+    - itemId: 
+      properties: 00000000000000000000000000000000
+      icon: {fileID: 0}
+    playerStatus:
+      healthBar: {fileID: 0}
+      manaBar: {fileID: 0}
+      hpValue: 0
+      hpMaxValue: 0
+      speed: 0
+      attack: 0
+      defense: 0
+      mpValue: 0
+      mpMaxValue: 0
+    coordinate: {x: 0, y: 0, z: 0}
+    level: 0
 --- !u!4 &1251411001
 Transform:
   m_ObjectHideFlags: 0

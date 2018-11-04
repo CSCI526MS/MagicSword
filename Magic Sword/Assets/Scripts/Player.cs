@@ -468,7 +468,7 @@ public class Player : MonoBehaviour {
     IEnumerator LoadScene(string name) {
         transitionPanel.SetActive(true);
         transition.SetTrigger("start");
-        yield return new WaitForSeconds(1.0f);
+        yield return new WaitForSeconds(0.8f);
         SceneManager.LoadScene(name);
         transitionPanel.SetActive(false);
     }

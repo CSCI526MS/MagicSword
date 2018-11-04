@@ -25,6 +25,11 @@ public class FireBall : MonoBehaviour
             collision.gameObject.GetComponent<Enemy>().TakeDamage(GameObject.Find("Player").GetComponent<Player>().getPlayerDamage());
         }
 
+        if (collision.gameObject.name == "Boss")
+        {
+            GameObject.Find("Boss").GetComponent<Boss>().TakeDamage(GameObject.Find("Player").GetComponent<Player>().getPlayerDamage());
+        }
+
         Destroy(gameObject);
         
     }

@@ -10,6 +10,8 @@ public class Boss : MonoBehaviour {
     float minY;
     float maxY;
 
+    bool move;
+
     public BossHealthBar healthBar;
     int health;
 	// Use this for initialization
@@ -29,18 +31,21 @@ public class Boss : MonoBehaviour {
 	}
 
     private void initialize(){
-        health = 100;
+        health = 1000;
         healthBar.MaxValue = health;
     }
 
     private void SummonMinions(){
-        //TODO: disable collision when falling
-        //TODO: exclude BOSS position for spawn place
         for (int i = 0; i < 5;i++){
             GameObject slime = (GameObject)Resources.Load("Prefabs/Enemy/FallingSlime");
 
             float randomX = Random.Range(minX, maxX);
             float randomY = Random.Range(minY, maxY);
+
+            while(Vector2.Distance(transform.position, new Vector2(randomX, randomY))<2){
+                randomX = Random.Range(minX, maxX);
+                randomY = Random.Range(minY, maxY);
+            }
             GameObject newSlime = Instantiate(slime) as GameObject;
             newSlime.transform.position = new Vector2(randomX, randomY + 20);
         }
@@ -50,5 +55,8 @@ public class Boss : MonoBehaviour {
         health -= damage;
         healthBar.Value = health;
         PopupTextController.CreatePopupText(damage.ToString(), transform, Color.white);
+        if(health<=0){
+            Destroy(gameObject);
+        }
     }
 }

@@ -49,18 +49,20 @@ public class Boss : MonoBehaviour {
         if (awake)
         {
             GeneralUpdate();
-            //if(Time.time- lastUpdate > 3){
-            //    SummonMinions();
-            //    lastUpdate = Time.time;
-            //}
+            if(Time.time- lastUpdate > 3){
+                //SummonMinions();
+                FireBall();
+                lastUpdate = Time.time;
+            }
 
-            //startMeteorRain = true;
+            startMeteorRain = true;
 
         }
     }
 
     private void GeneralUpdate(){
         MeteorRain();
+
     }
 
 

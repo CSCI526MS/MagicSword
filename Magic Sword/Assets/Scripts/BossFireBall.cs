@@ -20,7 +20,7 @@ public class BossFireBall : MonoBehaviour {
     private void OnCollisionEnter2D(Collision2D collision)
     {
         if (collision.gameObject.name == "Player") {
-            collision.gameObject.GetComponent<Player>().TakeDamage(50);
+            collision.gameObject.GetComponent<Player>().TakeDamage(20);
         }
         Destroy(gameObject);
     }

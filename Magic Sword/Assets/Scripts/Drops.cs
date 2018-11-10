@@ -62,6 +62,7 @@ public class Drops : MonoBehaviour {
 				Add this drop to inventory by calling Inventory.add(itemId)
 				pass the itemId to add method
 			*/
+            FindObjectOfType<AudioManager>().Play("pick_up");
             if (item.EquipmentType == EquipmentType.Consume) {
                 coll.gameObject.SendMessage("RestoreHealth", item.properties[0]);
                 Destroy(gameObject);

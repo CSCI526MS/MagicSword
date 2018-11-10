@@ -8,6 +8,8 @@ public class Flame : MonoBehaviour {
 
     public LayerMask enemyLayer;
 
+    public LayerMask bossLayer;
+
     // Use this for initialization
     void Start () {
         CauseDamage();
@@ -24,7 +26,11 @@ public class Flame : MonoBehaviour {
         for (int i = 0; i < enemies.Length; i++)
         {
             enemies[i].GetComponent<Enemy>().TakeDamage(60);
-            Debug.Log(enemies[i]);
+        }
+
+        Collider2D boss = Physics2D.OverlapCircle(transform.position, 2.8f, bossLayer);
+        if (boss != null) {
+            boss.GetComponent<Boss>().TakeDamage(60);
         }
     }
 }

@@ -4,22 +4,36 @@ using UnityEngine;
 
 public class FallingSlime : Enemy {
 
-    Vector2 targetPosition;
-    Collider collider;
+    private Vector2 targetPosition;
+    private CircleCollider2D collider;
+    private bool inPosition = false;
 
     // Use this for initialization
     void Start () {
+        GeneralStart();
         targetPosition = new Vector2(transform.position.x, transform.position.y - 20);
-        collider = GetComponent<Collider>();
+        collider = GetComponent<CircleCollider2D>();
         collider.enabled = false;
 	}
 	
 	// Update is called once per frame
 	void Update () {
         GeneralUpdate();
-        transform.position = Vector3.MoveTowards(transform.position, targetPosition, 30 * Time.deltaTime);
+        if(!inPosition){
+            transform.position = Vector3.MoveTowards(transform.position, targetPosition, 30 * Time.deltaTime);
+        }
+        if(!inPosition && Vector2.Distance(transform.position, targetPosition)<1){
+            inPosition = true;
+        }
+
         if(collider.enabled == false && Vector2.Distance(transform.position, targetPosition)<1){
             collider.enabled = true;
         }
+    }
+
+    protected override void Initialize()
+    {
+        health = 60;
+        rangedAttackType = false;
     }
 }

@@ -55,6 +55,11 @@ public class Enemy : MonoBehaviour {
     float immuneTimer = 1;
 
     void Start() {
+        GeneralStart();
+
+    }
+
+    protected void GeneralStart(){
         sRenderer = GetComponent<SpriteRenderer>();
         MonsterAttackCooldown = ATTACK_COOLDOWN_TIME;
         isAttack = false;
@@ -74,7 +79,6 @@ public class Enemy : MonoBehaviour {
 
         lastSpot = transform.position;
         aware = false;
-
     }
 
 

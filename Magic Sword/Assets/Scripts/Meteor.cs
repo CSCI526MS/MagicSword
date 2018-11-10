@@ -72,6 +72,9 @@ public class Meteor : MonoBehaviour
         }
 
         Collider2D boss = Physics2D.OverlapCircle(transform.position, 1, bossLayer);
-        boss.GetComponent<Boss>().TakeDamage(100);
+        if(boss){
+            boss.GetComponent<Boss>().TakeDamage(100);
+        }
+
     }
 }

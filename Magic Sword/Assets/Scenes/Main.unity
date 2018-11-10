@@ -527,6 +527,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   coolDownTime: 5
   skill: Flame
+  normalImage: {fileID: 21300000, guid: 3d231ed56e59c4394bbcbbb22b847f06, type: 3}
+  selectedImage: {fileID: 21300000, guid: 4bbb15c64b7bb4ef4b02f3046042a9dd, type: 3}
 --- !u!114 &123023474
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2819,7 +2821,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 1, y: 0}
   m_AnchorMax: {x: 1, y: 0}
-  m_AnchoredPosition: {x: -300.00012, y: 250}
+  m_AnchoredPosition: {x: -250, y: 250}
   m_SizeDelta: {x: 150, y: 150}
   m_Pivot: {x: 1, y: 0}
 --- !u!114 &1068761464
@@ -4295,7 +4297,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 1, y: 0}
   m_AnchorMax: {x: 1, y: 0}
-  m_AnchoredPosition: {x: -200.00018, y: 450}
+  m_AnchoredPosition: {x: -150, y: 420}
   m_SizeDelta: {x: 150, y: 150}
   m_Pivot: {x: 1, y: 0}
 --- !u!114 &1564532533
@@ -4978,6 +4980,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   coolDownTime: 2
   skill: FireBall
+  normalImage: {fileID: 21300000, guid: 5d42ec161d0cc7c48a394d3f1215b20a, type: 3}
+  selectedImage: {fileID: 21300000, guid: 423937cf6639c4d678a4fe463ea3b5c8, type: 3}
 --- !u!114 &1843246652
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -4997,7 +5001,7 @@ MonoBehaviour:
       m_Calls: []
     m_TypeName: UnityEngine.UI.MaskableGraphic+CullStateChangedEvent, UnityEngine.UI,
       Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
-  m_Sprite: {fileID: 21300000, guid: 5d42ec161d0cc7c48a394d3f1215b20a, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 423937cf6639c4d678a4fe463ea3b5c8, type: 3}
   m_Type: 3
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -5127,7 +5131,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 1, y: 0}
   m_AnchorMax: {x: 1, y: 0}
-  m_AnchoredPosition: {x: -400, y: 50}
+  m_AnchoredPosition: {x: -350, y: 70}
   m_SizeDelta: {x: 150, y: 150}
   m_Pivot: {x: 1, y: 0}
 --- !u!114 &1889864241
@@ -5378,6 +5382,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   coolDownTime: 10
   skill: Meteor
+  normalImage: {fileID: 21300000, guid: 1fd590de8859c2b4799e99b8a99df4e1, type: 3}
+  selectedImage: {fileID: 21300000, guid: 03c51e455ca2040648e84e957305e300, type: 3}
 --- !u!114 &1993042212
 MonoBehaviour:
   m_ObjectHideFlags: 0

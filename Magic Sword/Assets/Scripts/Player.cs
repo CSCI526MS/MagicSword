@@ -17,6 +17,9 @@ public class Player : MonoBehaviour {
     private float manaRegeneration;
     private Animator animator;
     private FixedJoystick joystick;
+    private SkillCoolDown FireBallButton;
+    private SkillCoolDown FlameButton;
+    private SkillCoolDown MeteorButton;
     private bool isMove;
     private bool isAttack;
     private bool isCoolDown;
@@ -85,7 +88,9 @@ public class Player : MonoBehaviour {
         sRenderer = GetComponent<SpriteRenderer>();
         PopupTextController.Initialize();
         joystick = FindObjectOfType<FixedJoystick>();
-        Debug.Log(joystick);
+        FireBallButton = GameObject.Find("FireBallCooldown").GetComponent<SkillCoolDown>();
+        FlameButton = GameObject.Find("FlameCooldown").GetComponent<SkillCoolDown>();
+        MeteorButton = GameObject.Find("MeteorCooldown").GetComponent<SkillCoolDown>();
         animator = GetComponent<Animator>();
         direction = Vector2.down;
         isMove = false;
@@ -154,7 +159,7 @@ public class Player : MonoBehaviour {
             immuneTimer -= Time.deltaTime;
         }
 
-        if (Input.GetMouseButtonDown(0) && !joystick.isTouched())
+        if (Input.GetMouseButtonDown(0) && !joystick.isTouched() && !SkillButtonTouched())
         {
             Vector3 castPoint;
             castPoint = Input.mousePosition;
@@ -169,21 +174,21 @@ public class Player : MonoBehaviour {
                     FireBallAttack();
                     isAttack = true;
                     isCoolDown = false;
-                    GameObject.Find("FireBallCooldown").GetComponent<SkillCoolDown>().SetCurrentCoolDown(0);
+                    FireBallButton.SetCurrentCoolDown(0);
                 }
                 else if (currentSkill == CurrentSkill.Meteor && playerStatus.CurrentMP >= SKILL2_MANA_COST)
                 {
                     MeteorAttack();
                     isAttack = true;
                     isCoolDown = false;
-                    GameObject.Find("MeteorCooldown").GetComponent<SkillCoolDown>().SetCurrentCoolDown(0);
+                    MeteorButton.SetCurrentCoolDown(0);
                 }
                 else if (currentSkill == CurrentSkill.Flame && playerStatus.CurrentMP >= SKILL3_MANA_COST)
                 {
                     FlameAttack();
                     isAttack = true;
                     isCoolDown = false;
-                    GameObject.Find("FlameCooldown").GetComponent<SkillCoolDown>().SetCurrentCoolDown(0);
+                    FlameButton.SetCurrentCoolDown(0);
                 }
                 else
                 {
@@ -192,6 +197,10 @@ public class Player : MonoBehaviour {
                 DirectionUpdate(new Vector2(castPoint.x - Screen.width / 2, castPoint.y - Screen.height / 2));
             }
         }
+    }
+
+    private bool SkillButtonTouched() {
+        return FireBallButton.isTouched() || FlameButton.isTouched() || MeteorButton.isTouched();
     }
 
     private void LateUpdate()
@@ -410,7 +419,8 @@ public class Player : MonoBehaviour {
     {
         SetCurrentSkill(skill);
         SetCoolDownTime(coolDownTime);
-
+        isCoolDown = true;
+        skillCoolDown = skillCoolDownTime;
     }
 
     private void CoolDown()

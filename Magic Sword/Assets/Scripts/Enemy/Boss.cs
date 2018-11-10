@@ -10,15 +10,19 @@ public class Boss : MonoBehaviour {
     private float minY;
     private float maxY;
 
-    private Transform player;
+    private GameObject player;
 
     private bool awake;
-    private bool move;
+    private float speed;
+    private bool move = true;
+    private int moveDirection;
 
-    private int meteorCounter;
+    private int skillSequence = 0;
+    private int meteorCounter = 0;
     private bool startMeteorRain; // set "true" to active this skill
     private float lastFireTime;
 
+    private float castInterval = 8;
     private float lastUpdate = 0;
 
 
@@ -31,7 +35,6 @@ public class Boss : MonoBehaviour {
 	// Use this for initialization
 	void Start () {
         initialize();
-        meteorCounter = 0;
         startMeteorRain = false;
         lastFireTime = Time.time;
         minX = GameObject.Find("TopLeft").transform.position.x;
@@ -39,37 +42,76 @@ public class Boss : MonoBehaviour {
         minY = GameObject.Find("BottomRight").transform.position.y;
         maxY = GameObject.Find("TopLeft").transform.position.y;
 
-        player = GameObject.FindGameObjectWithTag("Player").GetComponent<Transform>();
+        player = GameObject.FindGameObjectWithTag("Player");
 
         //SummonMinions();
     }
 	
 	// Update is called once per frame
 	void Update () {
-        if (awake)
+        if (!awake)
+        {
+            lastUpdate = Time.time;
+        }
+        else
         {
             GeneralUpdate();
-            if(Time.time- lastUpdate > 3){
-                //SummonMinions();
-                FireBall();
+
+
+            if(Time.time - lastUpdate > castInterval)
+            {
+                move = true;
+                CastSkillLoops();
                 lastUpdate = Time.time;
+            }else if (Time.time - lastUpdate > castInterval - 2)
+            {
+                //TODO: cast sound
+                move = false;
+
             }
 
-            startMeteorRain = true;
+            //startMeteorRain = true;
 
         }
     }
 
     private void GeneralUpdate(){
         MeteorRain();
-
+        if(move){
+            ChasePlayer();
+        }
+        if (Vector2.Distance(transform.position, GameObject.Find("Player").transform.position) <= 1.5)
+        {
+            FindObjectOfType<Player>().TakeDamage(30);
+        }
     }
 
 
     private void initialize(){
         awake = false;
         health = 1000;
+        speed = 1;
         healthBar.MaxValue = health;
+        moveDirection = 2;
+    }
+
+    private void CastSkillLoops(){
+
+
+        switch(skillSequence){
+            case 0:
+                FireBall();
+                skillSequence++;
+                break;
+            case 1:
+                SummonMinions();
+                skillSequence++;
+                break;
+            case 2:
+                startMeteorRain = true;
+                skillSequence = 0;
+                break;
+        }
     }
 
     private void SummonMinions(){
@@ -104,10 +146,10 @@ public class Boss : MonoBehaviour {
     private void FireAMeteor()
     {
         int offset = 5;
-        float playerMinX = (player.position.x - offset < minX) ? minX : (player.position.x - offset);
-        float playerMaxX = (player.position.x + offset > maxX) ? maxX : (player.position.x + offset);
-        float playerMinY = (player.position.y - offset < minY) ? minY : (player.position.y - offset);
-        float playerMaxY = (player.position.y + offset > maxY) ? maxY : (player.position.y + offset);
+        float playerMinX = (player.transform.position.x - offset < minX) ? minX : (player.transform.position.x - offset);
+        float playerMaxX = (player.transform.position.x + offset > maxX) ? maxX : (player.transform.position.x + offset);
+        float playerMinY = (player.transform.position.y - offset < minY) ? minY : (player.transform.position.y - offset);
+        float playerMaxY = (player.transform.position.y + offset > maxY) ? maxY : (player.transform.position.y + offset);
 
         GameObject meteor = (GameObject)Resources.Load("Prefabs/BossMeteor");
 
@@ -160,5 +202,55 @@ public class Boss : MonoBehaviour {
     public void Awake()
     {
         awake = true;
+    }
+
+    private void ChasePlayer(){
+        transform.position = Vector2.MoveTowards(transform.position, player.transform.position, speed * Time.deltaTime);
+        Vector2 direction = player.transform.position - transform.position;
+        moveDirection = getMoveDirection(direction);
+    }
+
+    private int getMoveDirection(Vector2 direction)
+    {
+        float tan = direction.y / direction.x;
+        int moveDirection = 2;
+        if (direction.x > 0)
+        {
+            if (tan <= 1 && tan >= -1)
+            {
+                // Go right
+                moveDirection = 4;
+            }
+            else if (tan > 1)
+            {
+                // Go up
+                moveDirection = 1;
+            }
+            else
+            {
+                // Go down
+                moveDirection = 2;
+            }
+        }
+        else
+        {
+            if (tan <= 1 && tan >= -1)
+            {
+                // Go left
+                moveDirection = 3;
+            }
+            else if (tan > 1)
+            {
+                // Go down
+                moveDirection = 2;
+            }
+            else
+            {
+                // Go up
+                moveDirection = 1;
+            }
+        }
+
+        return moveDirection;
     }
 }

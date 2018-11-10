@@ -11,7 +11,7 @@ public class Enemy : MonoBehaviour {
     private Animator animator;
     private bool move;
     protected bool isAttack;
-    private bool awake;
+    protected bool awake;
     private bool isImmune = false;
     private SpriteRenderer sRenderer;
 

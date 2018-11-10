@@ -11,6 +11,7 @@ public class FallingSlime : Enemy {
     // Use this for initialization
     void Start () {
         GeneralStart();
+        awake = false;
         targetPosition = new Vector2(transform.position.x, transform.position.y - 20);
         collider = GetComponent<CircleCollider2D>();
         collider.enabled = false;
@@ -24,11 +25,10 @@ public class FallingSlime : Enemy {
         }
         if(!inPosition && Vector2.Distance(transform.position, targetPosition)<1){
             inPosition = true;
+            collider.enabled = true;
+            awake = true;
         }
 
-        if(collider.enabled == false && Vector2.Distance(transform.position, targetPosition)<1){
-            collider.enabled = true;
-        }
     }
 
     protected override void Initialize()

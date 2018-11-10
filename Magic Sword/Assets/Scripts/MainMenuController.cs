@@ -7,11 +7,13 @@ public class MainMenuController : MonoBehaviour {
 
 	public void PlayGame()
     {
+        FindObjectOfType<AudioManager>().Play("select");
         LoadDataFromLocal(0);
         SceneManager.LoadScene("LevelOne");
     }
 
     public void ContinueGame() {
+        FindObjectOfType<AudioManager>().Play("select");
         LoadDataFromLocal(1);
         switch (GlobalStatic.crossSceneLevel){
             case 1: SceneManager.LoadScene("LevelOne");break;
@@ -22,6 +24,7 @@ public class MainMenuController : MonoBehaviour {
     }
 
 	public void QuitGame() {
+        FindObjectOfType<AudioManager>().Play("select");
 		Debug.Log("QUIT!");
 		Application.Quit();
 	}

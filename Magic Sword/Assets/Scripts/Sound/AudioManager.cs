@@ -18,12 +18,5 @@ public class AudioManager : MonoBehaviour {
 	 	Sound s = Array.Find(sounds, sound => sound.name == name);
 		s.source.Play();
 	}
-
-	public void NoOverlapPlay(string name) {
-	 	Sound s = Array.Find(sounds, sound => sound.name == name);
-	 	if (!s.source.isPlaying) {
-	 		s.source.Play();
-	 	}
-	}
 }
 // FindObjectOfType<AudioManager>().Play();

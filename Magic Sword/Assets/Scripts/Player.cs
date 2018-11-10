@@ -1,7 +1,8 @@
 using System.Collections;
 using UnityEngine;
 using UnityEngine.SceneManagement;
-
+using UnityEngine.Audio;
+using System;
 
 public class Player : MonoBehaviour {
 
@@ -17,6 +18,7 @@ public class Player : MonoBehaviour {
     private float manaRegeneration;
     private Animator animator;
     private FixedJoystick joystick;
+    private AudioSource footstepSound;
     private bool isMove;
     private bool isAttack;
     private bool isImmune;
@@ -93,6 +95,7 @@ public class Player : MonoBehaviour {
             transform.position = initPosition;
             initPosition = new Vector3(0, 0, 0);
         };
+        footstepSound = Array.Find(FindObjectOfType<AudioManager>().sounds, s => s.name=="footstep").source;
     }
 
     private void Initialize()
@@ -134,6 +137,10 @@ public class Player : MonoBehaviour {
 
         if (immuneTimer > 0) {
             immuneTimer -= Time.deltaTime;
+        }
+
+        if (isMove && !footstepSound.isPlaying) {
+            footstepSound.Play();
         }
 
         // MeteorAttack();
@@ -262,7 +269,6 @@ public class Player : MonoBehaviour {
         playerStatus.Speed += properties[1];
         playerStatus.Attack += properties[2];
         playerStatus.Defense += properties[3];
-        Debug.Log("Improve: MaxHp:"+playerStatus.MaxHP+" Hp:"+ playerStatus.CurrentHP+" Speed:"+playerStatus.Speed+" Attack:"+playerStatus.Attack+" Defense:"+playerStatus.Defense);
     }
 
     private void Decline(int[] properties) {
@@ -273,7 +279,6 @@ public class Player : MonoBehaviour {
         playerStatus.Speed -= properties[1];
         playerStatus.Attack -= properties[2];
         playerStatus.Defense -= properties[3];
-        Debug.Log("Decline: MaxHp:"+playerStatus.MaxHP+" Hp:"+ playerStatus.CurrentHP+" Speed:"+playerStatus.Speed+" Attack:"+playerStatus.Attack+" Defense:"+playerStatus.Defense);
     }
 
     private void Attack() {
@@ -334,7 +339,7 @@ public class Player : MonoBehaviour {
             // Camera shake effect
             Vector3 deltaPosition = Vector3.zero;
             camera.transform.localPosition -= deltaPosition;
-            deltaPosition = Random.insideUnitCircle * 0.5f;
+            deltaPosition = UnityEngine.Random.insideUnitCircle * 0.5f;
             camera.transform.position += deltaPosition;
         }
     }
@@ -366,12 +371,13 @@ public class Player : MonoBehaviour {
 
     public void TakeDamage(int damage) {
         if (!isImmune) {
+            FindObjectOfType<AudioManager>().Play("hurt");
             immuneTimer = IMMUNE_TIME;
             damage = (int)(damage * (0.2+20/(float)(playerStatus.Defense+25)));
             playerStatus.CurrentHP -= damage;
             if (playerStatus.CurrentHP<=0) {
+                FindObjectOfType<AudioManager>().Play("game_over");
                 StartCoroutine(LoadScene("MainMenu"));
-                // SceneManager.LoadScene("MainMenu");
             }
             PopupTextController.CreatePopupText(damage.ToString(), transform, Color.red);
             isImmune = true;
@@ -427,6 +433,7 @@ public class Player : MonoBehaviour {
     private void FireBallAttack()
     {
         playerStatus.CurrentMP -= SKILL1_MANA_COST;
+        FindObjectOfType<AudioManager>().Play("fire");
         var clone = Instantiate(fireBall, gameObject.transform.position + new Vector3(touchDirection.x, touchDirection.y, 0), gameObject.transform.rotation);
 
         float rot_z = Mathf.Atan2(touchDirection.y, touchDirection.x) * Mathf.Rad2Deg + 180f;

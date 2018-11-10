@@ -74,6 +74,9 @@ MonoBehaviour:
   enemyLayer:
     serializedVersion: 2
     m_Bits: 512
+  bossLayer:
+    serializedVersion: 2
+    m_Bits: 131072
 --- !u!212 &212873075201434334
 SpriteRenderer:
   m_ObjectHideFlags: 1

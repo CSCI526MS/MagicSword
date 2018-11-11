@@ -258,7 +258,8 @@ public class Enemy : MonoBehaviour {
     private void MeleeAttack()
     {
         if (Vector2.Distance(transform.position, GameObject.Find("Player").transform.position) <= 1.5)
-        {
+        {   
+            FindObjectOfType<AudioManager>().Play("slime_bite");
             isAttack = true;
             attackCooldown = ATTACK_COOLDOWN_TIME;
             FindObjectOfType<Player>().TakeDamage(10);

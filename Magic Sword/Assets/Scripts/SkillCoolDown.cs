@@ -71,10 +71,6 @@ public class SkillCoolDown : MonoBehaviour, IPointerUpHandler, IPointerDownHandl
         currentCoolDown = ccd;
     }
 
-    public bool isTouched() {
-        return touch;
-    }
-
 }
 
 public class Skill

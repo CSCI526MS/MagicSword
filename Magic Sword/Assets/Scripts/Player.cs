@@ -159,7 +159,7 @@ public class Player : MonoBehaviour {
             immuneTimer -= Time.deltaTime;
         }
 
-        if (Input.GetMouseButtonDown(0) && !joystick.isTouched() && !SkillButtonTouched())
+        if (Input.GetMouseButtonDown(0) && !UnityEngine.EventSystems.EventSystem.current.IsPointerOverGameObject())
         {
             Vector3 castPoint;
             castPoint = Input.mousePosition;
@@ -197,10 +197,6 @@ public class Player : MonoBehaviour {
                 DirectionUpdate(new Vector2(castPoint.x - Screen.width / 2, castPoint.y - Screen.height / 2));
             }
         }
-    }
-
-    private bool SkillButtonTouched() {
-        return FireBallButton.isTouched() || FlameButton.isTouched() || MeteorButton.isTouched();
     }
 
     private void LateUpdate()

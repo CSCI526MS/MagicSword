@@ -35,7 +35,7 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1855788603772346}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -2.8954823, y: -2.049375, z: -10.000061}
+  m_LocalPosition: {x: -12.06, y: -2.25, z: -10.000061}
   m_LocalScale: {x: 2, y: 2, z: 2}
   m_Children: []
   m_Father: {fileID: 0}
@@ -227,7 +227,7 @@ ParticleSystem:
       serializedVersion: 2
       minMaxState: 0
       minColor: {r: 1, g: 1, b: 1, a: 1}
-      maxColor: {r: 1, g: 0, b: 0, a: 1}
+      maxColor: {r: 0, g: 1, b: 0.0009315014, a: 1}
       maxGradient:
         serializedVersion: 2
         key0: {r: 1, g: 1, b: 1, a: 1}
@@ -1309,7 +1309,7 @@ ParticleSystem:
       maxColor: {r: 1, g: 1, b: 1, a: 1}
       maxGradient:
         serializedVersion: 2
-        key0: {r: 1, g: 0, b: 0, a: 0.6784314}
+        key0: {r: 0, g: 1, b: 0.07144809, a: 0.6784314}
         key1: {r: 1, g: 0, b: 0, a: 0}
         key2: {r: 1, g: 1, b: 1, a: 0}
         key3: {r: 1, g: 1, b: 1, a: 0}
@@ -4647,8 +4647,8 @@ ParticleSystemRenderer:
   m_ReflectionProbeUsage: 0
   m_RenderingLayerMask: 4294967295
   m_Materials:
-  - {fileID: 2100000, guid: f96f868c976af8c47a382b8c5fe3784c, type: 2}
-  - {fileID: 2100000, guid: f96f868c976af8c47a382b8c5fe3784c, type: 2}
+  - {fileID: 2100000, guid: 077327776c7ab4d2099962520fd9508b, type: 2}
+  - {fileID: 2100000, guid: 077327776c7ab4d2099962520fd9508b, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0

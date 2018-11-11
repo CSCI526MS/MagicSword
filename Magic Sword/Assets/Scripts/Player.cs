@@ -24,6 +24,7 @@ public class Player : MonoBehaviour {
     private bool isAttack;
     private bool isCoolDown;
     private bool isImmune;
+    private bool invincible = false;
 
     [SerializeField]
     public Stat playerStatus;
@@ -368,7 +369,7 @@ public class Player : MonoBehaviour {
     }
 
     public void TakeDamage(int damage) {
-        if (!isImmune) {
+        if (!isImmune && !invincible) {
             immuneTimer = IMMUNE_TIME;
             damage = (int)(damage * (0.2+20/(float)(playerStatus.Defense+25)));
             playerStatus.CurrentHP -= damage;
@@ -496,6 +497,10 @@ public class Player : MonoBehaviour {
         GameObject newMeteor = Instantiate(meteor) as GameObject;
         FindObjectOfType<Meteor>().Create(castPoint);
         newMeteor.transform.position = new Vector3(castPoint.x + 15, castPoint.y + 15, 0);
+    }
+
+    public void setInvincible(bool b){
+        invincible = b;
     }
 
     IEnumerator LoadScene(string name) {

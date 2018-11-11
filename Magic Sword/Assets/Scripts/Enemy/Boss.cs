@@ -11,11 +11,13 @@ public class Boss : MonoBehaviour {
     private float maxY;
 
     private GameObject player;
+    private Animator animator;
 
     private bool awake;
     private float speed;
     private bool move = true;
     private int moveDirection;
+    private bool dead = false;
 
     private int skillSequence = 0;
     private int meteorCounter = 0;
@@ -35,6 +37,7 @@ public class Boss : MonoBehaviour {
 	// Use this for initialization
 	void Start () {
         initialize();
+        animator = GetComponent<Animator>();
         startMeteorRain = false;
         lastFireTime = Time.time;
         minX = GameObject.Find("TopLeft").transform.position.x;
@@ -49,6 +52,7 @@ public class Boss : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
+        Animation();
         if (!awake)
         {
             lastUpdate = Time.time;
@@ -89,7 +93,7 @@ public class Boss : MonoBehaviour {
 
     private void initialize(){
         awake = false;
-        health = 1000;
+        health = 10;
         speed = 1;
         healthBar.MaxValue = health;
         moveDirection = 2;
@@ -195,7 +199,11 @@ public class Boss : MonoBehaviour {
         healthBar.Value = health;
         PopupTextController.CreatePopupText(damage.ToString(), transform, Color.white);
         if(health<=0){
-            Destroy(gameObject);
+            awake = false;
+            move = false;
+            dead = true;
+            player.GetComponent<Player>().setInvincible(true);
+            gameObject.GetComponent<CapsuleCollider2D>().enabled = false;
         }
     }
 
@@ -206,51 +214,18 @@ public class Boss : MonoBehaviour {
 
     private void ChasePlayer(){
         transform.position = Vector2.MoveTowards(transform.position, player.transform.position, speed * Time.deltaTime);
-        Vector2 direction = player.transform.position - transform.position;
-        moveDirection = getMoveDirection(direction);
+        if(player.transform.position.x > transform.position.x){
+            moveDirection = 2;
+        }else{
+            moveDirection = 1;
+        }
     }
 
-    private int getMoveDirection(Vector2 direction)
+    private void Animation()
     {
-        float tan = direction.y / direction.x;
-        int moveDirection = 2;
-        if (direction.x > 0)
-        {
-            if (tan <= 1 && tan >= -1)
-            {
-                // Go right
-                moveDirection = 4;
-            }
-            else if (tan > 1)
-            {
-                // Go up
-                moveDirection = 1;
-            }
-            else
-            {
-                // Go down
-                moveDirection = 2;
-            }
-        }
-        else
-        {
-            if (tan <= 1 && tan >= -1)
-            {
-                // Go left
-                moveDirection = 3;
-            }
-            else if (tan > 1)
-            {
-                // Go down
-                moveDirection = 2;
-            }
-            else
-            {
-                // Go up
-                moveDirection = 1;
-            }
-        }
+        animator.SetInteger("moveDirection", moveDirection);
+        animator.SetBool("dead", dead);
 
-        return moveDirection;
     }
+
 }

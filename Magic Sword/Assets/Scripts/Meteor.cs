@@ -14,7 +14,8 @@ public class Meteor : MonoBehaviour
     private GameObject fireExplosion;
     //private GameObject smallFires;
 
-    public LayerMask enemyLayer; 
+    public LayerMask enemyLayer;
+    public LayerMask bossLayer;
 
     void Start()
     {
@@ -69,5 +70,11 @@ public class Meteor : MonoBehaviour
         {
             enemies[i].GetComponent<Enemy>().TakeDamage(100);
         }
+
+        Collider2D boss = Physics2D.OverlapCircle(transform.position, 1, bossLayer);
+        if(boss){
+            boss.GetComponent<Boss>().TakeDamage(100);
+        }
+
     }
 }

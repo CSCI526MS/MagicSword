@@ -41,6 +41,7 @@ public class EnemyArrow : MonoBehaviour {
 
             GameObject.Find("Player").GetComponent<Player>().TakeDamage(10);
         }
+        FindObjectOfType<AudioManager>().Play("arrow_hit");
         Destroy(gameObject);
     }
 }

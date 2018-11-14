@@ -23,6 +23,7 @@ public class GoblinSniper : Enemy {
 
         if (!barrier && Vector2.Distance(transform.position, playerPosition)<8 && aware)
         {
+            FindObjectOfType<AudioManager>().Play("archer_shot");
             Vector3 direction = playerPosition - transform.position;
             attackDirection = GetMoveDirection(direction);
             isAttack = true;

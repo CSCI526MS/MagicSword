@@ -48,7 +48,7 @@ public class HealthBar : MonoBehaviour {
         }
     }
 
-    private void HandleBar()
+    protected void HandleBar()
     {
         if(barContent.fillAmount < actualAmount)
         {

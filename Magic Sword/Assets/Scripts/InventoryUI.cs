@@ -132,6 +132,7 @@ public class InventoryUI : MonoBehaviour {
 
 	private void BeginDrag(InventorySlot inventorySlot)
 	{
+		FindObjectOfType<AudioManager>().Play("equip");
 		if (inventorySlot.Item != null)
 		{
 			draggedSlot = inventorySlot;
@@ -151,6 +152,7 @@ public class InventoryUI : MonoBehaviour {
 
 	private void EndDrag(InventorySlot inventorySlot)
 	{
+		FindObjectOfType<AudioManager>().Play("equip");
 		draggedSlot = null;
 		draggableItem.enabled = false;
 	}

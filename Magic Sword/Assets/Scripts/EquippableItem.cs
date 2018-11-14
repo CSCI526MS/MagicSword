@@ -4,13 +4,15 @@ public enum EquipmentType
 	Consume,
 	Helmet,
 	Weapon,
+    Armor,
+    Boots,
     Ring
 }
 
 [CreateAssetMenu]
 public class EquippableItem : Item {
 
-	public EquipmentType EquipmentType;
+	public EquipmentType equipmentType;
     /*
 	public EquippableItem(string itemId, EquipmentType EquipmentType, int hp, int speed, int attack, int defense, Sprite icon) {
 		this.itemId = itemId;

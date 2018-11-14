@@ -28,18 +28,18 @@ public class Enemy : MonoBehaviour {
     private Vector2 direction;
     protected int moveDirection;
     protected int attackDirection;
-    private string legendary = "helmets";
+    private string[] legendary = new string[] { "weapon_2", "helmet_1", "armor_1", "hp_potion_2" };
     // private string legendary = "eat";
-    private int legendaryBar = 75;
-    private string epic = "axe";
+    public int legendaryBar;
+    private string[] epic = new string[] { "weapon_1", "helmet_0", "boots_0", "armor_0", "hp_potion_1" };
     // private string epic = "mp";
-    private int epicBar = 50;
-    private string rare = "hp";
+    public int epicBar;
+    private string[] rare = new string[] { "weapon_0", "hp_potion_0" };
     // private string rare = "apple";
-    private int rareBar = 25;
-    private string common = "hp";
+    public int rareBar;
+    private string[] common = new string[] { "hp_potion_0" };
     // private string common = "hp";
-    private int commonBar = -1;
+    public int commonBar;
 
     private float deviation = 0.1f;
 
@@ -73,8 +73,6 @@ public class Enemy : MonoBehaviour {
         awake = true;
 
         player = GameObject.FindGameObjectWithTag("Player").GetComponent<Transform>();
-        //drop = GameObject.Find("Drop");
-        //target = GameObject.FindGameObjectWithTag("Player").GetComponent<Transform>();
         new Drops(); // call static constructor
 
         lastSpot = transform.position;
@@ -125,15 +123,14 @@ public class Enemy : MonoBehaviour {
                 // if it is an archer
                 if (rangedAttackType && !Physics2D.Linecast(transform.position, player.position, 1 << LayerMask.NameToLayer("Wall")).collider && Vector2.Distance(transform.position, player.position) < 8)
                 {
-                    moveDirection = getMoveDirection(direction);
+                    moveDirection = GetMoveDirection(direction);
                     // if the enemy get too close to player -> run away
                     if (!isAttack && Vector2.Distance(transform.position, player.position) < 6)
                     {
                         Vector3 target = new Vector2(2 * transform.position.x - lastSpot.x, 2 * transform.position.y - lastSpot.y);
                         transform.position = Vector2.MoveTowards(transform.position, target, speed * Time.deltaTime);
                         direction = target - transform.position;
-                        moveDirection = getMoveDirection(direction);
-
+                        moveDirection = GetMoveDirection(direction);
                     }
                     else
                     {
@@ -144,7 +141,7 @@ public class Enemy : MonoBehaviour {
                 {
                     transform.position = Vector2.MoveTowards(transform.position, lastSpot, speed * Time.deltaTime);
                     direction = lastSpot - transform.position;
-                    moveDirection = getMoveDirection(direction);
+                    moveDirection = GetMoveDirection(direction);
                 }
 
             }
@@ -157,7 +154,8 @@ public class Enemy : MonoBehaviour {
 
             if (health <= 0)
             {
-                dropItems();
+                Debug.Log("dead");
+                DropItems();
                 Destroy(gameObject);
             }
 
@@ -204,9 +202,9 @@ public class Enemy : MonoBehaviour {
     }
 
     protected virtual void Initialize(){
-        //health = 
-        //speed = 
-        //TODO: damage = 
+        //health =
+        //speed =
+        //TODO: damage =
         //rangedAttackType =
     }
 
@@ -258,7 +256,7 @@ public class Enemy : MonoBehaviour {
                 moveDirection = Random.Range(1, 5);
             }
         }
-        
+
 
 
     }
@@ -272,14 +270,14 @@ public class Enemy : MonoBehaviour {
             attackCooldown = ATTACK_COOLDOWN_TIME;
             FindObjectOfType<Player>().TakeDamage(10);
         }
-        
+
     }
 
 
     public void MonsterAttacks(){
         if (!isAttack && attackCooldown <= 0)
         {
-            
+
             if (rangedAttackType)
             {
                 RangedAttack();
@@ -288,7 +286,7 @@ public class Enemy : MonoBehaviour {
             {
                 MeleeAttack();
             }
-                
+
         }
 
     }
@@ -298,31 +296,36 @@ public class Enemy : MonoBehaviour {
         PopupTextController.CreatePopupText(damage.ToString(), transform, Color.white);
     }
 
-    public void dropItems() {
+    public void DropItems() {
         int random = Random.Range(0, 100);
         Debug.Log("random" + random);
         string id;
         if (GameObject.FindGameObjectsWithTag("Slime").Length == 8)
         {
             id = "rings";
-           // PopupTextController.CreatePopupText("get the key", transform, Color.white);
-        }
-        else     
-        if (random<commonBar) {
+        } else if (random<commonBar) 
+        {
             return;
-        } else if (random<rareBar) {
-            id = common;
-        } else if (random<epicBar) {
-            id = rare;
-        } else if (random<legendaryBar) {
-            id = epic;
-        } else {
-            id = legendary;
+        } else if (random<rareBar)
+        {
+            int ind = (int)Random.Range(0, (float)(common.Length - 0.000001));
+            id = epic[ind];
+        } else if (random<epicBar)
+        {
+            int ind = (int)Random.Range(0, (float)(rare.Length - 0.000001));
+            id = legendary[ind];
+        } else if (random<legendaryBar)
+        {
+            int ind = (int)Random.Range(0, (float)(epic.Length - 0.000001));
+            id = epic[ind];
+        } else
+        {
+            int ind = (int)Random.Range(0, (float)(legendary.Length - 0.000001));
+            id = legendary[ind];
         }
-
         GameObject loot = (GameObject)Resources.Load("Prefabs/loot");
         loot = Instantiate(loot) as GameObject;
-        FindObjectsOfType<Drops>()[0].setItem(id, deviation);
+        FindObjectsOfType<Drops>()[0].SetItem(id, deviation);
         loot.transform.position = gameObject.transform.position;
     }
 
@@ -335,7 +338,7 @@ public class Enemy : MonoBehaviour {
 
     }
 
-    protected int getMoveDirection(Vector2 direction) {
+    protected int GetMoveDirection(Vector2 direction) {
         float tan = direction.y / direction.x;
         int moveDirection = 2;
         if (direction.x > 0) {

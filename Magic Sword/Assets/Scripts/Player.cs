@@ -206,7 +206,7 @@ public class Player : MonoBehaviour {
                 }
                 DirectionUpdate(new Vector2(castPoint.x - Screen.width / 2, castPoint.y - Screen.height / 2));
             }
-        }
+		}
     }
 
     private void LateUpdate()
@@ -389,7 +389,7 @@ public class Player : MonoBehaviour {
             PopupTextController.CreatePopupText(damage.ToString(), transform, Color.red);
             isImmune = true;
         }
-        
+
     }
 
     private void FlashSprite() {

@@ -3,8 +3,8 @@
 [System.Serializable]
 public class GameData
 {
-    public static readonly int sizeLimit = 18;
-    public ItemData [] itemList = new ItemData[sizeLimit];
+    public ItemData[] inventorySlots = new ItemData[20];
+    public ItemData[] equipmentSlots = new ItemData[2];
     public Stat playerStatus;
     public Vector3 coordinate;
     public int level;

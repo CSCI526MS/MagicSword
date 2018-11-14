@@ -54,29 +54,45 @@ public class DataLoader : MonoBehaviour
         player.playerStatus = gameData.playerStatus;
         player.playerStatus.manaBar = manaBar;
         player.playerStatus.healthBar = healthBar;
-        if(inventoryUI == null){
-            inventoryUI = GameObject.FindWithTag("InventoryUI");
-        }
-        inventoryUI.SetActive(true);
         Inventory inventory = FindObjectOfType<Inventory>();
         InventorySlot[] inventorySlots = FindObjectsOfType<InventorySlot>();
-        for (int i = 0; i < gameData.itemList.Length; i++)
+        EquipmentSlot[] equipmentSlots = FindObjectsOfType<EquipmentSlot>();
+        for (int i = 0; i < GlobalStatic.inventorySlotNum; i++)
         {
-            if (gameData.itemList[i].itemId != null){
-                ItemData newItemData = gameData.itemList[i];
+            if (!gameData.inventorySlots[i].itemId.Equals("")){
+                ItemData newItemData = gameData.inventorySlots[i];
                 inventory.itemList[i] = new EquippableItem
                 {
                     itemId = newItemData.itemId,
                     properties = newItemData.properties,
-                    icon = newItemData.icon
+                    equipmentType = newItemData.equipmentType,
+                    icon = newItemData.icon,
+                    iconSelected = newItemData.iconSelected
                 };
-                if (!gameData.itemList[i].itemId.Equals(""))
+                inventorySlots[i].Item = new EquippableItem
                 {
-                    inventorySlots[i].Item = new EquippableItem
+                    itemId = newItemData.itemId,
+                    properties = newItemData.properties,
+                    equipmentType = newItemData.equipmentType,
+                    icon = newItemData.icon,
+                    iconSelected = newItemData.iconSelected
+                };
+            }
+        }
+        for (int i = 0; i < GlobalStatic.equipmentSlotNum; i++)
+        {
+            if (gameData.equipmentSlots[i].itemId != null)
+            {
+                ItemData newItemData = gameData.equipmentSlots[i];
+                if (!gameData.equipmentSlots[i].itemId.Equals(""))
+                {
+                    equipmentSlots[i].Item = new EquippableItem
                     {
                         itemId = newItemData.itemId,
                         properties = newItemData.properties,
-                        icon = newItemData.icon
+                        equipmentType = newItemData.equipmentType,
+                        icon = newItemData.icon,
+                        iconSelected = newItemData.iconSelected
                     };
                 }
             }
@@ -89,6 +105,10 @@ public class DataLoader : MonoBehaviour
                 GlobalStatic.crossSceneLevel = 2; break;
             default:
                 GlobalStatic.crossSceneLevel = 1; break;
+        }
+        if (inventoryUI == null)
+        {
+            inventoryUI = GameObject.FindWithTag("InventoryUI");
         }
         inventoryUI.SetActive(false);
     }

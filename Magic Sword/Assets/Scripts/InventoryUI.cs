@@ -1,14 +1,20 @@
-﻿using System.Collections;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine.UI;
 using UnityEngine;
 
 public class InventoryUI : MonoBehaviour {
-
+	// private SpriteRenderer spriteRenderer;
 	[SerializeField] Text hpText;
-	[SerializeField] Text speedText;
+    [SerializeField] Text mpText;
+    [SerializeField] Text speedText;
 	[SerializeField] Text attackText;
 	[SerializeField] Text defenseText;
+
+	[SerializeField] Text curHp;
+    [SerializeField] Text curSpeed;
+	[SerializeField] Text curAttack;
+	[SerializeField] Text curDefense;
 
 	[SerializeField] Inventory inventory;
 	[SerializeField] EquipmentPanel equipmentPanel;
@@ -16,12 +22,20 @@ public class InventoryUI : MonoBehaviour {
 	[SerializeField] Image draggableItem;
 
 	private InventorySlot draggedSlot;
-	private GameObject player;
+	private InventorySlot selectedSlot;
+
+    private GameObject playerObject;
+    private Player player;
 
 	void OnEnable() {
-    	player = GameObject.FindWithTag("Player");
+    	playerObject = GameObject.FindWithTag("Player");
 		inventory = FindObjectOfType<Inventory>();
         Time.timeScale = 0f;
+        hpText.text = player.playerStatus.CurrentHP + "/" + player.playerStatus.MaxHP.ToString();
+        mpText.text = player.playerStatus.CurrentMP + "/" + player.playerStatus.MaxMP.ToString();
+        speedText.text = player.playerStatus.speed.ToString();
+        attackText.text = player.playerStatus.attack.ToString();
+        defenseText.text = player.playerStatus.defense.ToString();
     }
 
     private void OnDisable()
@@ -35,8 +49,10 @@ public class InventoryUI : MonoBehaviour {
 		equipmentPanel.OnEndDragEvent += EndDrag;
 		equipmentPanel.OnDragEvent += Drag;
 		equipmentPanel.OnDropEvent += Drop;
+		equipmentPanel.OnPointerClickEvent += Click;
+        player = FindObjectOfType<Player>();
 
-		for (int i = 0; i < inventory.inventorySlots.Length; i += 1){
+        for (int i = 0; i < inventory.inventorySlots.Length; i += 1){
 			// Begin Drag
 			inventory.inventorySlots[i].OnBeginDragEvent += BeginDrag;
 			// End Drag
@@ -45,11 +61,65 @@ public class InventoryUI : MonoBehaviour {
 			inventory.inventorySlots[i].OnDragEvent += Drag;
 			// Drop
 			inventory.inventorySlots[i].OnDropEvent += Drop;
+
+			inventory.inventorySlots[i].OnPointerClickEvent += Click;
         }
-		hpText.text = "100";
-		speedText.text  = "5";
-		attackText.text  = "10";
-		defenseText.text  = "0";
+    }
+
+
+
+	private void Click(InventorySlot inventorySlot) {
+		EquippableItem equippableItem = inventorySlot.Item as EquippableItem;
+		
+        if (equippableItem != null) {
+
+            if (inventorySlot == selectedSlot)
+            {
+
+                // set selected slot to null
+                // swap icon of inventorySlot
+                selectedSlot = null;
+                Sprite tmp = equippableItem.icon;
+
+                equippableItem.icon = equippableItem.iconSelected;
+                equippableItem.iconSelected = tmp;
+                inventorySlot.Item = equippableItem;
+
+                curHp.text = "0";
+                curSpeed.text = "0";
+                curAttack.text = "0";
+                curDefense.text = "0";
+
+            }
+            else
+            {
+
+                if (selectedSlot != null)
+                {
+                    Debug.Log("click selectedSlot first time");
+                    // update selected slot UI
+                    EquippableItem selectedItem = selectedSlot.Item as EquippableItem;
+                    Sprite tmpicon = selectedItem.icon;
+                    selectedItem.icon = selectedItem.iconSelected;
+                    selectedItem.iconSelected = tmpicon;
+                    selectedSlot.Item = selectedItem;
+                }
+
+                selectedSlot = inventorySlot;
+
+
+                // update current inventory slot UI
+                Sprite tmp = equippableItem.icon;
+                equippableItem.icon = equippableItem.iconSelected;
+                equippableItem.iconSelected = tmp;
+                inventorySlot.Item = equippableItem;
+
+                curHp.text = equippableItem.properties[0].ToString();
+                curSpeed.text = equippableItem.properties[1].ToString();
+                curAttack.text = equippableItem.properties[2].ToString();
+                curDefense.text = equippableItem.properties[3].ToString();
+            }
+		}
 	}
 
 	private void EquipmentPanelRightClick(InventorySlot inventorySlot)
@@ -94,60 +164,68 @@ public class InventoryUI : MonoBehaviour {
 			EquippableItem dropItem = dropItemSlot.Item as EquippableItem;
 
 			if (draggedSlot is EquipmentSlot) {
+
 				if (dragItem != null) {
-					player.SendMessage("Decline", dragItem.properties);
-					hpText.text = updateStat(hpText.text, -dragItem.properties[0]);
-					speedText.text = updateStat(speedText.text, -dragItem.properties[1]);
-					attackText.text = updateStat(attackText.text, -dragItem.properties[2]);
-					defenseText.text = updateStat(defenseText.text, -dragItem.properties[3]);
+					UpdateStat(-1, dragItem.properties);
 					dragItem.Unequip(this);
 				}
 				if (dropItem != null) {
-					player.SendMessage("Improve", dragItem.properties);
-					hpText.text = updateStat(hpText.text, dropItem.properties[0]);
-					speedText.text = updateStat(speedText.text, dropItem.properties[1]);
-					attackText.text = updateStat(attackText.text, dropItem.properties[2]);
-					defenseText.text = updateStat(defenseText.text, dropItem.properties[3]);
+				    UpdateStat(1, dropItem.properties);
 					dropItem.Equip(this);
 				}
 
 			}
 
 			if (dropItemSlot is EquipmentSlot) {
-				if (dragItem != null) {
-					player.SendMessage("Improve", dragItem.properties);
-					hpText.text = updateStat(hpText.text, dragItem.properties[0]);
-					speedText.text = updateStat(speedText.text, dragItem.properties[1]);
-					attackText.text = updateStat(attackText.text, dragItem.properties[2]);
-					defenseText.text = updateStat(defenseText.text, dragItem.properties[3]);
 
+				if (dragItem != null) {
+					UpdateStat(1, dragItem.properties);
 					dragItem.Equip(this);
 				}
 				if (dropItem != null) {
-					player.SendMessage("Decline", dragItem.properties);
-					hpText.text = updateStat(hpText.text, -dropItem.properties[0]);
-					speedText.text = updateStat(speedText.text, -dropItem.properties[1]);
-					attackText.text = updateStat(attackText.text, -dropItem.properties[2]);
-					defenseText.text = updateStat(defenseText.text, -dropItem.properties[3]);
+					UpdateStat(-1, dropItem.properties);
 					dropItem.Unequip(this);
 				}
 			}
+			if (draggedSlot == selectedSlot) {
+				Debug.Log("this draggedSlot is selectedSlot");
+				selectedSlot = dropItemSlot;
+			}
+            else if (dropItemSlot == selectedSlot) {
+			 	Debug.Log("this draggedSlot is selectedSlot");
+			 	selectedSlot = draggedSlot;
+			 }
 
-			Item draggedItem = draggedSlot.Item;
+			EquippableItem draggedItem = draggedSlot.Item;
 			draggedSlot.Item = dropItemSlot.Item;
 			dropItemSlot.Item = draggedItem;
 		}
 	}
 
-	private string updateStat(string text, float value) {
-		text = (float.Parse(text) + value).ToString();
-		return text;
-	}
+	private void UpdateStat(int op, int[] value) {
+        player.playerStatus.hpMaxValue += op* value[0];
+        if (player.playerStatus.hpValue > player.playerStatus.hpMaxValue)
+        {
+            player.playerStatus.hpValue = player.playerStatus.hpMaxValue;
+        }
+        player.playerStatus.speed += op*value[1];
+        player.playerStatus.attack += op * value[2];
+        player.playerStatus.defense += op*value[3];
+        RefreshStatText();
+    }
+
+    private void RefreshStatText(){
+        hpText.text = player.playerStatus.hpValue.ToString() + "/" + player.playerStatus.MaxHP.ToString();
+        speedText.text = player.playerStatus.speed.ToString();
+        attackText.text = player.playerStatus.attack.ToString();
+        defenseText.text = player.playerStatus.defense.ToString();
+    }
 
 	private void Equip(EquippableItem item)
 	{
-		if (inventory.removeItem(item))
+		if (inventory.RemoveItemFromSlots(item))
 		{
+            Debug.Log("Removed");
 			EquippableItem previousItem;
 			if (equipmentPanel.AddItem(item, out previousItem))
 			{

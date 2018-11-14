@@ -11,7 +11,7 @@ public class Enemy : MonoBehaviour {
     private Animator animator;
     private bool move;
     protected bool isAttack;
-    private bool awake;
+    protected bool awake;
     private bool isImmune = false;
     private SpriteRenderer sRenderer;
 
@@ -55,6 +55,11 @@ public class Enemy : MonoBehaviour {
     float immuneTimer = 1;
 
     void Start() {
+        GeneralStart();
+
+    }
+
+    protected void GeneralStart(){
         sRenderer = GetComponent<SpriteRenderer>();
         MonsterAttackCooldown = ATTACK_COOLDOWN_TIME;
         isAttack = false;
@@ -74,13 +79,16 @@ public class Enemy : MonoBehaviour {
 
         lastSpot = transform.position;
         aware = false;
-
     }
 
 
     // Update is called once per frame
     void Update() {
+        GeneralUpdate();
 
+    }
+
+    protected void GeneralUpdate(){
         if (awake)
         {
             Animation();
@@ -115,17 +123,17 @@ public class Enemy : MonoBehaviour {
             if (!isAttack && Vector2.Distance(transform.position, lastSpot) > 0.5)
             {
                 // if it is an archer
-                if(rangedAttackType && !Physics2D.Linecast(transform.position, player.position, 1 << LayerMask.NameToLayer("Wall")).collider && Vector2.Distance(transform.position, player.position) < 8)
+                if (rangedAttackType && !Physics2D.Linecast(transform.position, player.position, 1 << LayerMask.NameToLayer("Wall")).collider && Vector2.Distance(transform.position, player.position) < 8)
                 {
                     moveDirection = getMoveDirection(direction);
                     // if the enemy get too close to player -> run away
-                    if(!isAttack && Vector2.Distance(transform.position, player.position) < 6)
+                    if (!isAttack && Vector2.Distance(transform.position, player.position) < 6)
                     {
                         Vector3 target = new Vector2(2 * transform.position.x - lastSpot.x, 2 * transform.position.y - lastSpot.y);
                         transform.position = Vector2.MoveTowards(transform.position, target, speed * Time.deltaTime);
                         direction = target - transform.position;
                         moveDirection = getMoveDirection(direction);
-                        
+
                     }
                     else
                     {
@@ -138,7 +146,7 @@ public class Enemy : MonoBehaviour {
                     direction = lastSpot - transform.position;
                     moveDirection = getMoveDirection(direction);
                 }
-               
+
             }
             else
             {
@@ -169,7 +177,7 @@ public class Enemy : MonoBehaviour {
 
 
 
-          
+
         }
 
         if (immuneTimer < 0 && isImmune)

@@ -6,6 +6,8 @@ public class Trap : MonoBehaviour
 {
     private Animator animator;
     private bool attack;
+    private float timeStart = 0;
+    private bool startTiming = false;
 
 
 
@@ -21,6 +23,15 @@ public class Trap : MonoBehaviour
     void Update()
     {
         Animation();
+        if(attack && !startTiming){
+            startTiming = true;
+            timeStart = Time.time;
+        }
+        if(startTiming && Time.time - timeStart > 0.2)
+        {
+            GameObject.Find("Player").GetComponent<Player>().TakeDamage(5);
+            startTiming = false;
+        }
     }
 
 
@@ -41,6 +52,7 @@ public class Trap : MonoBehaviour
     }
     void OnTriggerExit2D(Collider2D collider1){
         attack = false;
+        startTiming = false;
 
     }
 

@@ -6,6 +6,7 @@ using System.IO;                                                        // The S
 public class DataSaver : MonoBehaviour
 {
     public GameData gameData = new GameData();
+    private GameObject inventoryUI;
 
     private readonly string gameDataFileName = "data.json";
     private string root;
@@ -43,17 +44,39 @@ public class DataSaver : MonoBehaviour
         gameData.coordinate = player.transform.position;
         gameData.playerStatus = player.playerStatus;
         Inventory inventory = FindObjectOfType<Inventory>();
-        for (int i = 0; i < inventory.itemList.Length; i++)
+        InventorySlot[] inventorySlots = FindObjectsOfType<InventorySlot>();
+        EquipmentSlot[] equipmentSlots = FindObjectsOfType<EquipmentSlot>();
+        Debug.Log(inventorySlots.Length);
+        Debug.Log(gameData.inventorySlots.Length);
+        for (int i = 0; i < GlobalStatic.inventorySlotNum; i++)
         {
-            if (!inventory.itemList[i].itemId.Equals(""))
+            Debug.Log(i);
+            if (inventorySlots[i].item != null)
             {
-                Debug.Log(i);
-                gameData.itemList[i].itemId = inventory.itemList[i].itemId;
-                gameData.itemList[i].properties = inventory.itemList[i].properties;
-                gameData.itemList[i].icon = inventory.itemList[i].icon;
+                gameData.inventorySlots[i].itemId = inventorySlots[i].item.itemId;
+                gameData.inventorySlots[i].properties = inventorySlots[i].item.properties;
+                gameData.inventorySlots[i].equipmentType = inventorySlots[i].item.equipmentType;
+                gameData.inventorySlots[i].icon = inventorySlots[i].item.icon;
+                gameData.inventorySlots[i].iconSelected = inventorySlots[i].item.iconSelected;
             }
             else{
-                gameData.itemList[i] = new ItemData();
+                gameData.inventorySlots[i] = new ItemData();
+            }
+        }
+        for (int i = 0; i < GlobalStatic.equipmentSlotNum; i++)
+        {
+            Debug.Log(equipmentSlots[i].item);
+            if (equipmentSlots[i].item != null)
+            {
+                gameData.equipmentSlots[i].itemId = equipmentSlots[i].item.itemId;
+                gameData.equipmentSlots[i].properties = equipmentSlots[i].item.properties;
+                gameData.equipmentSlots[i].equipmentType = equipmentSlots[i].item.equipmentType;
+                gameData.equipmentSlots[i].icon = equipmentSlots[i].item.icon;
+                gameData.equipmentSlots[i].iconSelected = equipmentSlots[i].item.iconSelected;
+            }
+            else
+            {
+                gameData.equipmentSlots[i] = new ItemData();
             }
         }
         switch (SceneManager.GetActiveScene().name){

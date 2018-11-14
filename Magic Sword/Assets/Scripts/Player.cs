@@ -168,7 +168,7 @@ public class Player : MonoBehaviour {
                 DirectionUpdate(new Vector2(castPoint.x - Screen.width / 2, castPoint.y - Screen.height / 2));
             }
 
-            
+
         }
         //if (Input.touchCount > 0)
         //{
@@ -184,8 +184,8 @@ public class Player : MonoBehaviour {
         //        RemoteAttack();
         //    }
         //}
-        
-        
+
+
 
     }
 
@@ -376,7 +376,7 @@ public class Player : MonoBehaviour {
             PopupTextController.CreatePopupText(damage.ToString(), transform, Color.red);
             isImmune = true;
         }
-        
+
     }
 
     private void FlashSprite() {

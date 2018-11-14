@@ -1,4 +1,5 @@
-﻿
+﻿using UnityEngine;
+
 public class EquipmentSlot : InventorySlot {
 	public EquipmentType EquipmentType;
 
@@ -12,8 +13,9 @@ public class EquipmentSlot : InventorySlot {
 	{
 		if (item == null)
 			return true;
-
 		EquippableItem equippableItem = item as EquippableItem;
-		return equippableItem != null && equippableItem.EquipmentType == EquipmentType;
+        Debug.Log(equippableItem.equipmentType);
+        Debug.Log(EquipmentType);
+        return equippableItem != null && equippableItem.equipmentType == EquipmentType;
 	}
 }

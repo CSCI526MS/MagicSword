@@ -10,9 +10,9 @@ public class InventorySlot : MonoBehaviour , IPointerClickHandler, IDragHandler,
 , IDropHandler {
     [SerializeField] public Image image;
 
-    private Item _item;
+    public EquippableItem item;
 
-    public event Action<InventorySlot> OnRightClickEvent;
+    public event Action<InventorySlot> OnPointerClickEvent;
     public event Action<InventorySlot> OnBeginDragEvent;
     public event Action<InventorySlot> OnEndDragEvent;
     public event Action<InventorySlot> OnDragEvent;
@@ -20,16 +20,16 @@ public class InventorySlot : MonoBehaviour , IPointerClickHandler, IDragHandler,
 
     private Color normalColor = Color.white;
 	private Color disabledColor = new Color(1, 1, 1, 0);
-	public Item Item {
-		get { return _item; }
+	public EquippableItem Item {
+		get { return item; }
 		set {
-			_item = value;
-			if (_item == null) {
+			item = value;
+			if (item == null) {
 				// image.enabled = false;
 				image.color = disabledColor;
 			} else {
 				// image.enabled = true;
-				image.sprite = _item.icon;
+				image.sprite = item.icon;
 				image.color =  normalColor;
 			}
 		}
@@ -40,11 +40,16 @@ public class InventorySlot : MonoBehaviour , IPointerClickHandler, IDragHandler,
 	}
 
     public void OnPointerClick(PointerEventData eventData) {
-        Debug.Log("inventorySlot click");
 
-		if (eventData != null && eventData.button == PointerEventData.InputButton.Right) {
-			if (OnRightClickEvent != null) {
-				OnRightClickEvent(this);
+        // Debug.Log(this._item.properties[0]);
+        EquippableItem equippableItem = this.item as EquippableItem;
+        
+        // Debug.Log(equippableItem.EquipmentType);
+
+		if (eventData != null && eventData.button == PointerEventData.InputButton.Left) {
+            // Debug.Log("inventorySlot click");
+			if (OnPointerClickEvent != null) {
+				OnPointerClickEvent(this);
 			}
 		}
 	}

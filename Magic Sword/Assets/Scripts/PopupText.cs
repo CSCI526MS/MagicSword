@@ -13,9 +13,6 @@ public class PopupText : MonoBehaviour {
 	void Start () {
         int randomNumber = Random.Range(0, 3);
         animator.SetInteger("random", randomNumber);
-        //AnimatorClipInfo[] clipInfo = animator.GetCurrentAnimatorClipInfo(0);
-        //Destroy(gameObject, clipInfo[0].clip.length);
-
         // !!! Destroy time is related to the duration of animation. Refactory of random animation probably is needed in the future.
         Destroy(gameObject, 0.5f);
 

@@ -6,8 +6,12 @@ public class GoblinSniper : Enemy {
 
     protected override void Initialize()
     {
-        health = 40;
+        health = 100;
         rangedAttackType = true;
+        legendaryBar = 90;
+        epicBar = 80;
+        rareBar = 40;
+        commonBar = 10;
     }
 
 
@@ -20,7 +24,7 @@ public class GoblinSniper : Enemy {
         if (!barrier && Vector2.Distance(transform.position, playerPosition)<8 && aware)
         {
             Vector3 direction = playerPosition - transform.position;
-            attackDirection = getMoveDirection(direction);
+            attackDirection = GetMoveDirection(direction);
             isAttack = true;
 
             attackCooldown = ATTACK_COOLDOWN_TIME;

@@ -21,6 +21,10 @@ public class DataLoader : MonoBehaviour
 #else
         root = Application.streamingAssetsPath;
 #endif
+        if (inventoryUI == null)
+        {
+            inventoryUI = GameObject.FindWithTag("InventoryUI");
+        }
     }
 
     public bool LoadGameData(int mode)
@@ -106,10 +110,9 @@ public class DataLoader : MonoBehaviour
             default:
                 GlobalStatic.crossSceneLevel = 1; break;
         }
-        if (inventoryUI == null)
-        {
-            inventoryUI = GameObject.FindWithTag("InventoryUI");
-        }
+    }
+
+    public void SetUI(){
         inventoryUI.SetActive(false);
     }
 }

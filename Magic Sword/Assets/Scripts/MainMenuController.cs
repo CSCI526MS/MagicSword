@@ -34,9 +34,11 @@ public class MainMenuController : MonoBehaviour {
         if (dataLoader.LoadGameData(mode))
         {
             dataLoader.LoadPlayerProgress();
+            dataLoader.SetUI();
         }
         else
         {
+            dataLoader.SetUI();
             SceneManager.LoadScene("LevelOne");
         }
     }

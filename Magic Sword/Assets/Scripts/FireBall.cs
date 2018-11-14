@@ -30,6 +30,7 @@ public class FireBall : MonoBehaviour
             GameObject.Find("Boss").GetComponent<Boss>().TakeDamage(GameObject.Find("Player").GetComponent<Player>().getPlayerDamage());
         }
 
+        FindObjectOfType<AudioManager>().Play("fire_hit");
         Destroy(gameObject);
         
     }

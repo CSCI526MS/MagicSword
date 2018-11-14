@@ -482,6 +482,7 @@ public class Player : MonoBehaviour {
     private void FlameAttack()
     {
         playerStatus.CurrentMP -= SKILL3_MANA_COST;
+        FindObjectOfType<AudioManager>().Play("flame");
         var clone = Instantiate(flame, gameObject.transform.position, gameObject.transform.rotation);
         clone.transform.parent = gameObject.transform;
     }

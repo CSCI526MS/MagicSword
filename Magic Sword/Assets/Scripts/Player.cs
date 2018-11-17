@@ -362,7 +362,7 @@ public class Player : MonoBehaviour {
 
     public void Getkey()
     {
-        PopupTextController.CreatePopupText("get the key!", transform, Color.green);
+    	PopupTextController.CreatePopupText("Door unlocked!", transform, Color.green);
     }
 
 

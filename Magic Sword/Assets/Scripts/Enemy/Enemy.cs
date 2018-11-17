@@ -28,19 +28,18 @@ public class Enemy : MonoBehaviour {
     private Vector2 direction;
     protected int moveDirection;
     protected int attackDirection;
-    private string[] legendary = new string[] { "weapon_2", "helmet_1", "armor_1", "hp_potion_2" };
+    private string[] legendary = new string[] { "weapon_2", "helmet_1", "armor_1" };
     // private string legendary = "eat";
     public int legendaryBar;
-    private string[] epic = new string[] { "weapon_1", "helmet_0", "boots_0", "armor_0", "hp_potion_1" };
+    private string[] epic = new string[] { "weapon_1", "helmet_0", "boots_0", "armor_0" };
     // private string epic = "mp";
     public int epicBar;
-    private string[] rare = new string[] { "weapon_0", "hp_potion_0" };
+    private string[] rare = new string[] { "weapon_0" };
     // private string rare = "apple";
     public int rareBar;
-    private string[] common = new string[] { "hp_potion_0" };
+    private string[] common = new string[] { "hp_potion_0", "hp_potion_1", "hp_potion_2" };
     // private string common = "hp";
     public int commonBar;
-
     private float deviation = 0.1f;
 
     public GameObject projectile;

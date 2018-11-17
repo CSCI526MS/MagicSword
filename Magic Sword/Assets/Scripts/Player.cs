@@ -242,7 +242,7 @@ public class Player : MonoBehaviour {
 
     }
 
-    public int getPlayerDamage()
+    public int GetPlayerDamage()
     {
         return playerStatus.Attack;
     }
@@ -338,7 +338,7 @@ public class Player : MonoBehaviour {
 
     public void MeleeAttack() {
 
-        if (!isAttack) {
+        if ( isAttack) {
             isAttack = true;
             Collider2D[] enemies = Physics2D.OverlapCircleAll(attackPos.position, attackRange, 9);
             for (int i = 0; i < enemies.Length; i++) {
@@ -360,9 +360,8 @@ public class Player : MonoBehaviour {
         PopupTextController.CreatePopupText(health.ToString(), transform, Color.green);
     }
 
-    public void Getkey(int health)
+    public void Getkey()
     {
-        Debug.Log("player371"+health);
         PopupTextController.CreatePopupText("get the key!", transform, Color.green);
     }
 
@@ -510,7 +509,7 @@ public class Player : MonoBehaviour {
         newMeteor.transform.position = new Vector3(castPoint.x + 15, castPoint.y + 15, 0);
     }
 
-    public void setInvincible(bool b){
+    public void SetInvincible(bool b){
         invincible = b;
     }
 

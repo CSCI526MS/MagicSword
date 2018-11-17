@@ -13,31 +13,25 @@ public class Drops : MonoBehaviour {
         dic = new Dictionary<string, EquippableItem>();
         // [hp, speed ,attack, defense]
         // hp
-        EquippableItem hp_potion_0 = generateItem("hp_potion_0", new int[]{10, 0, 0, 0}, EquipmentType.Consume);
-        EquippableItem hp_potion_1 = generateItem("hp_potion_1", new int[]{30, 0, 0, 0}, EquipmentType.Consume);
-        EquippableItem hp_potion_2 = generateItem("hp_potion_2", new int[]{70, 0, 0, 0}, EquipmentType.Consume);
+        EquippableItem hp_potion_0 = GenerateItem("hp_potion_0", new int[]{30, 0, 0, 0}, EquipmentType.Consume);
+        EquippableItem hp_potion_1 = GenerateItem("hp_potion_1", new int[]{50, 0, 0, 0}, EquipmentType.Consume);
+        EquippableItem hp_potion_2 = GenerateItem("hp_potion_2", new int[]{70, 0, 0, 0}, EquipmentType.Consume);
         
         // weapon
-        EquippableItem weapon_item_0 = generateItem("weapon_0", new int[]{0, 0, 10, 0}, EquipmentType.Weapon);
-        EquippableItem weapon_item_1 = generateItem("weapon_1", new int[]{0, 0, 30, 0}, EquipmentType.Weapon);
-        EquippableItem weapon_item_2 = generateItem("weapon_2", new int[]{0, 0, 70, 0}, EquipmentType.Weapon);
+        EquippableItem weapon_item_0 = GenerateItem("weapon_0", new int[]{0, 0, 10, 0}, EquipmentType.Weapon);
+        EquippableItem weapon_item_1 = GenerateItem("weapon_1", new int[]{0, 0, 30, 0}, EquipmentType.Weapon);
+        EquippableItem weapon_item_2 = GenerateItem("weapon_2", new int[]{0, 0, 70, 0}, EquipmentType.Weapon);
         
         // helmets
-        EquippableItem helmet_item_0 = generateItem("helmet_0", new int[]{0, 0, 0, 10}, EquipmentType.Helmet);
-        EquippableItem helmet_item_1 = generateItem("helmet_1", new int[]{0, 0, 0, 30}, EquipmentType.Helmet);
+        EquippableItem helmet_item_0 = GenerateItem("helmet_0", new int[]{0, 0, 0, 10}, EquipmentType.Helmet);
+        EquippableItem helmet_item_1 = GenerateItem("helmet_1", new int[]{0, 0, 0, 30}, EquipmentType.Helmet);
 
         // boots
-        EquippableItem boots_item_0 = generateItem("boots_0", new int[]{0, 10, 0, 0}, EquipmentType.Boots);
+        EquippableItem boots_item_0 = GenerateItem("boots_0", new int[]{0, 10, 0, 0}, EquipmentType.Boots);
 
         // armor
-        EquippableItem armor_item_0 = generateItem("armor_0", new int[]{0, 0, 0, 10}, EquipmentType.Armor);
-        EquippableItem armor_item_1 = generateItem("armor_1", new int[]{0, 0, 0, 30}, EquipmentType.Armor);
-
-        EquippableItem ringsItem = (EquippableItem)ScriptableObject.CreateInstance("EquippableItem");
-        ringsItem.itemId = "rings";
-        ringsItem.equipmentType = EquipmentType.Ring;
-        ringsItem.properties = new int[] { 0, 10, 0, 0 };
-        ringsItem.icon = null;
+        EquippableItem armor_item_0 = GenerateItem("armor_0", new int[]{0, 0, 0, 10}, EquipmentType.Armor);
+        EquippableItem armor_item_1 = GenerateItem("armor_1", new int[]{0, 0, 0, 30}, EquipmentType.Armor);
 
         dic.Add("hp_potion_0", hp_potion_0);
         dic.Add("hp_potion_1", hp_potion_1);
@@ -50,59 +44,30 @@ public class Drops : MonoBehaviour {
         dic.Add("boots_0", boots_item_0);
         dic.Add("armor_0", armor_item_0);
         dic.Add("armor_1", armor_item_1);
-        dic.Add("rings", ringsItem);
 
     }
     
     
-    private EquippableItem generateItem(string name, int[] properties, EquipmentType type) {
+    private EquippableItem GenerateItem(string itemId, int[] properties, EquipmentType type) {
         EquippableItem item = (EquippableItem)ScriptableObject.CreateInstance("EquippableItem");
-        
-        item.itemId = name;
+        Sprite imageSprite = Resources.Load<Sprite>("loot/" + itemId);
+        Sprite imageSpriteSelected = Resources.Load<Sprite>("loot/" + itemId + "Selected");
+        item.itemId = itemId;
         item.equipmentType = type;
         item.properties = properties;
-        item.icon = null;
-        
+        item.icon = imageSprite;
+        item.iconSelected = imageSpriteSelected;
         return item;
     }
 
-    // Use this for initialization
-
-    void Start()
-    {
-        cubes = GameObject.FindGameObjectsWithTag("Slime");
-        Debug.Log("count" + cubes.Length);
-
-    }
-
-    // Update is called once per frame
-    void Update () {
-	}
-
-	void OnCollisionEnter2D(Collision2D coll) {
+	public virtual void OnCollisionEnter2D(Collision2D coll) {
 		if (coll.gameObject.name == "Player") {
-			/*
-				TODO:
-				Find the Inventory Object
-				Add this drop to inventory by calling Inventory.add(itemId)
-				pass the itemId to add method
-			*/
             FindObjectOfType<AudioManager>().Play("pick_up");
             if (item.equipmentType == EquipmentType.Consume) {
                 coll.gameObject.SendMessage("RestoreHealth", item.properties[0]);
                 Destroy(gameObject);
                 return;
             }
-            if (item.equipmentType ==EquipmentType.Ring)
-            {
-                Debug.Log("drop72");
-                coll.gameObject.SendMessage("Getkey", item.properties[1]);
-                Destroy(gameObject);
-                var cylinder = GameObject.Find("door");
-                Destroy(cylinder);
-                return;
-            }
-
             bool success = FindObjectOfType<Inventory>().addItem(this.item);
 			if(success){
 				Destroy(gameObject);
@@ -110,14 +75,11 @@ public class Drops : MonoBehaviour {
 		}
 	}
 
-	public void SetItem(string id, float deviation) {
+    public virtual void SetItem(string id, float deviation) {
         gameObject.tag = "Loot";
-        Sprite imageSprite = Resources.Load<Sprite>("loot/"+id);
-        Sprite imageSpriteSelected = Resources.Load<Sprite>("loot/"+id + "Selected");
-		gameObject.GetComponent<SpriteRenderer>().sprite = imageSprite;
         EquippableItem standard = dic[id];
-
-		float variation = Random.Range(-deviation, deviation);
+        gameObject.GetComponent<SpriteRenderer>().sprite = standard.icon;
+        float variation = Random.Range(-deviation, deviation);
         int currHp = (int)(standard.properties[0] * (1 + variation));
         int currSpeed = (int)(standard.properties[1] * (1 + variation));
         int currAttack = (int)(standard.properties[2] * (1 + variation));
@@ -126,9 +88,8 @@ public class Drops : MonoBehaviour {
         newItem.itemId = id;
         newItem.equipmentType = standard.equipmentType;
         newItem.properties = new int[] { currHp, currSpeed, currAttack, currDefense };
-        newItem.icon = imageSprite;
-        newItem.iconSelected = imageSpriteSelected;
+        newItem.icon = standard.icon;
+        newItem.iconSelected = standard.iconSelected;
         this.item = newItem;
-        //this.item = new EquippableItem(id, standard.EquipmentType, currHp, currSpeed, currAttack, currDefense, imageSprite);
     }
 }

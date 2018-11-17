@@ -22,12 +22,12 @@ public class FireBall : MonoBehaviour
     {
         if (collision.gameObject.layer == LayerMask.NameToLayer("Enemy"))
         {
-            collision.gameObject.GetComponent<Enemy>().TakeDamage(GameObject.Find("Player").GetComponent<Player>().getPlayerDamage());
+            collision.gameObject.GetComponent<Enemy>().TakeDamage(GameObject.Find("Player").GetComponent<Player>().GetPlayerDamage());
         }
 
         if (collision.gameObject.name == "Boss")
         {
-            GameObject.Find("Boss").GetComponent<Boss>().TakeDamage(GameObject.Find("Player").GetComponent<Player>().getPlayerDamage());
+            GameObject.Find("Boss").GetComponent<Boss>().TakeDamage(GameObject.Find("Player").GetComponent<Player>().GetPlayerDamage());
         }
 
         FindObjectOfType<AudioManager>().Play("fire_hit");

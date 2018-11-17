@@ -202,7 +202,7 @@ public class Boss : MonoBehaviour {
             awake = false;
             move = false;
             dead = true;
-            player.GetComponent<Player>().setInvincible(true);
+            player.GetComponent<Player>().SetInvincible(true);
             gameObject.GetComponent<CapsuleCollider2D>().enabled = false;
         }
     }

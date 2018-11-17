@@ -27,8 +27,9 @@ public class Trap : MonoBehaviour
             startTiming = true;
             timeStart = Time.time;
         }
-        if(startTiming && Time.time - timeStart > 0.2)
-        {
+        if(startTiming && Time.time - timeStart > 0.6)
+        {   
+            FindObjectOfType<AudioManager>().Play("trap");
             GameObject.Find("Player").GetComponent<Player>().TakeDamage(5);
             startTiming = false;
         }

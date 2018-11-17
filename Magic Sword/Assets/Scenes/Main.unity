@@ -4709,8 +4709,8 @@ MonoBehaviour:
   - name: footstep
     clip: {fileID: 8300000, guid: 7d067fddd05784f88937691b1d28efd4, type: 3}
     source: {fileID: 0}
-  - name: hurt
-    clip: {fileID: 8300000, guid: ce8471a2d9b884224a9323441d8a7bfb, type: 3}
+  - name: trap
+    clip: {fileID: 8300000, guid: 44416345a1bed47518c6c5d9d9eb46a4, type: 3}
     source: {fileID: 0}
   - name: equip
     clip: {fileID: 8300000, guid: 6bdbb7626dcd54321b02ac5ba9261ca7, type: 3}
@@ -4723,6 +4723,12 @@ MonoBehaviour:
     source: {fileID: 0}
   - name: arrow_hit
     clip: {fileID: 8300000, guid: 43b1af16d351c47e7b5b125fa3cef4da, type: 3}
+    source: {fileID: 0}
+  - name: flame
+    clip: {fileID: 8300000, guid: 324eb299a7983475ba19f615ebc7d1a4, type: 3}
+    source: {fileID: 0}
+  - name: fire_hit
+    clip: {fileID: 8300000, guid: 3308ea08305d84c8ab547f1b905e3ec8, type: 3}
     source: {fileID: 0}
 --- !u!224 &985849979
 RectTransform:

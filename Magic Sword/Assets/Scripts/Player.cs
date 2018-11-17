@@ -362,8 +362,8 @@ public class Player : MonoBehaviour {
 
     public void Getkey(int health)
     {
-        Debug.Log("player371"+health);
-        PopupTextController.CreatePopupText("get the key!", transform, Color.green);
+        //Debug.Log("player371"+health);
+        PopupTextController.CreatePopupText("Door unlocked!", transform, Color.green);
     }
 
 

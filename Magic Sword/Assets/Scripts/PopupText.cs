@@ -11,10 +11,7 @@ public class PopupText : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {
-        int randomNumber = Random.Range(0, 3);
-        animator.SetInteger("random", randomNumber);
-        // !!! Destroy time is related to the duration of animation. Refactory of random animation probably is needed in the future.
-        Destroy(gameObject, 0.5f);
+
 
 	}
 	
@@ -25,8 +22,13 @@ public class PopupText : MonoBehaviour {
 
     public void CreateText(string newText, Color newColor)
     {
+        int randomNumber = Random.Range(0, 3);
+        animator.SetInteger("random", randomNumber);
+        // !!! Destroy time is related to the duration of animation. Refactory of random animation probably is needed in the future.
+        Destroy(gameObject, 0.5f);
         animator.GetComponent<Text>().text = newText;
         animator.GetComponent<Text>().color = newColor;
+        animator.GetComponent<Text>().fontSize = 100;
     }
 
 

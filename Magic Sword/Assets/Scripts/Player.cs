@@ -12,8 +12,6 @@ public class Player : MonoBehaviour {
     private SpriteRenderer sRenderer;
     [SerializeField]
 
-    private static readonly int DEFAULT_SPEED = 10;
-
     private float healthRegeneration;
     private float manaRegeneration;
     private Animator animator;
@@ -116,7 +114,7 @@ public class Player : MonoBehaviour {
 
     private void Initialize()
     {
-        playerStatus.Speed = DEFAULT_SPEED;
+        playerStatus.Speed = 6;
         playerStatus.Attack = 10;
         playerStatus.Defense = 0;
         playerStatus.CurrentHP = 100;

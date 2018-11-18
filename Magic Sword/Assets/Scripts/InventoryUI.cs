@@ -208,8 +208,8 @@ public class InventoryUI : MonoBehaviour {
         {
             player.playerStatus.hpValue = player.playerStatus.hpMaxValue;
         }
-        player.playerStatus.speed += op*value[1];
-        player.playerStatus.attack += op * value[2];
+        player.playerStatus.speed += op*value[1]/10;
+        player.playerStatus.attack += op * value[2]/10;
         player.playerStatus.defense += op*value[3];
         RefreshStatText();
     }

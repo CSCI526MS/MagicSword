@@ -2498,6 +2498,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1c47fdeb609bceb4ba905fd708f73971, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  healthRegeneration: 0
   playerStatus:
     healthBar: {fileID: 438350334}
     manaBar: {fileID: 1525985888}
@@ -4362,7 +4363,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 48a47c2059468454daf75f2168f499e4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  coolDownTime: 2
+  coolDownTime: 1
   skill: FireBall
   normalImage: {fileID: 21300000, guid: 5d42ec161d0cc7c48a394d3f1215b20a, type: 3}
   selectedImage: {fileID: 21300000, guid: 423937cf6639c4d678a4fe463ea3b5c8, type: 3}

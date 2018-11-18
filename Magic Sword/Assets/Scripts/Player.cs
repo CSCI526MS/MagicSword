@@ -40,7 +40,7 @@ public class Player : MonoBehaviour {
     private Vector2 touchDirection;
 
     private readonly float ATTACK_COOLDOWN_TIME = 0.7f;
-    private float skillCoolDownTime = 2f;
+    private float skillCoolDownTime = 1f;
     private readonly float IMMUNE_TIME = 2f;
     private int speed;
     private float attackCooldown;

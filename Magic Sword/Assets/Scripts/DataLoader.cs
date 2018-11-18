@@ -58,6 +58,7 @@ public class DataLoader : MonoBehaviour
         player.playerStatus = gameData.playerStatus;
         player.playerStatus.manaBar = manaBar;
         player.playerStatus.healthBar = healthBar;
+        GlobalStatic.inventoryUI.SetActive(true);
         Inventory inventory = FindObjectOfType<Inventory>();
         InventorySlot[] inventorySlots = FindObjectsOfType<InventorySlot>();
         EquipmentSlot[] equipmentSlots = FindObjectsOfType<EquipmentSlot>();
@@ -82,6 +83,10 @@ public class DataLoader : MonoBehaviour
                     iconSelected = newItemData.iconSelected
                 };
             }
+            else {
+                inventory.itemList[i] = null;
+                inventorySlots[i].Item = null;
+            }
         }
         for (int i = 0; i < GlobalStatic.equipmentSlotNum; i++)
         {
@@ -99,6 +104,10 @@ public class DataLoader : MonoBehaviour
                         iconSelected = newItemData.iconSelected
                     };
                 }
+            }
+            else
+            {
+                equipmentSlots[i].Item = null;
             }
         }
         switch (gameData.level)

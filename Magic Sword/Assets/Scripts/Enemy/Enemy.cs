@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.SceneManagement;
 
 public class Enemy : MonoBehaviour {
 
@@ -72,7 +73,7 @@ public class Enemy : MonoBehaviour {
         awake = true;
 
         player = GameObject.FindGameObjectWithTag("Player").GetComponent<Transform>();
-        new Drops(); // call static constructor
+
 
         lastSpot = transform.position;
         aware = false;
@@ -295,37 +296,56 @@ public class Enemy : MonoBehaviour {
         PopupTextController.CreatePopupText(damage.ToString(), transform, Color.white);
     }
 
-    public void DropItems() {
+    public void DropItems()
+    {
         int random = Random.Range(0, 100);
         Debug.Log("random" + random);
         string id;
-        if (GameObject.FindGameObjectsWithTag("Slime").Length == 8)
+        if (GameObject.FindGameObjectsWithTag("Slime").Length == 7)
         {
-            id = "rings";
-        } else if (random<commonBar) 
-        {
-            return;
-        } else if (random<rareBar)
-        {
-            int ind = (int)Random.Range(0, (float)(common.Length - 0.000001));
-            id = epic[ind];
-        } else if (random<epicBar)
-        {
-            int ind = (int)Random.Range(0, (float)(rare.Length - 0.000001));
-            id = legendary[ind];
-        } else if (random<legendaryBar)
-        {
-            int ind = (int)Random.Range(0, (float)(epic.Length - 0.000001));
-            id = epic[ind];
-        } else
-        {
-            int ind = (int)Random.Range(0, (float)(legendary.Length - 0.000001));
-            id = legendary[ind];
+            switch (SceneManager.GetActiveScene().name)
+            {
+                case "LevelOne": id = "key_0"; break;
+                case "LevelTwo": id = "key_1"; break;
+                case "LevelThree": id = "key_2"; break;
+                default: id = "key_0"; break;
+            }
+            GameObject key = (GameObject)Resources.Load("Prefabs/key");
+            key = Instantiate(key) as GameObject;
+            FindObjectsOfType<Key>()[0].SetItem(id, 0);
+            key.transform.position = gameObject.transform.position;
         }
-        GameObject loot = (GameObject)Resources.Load("Prefabs/loot");
-        loot = Instantiate(loot) as GameObject;
-        FindObjectsOfType<Drops>()[0].SetItem(id, deviation);
-        loot.transform.position = gameObject.transform.position;
+        else
+        {
+            if (random < commonBar)
+            {
+                return;
+            }
+            else if (random < rareBar)
+            {
+                int ind = (int)Random.Range(0, (float)(common.Length - 0.000001));
+                id = epic[ind];
+            }
+            else if (random < epicBar)
+            {
+                int ind = (int)Random.Range(0, (float)(rare.Length - 0.000001));
+                id = legendary[ind];
+            }
+            else if (random < legendaryBar)
+            {
+                int ind = (int)Random.Range(0, (float)(epic.Length - 0.000001));
+                id = epic[ind];
+            }
+            else
+            {
+                int ind = (int)Random.Range(0, (float)(legendary.Length - 0.000001));
+                id = legendary[ind];
+            }
+            GameObject loot = (GameObject)Resources.Load("Prefabs/loot");
+            loot = Instantiate(loot) as GameObject;
+            FindObjectsOfType<Drops>()[0].SetItem(id, deviation);
+            loot.transform.position = gameObject.transform.position;
+        }
     }
 
     private void Animation() {
@@ -372,16 +392,7 @@ public class Enemy : MonoBehaviour {
         return moveDirection;
     }
 
-    private void OnCollisionEnter2D(Collision2D collision)
-    {
-        //if (collision.gameObject.tag == "Skill1")
-        //{
-        //    Debug.Log("attack.....");
-        //    TakeDamage(30);
-        //}
-    }
-
-    public void setAwake(bool b)
+    public void SetAwake(bool b)
     {
         awake = b;
     }

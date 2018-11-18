@@ -6,7 +6,7 @@ public enum EquipmentType
 	Weapon,
     Armor,
     Boots,
-    Ring
+    Key
 }
 
 [CreateAssetMenu]

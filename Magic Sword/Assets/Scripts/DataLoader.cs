@@ -60,10 +60,25 @@ public class DataLoader : MonoBehaviour
         player.playerStatus.healthBar = healthBar;
         GlobalStatic.inventoryUI.SetActive(true);
         Inventory inventory = FindObjectOfType<Inventory>();
+        InventoryUI inventoryUI = FindObjectOfType<InventoryUI>();
         InventorySlot[] inventorySlots = FindObjectsOfType<InventorySlot>();
         EquipmentSlot[] equipmentSlots = FindObjectsOfType<EquipmentSlot>();
+        GlobalStatic.keyStatus = gameData.keyStatus;
+        int level;
+        switch (SceneManager.GetActiveScene().name)
+        {
+            case "LevelOne": level = 0; break;
+            case "LevelTwo":level = 1; break;
+            case "LevelThree":level = 2; break;
+            default:level = 0; break;
+        }
+        if(gameData.keyStatus[level])
+        {
+            Destroy(GameObject.FindWithTag("Gate"));
+        }
         for (int i = 0; i < GlobalStatic.inventorySlotNum; i++)
         {
+            Debug.Log(gameData.inventorySlots[i].itemId);
             if (!gameData.inventorySlots[i].itemId.Equals("")){
                 ItemData newItemData = gameData.inventorySlots[i];
                 inventory.itemList[i] = new EquippableItem
@@ -74,7 +89,7 @@ public class DataLoader : MonoBehaviour
                     icon = newItemData.icon,
                     iconSelected = newItemData.iconSelected
                 };
-                inventorySlots[i].Item = new EquippableItem
+                inventoryUI.inventory.inventorySlots[i].Item = new EquippableItem
                 {
                     itemId = newItemData.itemId,
                     properties = newItemData.properties,
@@ -84,8 +99,9 @@ public class DataLoader : MonoBehaviour
                 };
             }
             else {
+                Debug.Log(i);
                 inventory.itemList[i] = null;
-                inventorySlots[i].Item = null;
+                inventoryUI.inventory.inventorySlots[i].Item = null;
             }
         }
         for (int i = 0; i < GlobalStatic.equipmentSlotNum; i++)

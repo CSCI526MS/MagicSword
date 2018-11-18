@@ -25,10 +25,8 @@ public class InventorySlot : MonoBehaviour , IPointerClickHandler, IDragHandler,
 		set {
 			item = value;
 			if (item == null) {
-				// image.enabled = false;
 				image.color = disabledColor;
 			} else {
-				// image.enabled = true;
 				image.sprite = item.icon;
 				image.color =  normalColor;
 			}

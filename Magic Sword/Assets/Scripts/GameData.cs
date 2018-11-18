@@ -8,4 +8,5 @@ public class GameData
     public Stat playerStatus;
     public Vector3 coordinate;
     public int level;
+    public bool[] keyStatus = { false, false, false };
 }

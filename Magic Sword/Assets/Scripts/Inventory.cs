@@ -8,7 +8,7 @@ public class Inventory : MonoBehaviour {
     [SerializeField] public InventorySlot[] inventorySlots;
     [SerializeField] GameObject itemsParent;
 
-    public bool addItem (EquippableItem item) {
+    public bool AddItem (EquippableItem item) {
 		// Debug.Log("item put in the bag");
         Debug.Log("item.EquipmentType = " + item.equipmentType);
         Debug.Log("item.hp = " + item.properties[0]);

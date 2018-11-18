@@ -3,7 +3,7 @@ using System;
 public class EquipmentPanel : MonoBehaviour {
 
 	[SerializeField] Transform equipmentSlotsParent;
-	[SerializeField] EquipmentSlot[] equipmentSlots;
+	public EquipmentSlot[] equipmentSlots;
 
 	public event Action<InventorySlot> OnPointerClickEvent;
 	public event Action<InventorySlot> OnBeginDragEvent;

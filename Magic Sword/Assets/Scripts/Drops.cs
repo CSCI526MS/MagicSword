@@ -68,7 +68,7 @@ public class Drops : MonoBehaviour {
                 Destroy(gameObject);
                 return;
             }
-            bool success = FindObjectOfType<Inventory>().addItem(this.item);
+            bool success = FindObjectOfType<Inventory>().AddItem(this.item);
 			if(success){
 				Destroy(gameObject);
 			}

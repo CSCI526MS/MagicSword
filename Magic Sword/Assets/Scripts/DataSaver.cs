@@ -44,10 +44,9 @@ public class DataSaver : MonoBehaviour
         gameData.coordinate = player.transform.position;
         gameData.playerStatus = player.playerStatus;
         Inventory inventory = FindObjectOfType<Inventory>();
-        InventorySlot[] inventorySlots = FindObjectsOfType<InventorySlot>();
+        InventorySlot[] inventorySlots = FindObjectOfType<InventoryUI>().inventory.inventorySlots;
         EquipmentSlot[] equipmentSlots = FindObjectsOfType<EquipmentSlot>();
-        Debug.Log(inventorySlots.Length);
-        Debug.Log(gameData.inventorySlots.Length);
+        gameData.keyStatus = GlobalStatic.keyStatus;
         for (int i = 0; i < GlobalStatic.inventorySlotNum; i++)
         {
             Debug.Log(i);

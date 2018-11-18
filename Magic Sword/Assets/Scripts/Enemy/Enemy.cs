@@ -143,22 +143,18 @@ public class Enemy : MonoBehaviour {
                     direction = lastSpot - transform.position;
                     moveDirection = GetMoveDirection(direction);
                 }
-
             }
             else
             {
                 aware = false;
                 Wander();
             }
-
-
             if (health <= 0)
             {
                 Debug.Log("dead");
                 DropItems();
                 Destroy(gameObject);
             }
-
             if (attackCooldown >= 0)
             {
                 attackCooldown -= Time.deltaTime;
@@ -167,17 +163,11 @@ public class Enemy : MonoBehaviour {
             {
                 isAttack = false;
             }
-
             if (wanderTimer >= 0)
             {
                 wanderTimer -= Time.deltaTime;
             }
-
-
-
-
         }
-
         if (immuneTimer < 0 && isImmune)
         {
             isImmune = false;
@@ -224,8 +214,6 @@ public class Enemy : MonoBehaviour {
         UItext.GetComponent<Text>().text = msg;
         UItext.GetComponent<Text>().fontSize = fontSize;
         UItext.GetComponent<Text>().color = color;
-
-        //Destroy(UItext, time);
     }
 
     private void Wander()
@@ -301,15 +289,17 @@ public class Enemy : MonoBehaviour {
         int random = Random.Range(0, 100);
         Debug.Log("random" + random);
         string id;
-        if (GameObject.FindGameObjectsWithTag("Slime").Length == 7)
+        int level;
+        switch (SceneManager.GetActiveScene().name)
         {
-            switch (SceneManager.GetActiveScene().name)
-            {
-                case "LevelOne": id = "key_0"; break;
-                case "LevelTwo": id = "key_1"; break;
-                case "LevelThree": id = "key_2"; break;
-                default: id = "key_0"; break;
-            }
+            case "LevelOne": id = "key_0"; level = 0; break;
+            case "LevelTwo": id = "key_1"; level = 1; break;
+            case "LevelThree": id = "key_2"; level = 2; break;
+            default: id = "key_0"; level = 0; break;
+        }
+        if (GameObject.FindGameObjectsWithTag("Slime").Length <= 7 && GlobalStatic.keyStatus[level] != true)
+        {
+            GlobalStatic.keyStatus[level] = true;
             GameObject key = (GameObject)Resources.Load("Prefabs/key");
             key = Instantiate(key) as GameObject;
             FindObjectsOfType<Key>()[0].SetItem(id, 0);

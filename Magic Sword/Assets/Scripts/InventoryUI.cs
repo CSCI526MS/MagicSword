@@ -16,13 +16,13 @@ public class InventoryUI : MonoBehaviour {
 	[SerializeField] Text curAttack;
 	[SerializeField] Text curDefense;
 
-	[SerializeField] Inventory inventory;
-	[SerializeField] EquipmentPanel equipmentPanel;
+	public Inventory inventory;
+	public EquipmentPanel equipmentPanel;
 
 	[SerializeField] Image draggableItem;
 
 	private InventorySlot draggedSlot;
-	private InventorySlot selectedSlot;
+	public InventorySlot selectedSlot;
 
     private GameObject playerObject;
     private Player player;
@@ -69,8 +69,8 @@ public class InventoryUI : MonoBehaviour {
 
 
 	private void Click(InventorySlot inventorySlot) {
-		EquippableItem equippableItem = inventorySlot.Item as EquippableItem;
-		
+		    EquippableItem equippableItem = inventorySlot.Item as EquippableItem;
+    
         if (equippableItem != null) {
 
             if (inventorySlot == selectedSlot)
@@ -162,7 +162,7 @@ public class InventoryUI : MonoBehaviour {
 		if (dropItemSlot.CanReceiveItem(draggedSlot.Item) && draggedSlot.CanReceiveItem(dropItemSlot.Item)) {
 			EquippableItem dragItem = draggedSlot.Item as EquippableItem;
 			EquippableItem dropItem = dropItemSlot.Item as EquippableItem;
-
+      
 			if (draggedSlot is EquipmentSlot) {
 
 				if (dragItem != null) {
@@ -177,7 +177,7 @@ public class InventoryUI : MonoBehaviour {
 			}
 
 			if (dropItemSlot is EquipmentSlot) {
-
+        
 				if (dragItem != null) {
 					UpdateStat(1, dragItem.properties);
 					dragItem.Equip(this);
@@ -187,11 +187,13 @@ public class InventoryUI : MonoBehaviour {
 					dropItem.Unequip(this);
 				}
 			}
-			if (draggedSlot == selectedSlot) {
+			
+      if (draggedSlot == selectedSlot) {
 				Debug.Log("this draggedSlot is selectedSlot");
 				selectedSlot = dropItemSlot;
+        
 			}
-            else if (dropItemSlot == selectedSlot) {
+      else if (dropItemSlot == selectedSlot) {
 			 	Debug.Log("this draggedSlot is selectedSlot");
 			 	selectedSlot = draggedSlot;
 			 }
@@ -202,7 +204,7 @@ public class InventoryUI : MonoBehaviour {
 		}
 	}
 
-	private void UpdateStat(int op, int[] value) {
+	public void UpdateStat(int op, int[] value) {
         player.playerStatus.hpMaxValue += op* value[0];
         if (player.playerStatus.hpValue > player.playerStatus.hpMaxValue)
         {
@@ -231,12 +233,12 @@ public class InventoryUI : MonoBehaviour {
 			{
 				if (previousItem != null)
 				{
-					inventory.addItem(previousItem);
+					inventory.AddItem(previousItem);
 				}
 			}
 			else
 			{
-				inventory.addItem(item);
+				inventory.AddItem(item);
 			}
 		}
 	}
@@ -245,7 +247,7 @@ public class InventoryUI : MonoBehaviour {
 	{
 		if (!inventory.IsFull() && equipmentPanel.RemoveItem(item))
 		{
-			inventory.addItem(item);
+            inventory.AddItem(item);
 		}
 	}
 

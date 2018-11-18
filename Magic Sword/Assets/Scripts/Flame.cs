@@ -22,15 +22,16 @@ public class Flame : MonoBehaviour {
 
     private void CauseDamage()
     {
+        int attack = 3 * GameObject.Find("Player").GetComponent<Player>().playerStatus.Attack;
         Collider2D[] enemies = Physics2D.OverlapCircleAll(transform.position, 2.8f, enemyLayer);
         for (int i = 0; i < enemies.Length; i++)
         {
-            enemies[i].GetComponent<Enemy>().TakeDamage(60);
+            enemies[i].GetComponent<Enemy>().TakeDamage(attack);
         }
 
         Collider2D boss = Physics2D.OverlapCircle(transform.position, 2.8f, bossLayer);
         if (boss != null) {
-            boss.GetComponent<Boss>().TakeDamage(60);
+            boss.GetComponent<Boss>().TakeDamage(attack);
         }
     }
 }

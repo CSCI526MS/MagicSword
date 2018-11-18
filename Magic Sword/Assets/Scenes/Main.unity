@@ -188,6 +188,106 @@ CanvasRenderer:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 15807952}
   m_CullTransparentMesh: 0
+--- !u!1001 &18397169
+Prefab:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: 224413177887307072, guid: e4718bbd57720462f8f957103cd4fb53,
+        type: 2}
+      propertyPath: m_LocalPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 224413177887307072, guid: e4718bbd57720462f8f957103cd4fb53,
+        type: 2}
+      propertyPath: m_LocalPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 224413177887307072, guid: e4718bbd57720462f8f957103cd4fb53,
+        type: 2}
+      propertyPath: m_LocalPosition.z
+      value: 53.625355
+      objectReference: {fileID: 0}
+    - target: {fileID: 224413177887307072, guid: e4718bbd57720462f8f957103cd4fb53,
+        type: 2}
+      propertyPath: m_LocalRotation.x
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 224413177887307072, guid: e4718bbd57720462f8f957103cd4fb53,
+        type: 2}
+      propertyPath: m_LocalRotation.y
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 224413177887307072, guid: e4718bbd57720462f8f957103cd4fb53,
+        type: 2}
+      propertyPath: m_LocalRotation.z
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 224413177887307072, guid: e4718bbd57720462f8f957103cd4fb53,
+        type: 2}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 224413177887307072, guid: e4718bbd57720462f8f957103cd4fb53,
+        type: 2}
+      propertyPath: m_RootOrder
+      value: 9
+      objectReference: {fileID: 0}
+    - target: {fileID: 224413177887307072, guid: e4718bbd57720462f8f957103cd4fb53,
+        type: 2}
+      propertyPath: m_AnchoredPosition.x
+      value: 875
+      objectReference: {fileID: 0}
+    - target: {fileID: 224413177887307072, guid: e4718bbd57720462f8f957103cd4fb53,
+        type: 2}
+      propertyPath: m_AnchoredPosition.y
+      value: 660
+      objectReference: {fileID: 0}
+    - target: {fileID: 224413177887307072, guid: e4718bbd57720462f8f957103cd4fb53,
+        type: 2}
+      propertyPath: m_SizeDelta.x
+      value: 100
+      objectReference: {fileID: 0}
+    - target: {fileID: 224413177887307072, guid: e4718bbd57720462f8f957103cd4fb53,
+        type: 2}
+      propertyPath: m_SizeDelta.y
+      value: 100
+      objectReference: {fileID: 0}
+    - target: {fileID: 224413177887307072, guid: e4718bbd57720462f8f957103cd4fb53,
+        type: 2}
+      propertyPath: m_AnchorMin.x
+      value: 0.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 224413177887307072, guid: e4718bbd57720462f8f957103cd4fb53,
+        type: 2}
+      propertyPath: m_AnchorMin.y
+      value: 0.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 224413177887307072, guid: e4718bbd57720462f8f957103cd4fb53,
+        type: 2}
+      propertyPath: m_AnchorMax.x
+      value: 0.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 224413177887307072, guid: e4718bbd57720462f8f957103cd4fb53,
+        type: 2}
+      propertyPath: m_AnchorMax.y
+      value: 0.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 224413177887307072, guid: e4718bbd57720462f8f957103cd4fb53,
+        type: 2}
+      propertyPath: m_Pivot.x
+      value: 0.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 224413177887307072, guid: e4718bbd57720462f8f957103cd4fb53,
+        type: 2}
+      propertyPath: m_Pivot.y
+      value: 0.5
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: e4718bbd57720462f8f957103cd4fb53, type: 2}
+  m_IsPrefabAsset: 0
 --- !u!1 &49590458
 GameObject:
   m_ObjectHideFlags: 0
@@ -2399,6 +2499,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1c47fdeb609bceb4ba905fd708f73971, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  healthRegeneration: 0
   playerStatus:
     healthBar: {fileID: 438350334}
     manaBar: {fileID: 1525985888}
@@ -4263,7 +4364,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 48a47c2059468454daf75f2168f499e4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  coolDownTime: 2
+  coolDownTime: 1
   skill: FireBall
   normalImage: {fileID: 21300000, guid: 5d42ec161d0cc7c48a394d3f1215b20a, type: 3}
   selectedImage: {fileID: 21300000, guid: 423937cf6639c4d678a4fe463ea3b5c8, type: 3}

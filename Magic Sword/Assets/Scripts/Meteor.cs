@@ -65,15 +65,16 @@ public class Meteor : MonoBehaviour
 
     private void CauseDamage()
     {
+        int attack = 5 * GameObject.Find("Player").GetComponent<Player>().playerStatus.Attack;
         Collider2D[] enemies = Physics2D.OverlapCircleAll(transform.position, 1, enemyLayer);
         for (int i = 0; i < enemies.Length; i++)
         {
-            enemies[i].GetComponent<Enemy>().TakeDamage(100);
+            enemies[i].GetComponent<Enemy>().TakeDamage(attack);
         }
 
         Collider2D boss = Physics2D.OverlapCircle(transform.position, 1, bossLayer);
         if(boss){
-            boss.GetComponent<Boss>().TakeDamage(100);
+            boss.GetComponent<Boss>().TakeDamage(attack);
         }
 
     }

@@ -12,8 +12,6 @@ public class Player : MonoBehaviour {
     private SpriteRenderer sRenderer;
     [SerializeField]
 
-    private static readonly int DEFAULT_SPEED = 10;
-
     private float healthRegeneration;
     private float manaRegeneration;
     private Animator animator;
@@ -42,7 +40,7 @@ public class Player : MonoBehaviour {
     private Vector2 touchDirection;
 
     private readonly float ATTACK_COOLDOWN_TIME = 0.7f;
-    private float skillCoolDownTime = 2f;
+    private float skillCoolDownTime = 1f;
     private readonly float IMMUNE_TIME = 2f;
     private int speed;
     private float attackCooldown;
@@ -116,7 +114,7 @@ public class Player : MonoBehaviour {
 
     private void Initialize()
     {
-        playerStatus.Speed = DEFAULT_SPEED;
+        playerStatus.Speed = 6;
         playerStatus.Attack = 10;
         playerStatus.Defense = 0;
         playerStatus.CurrentHP = 100;
@@ -222,8 +220,14 @@ public class Player : MonoBehaviour {
 
     private void Regeneration()
     {
-        playerStatus.CurrentHP += healthRegeneration;
-        playerStatus.CurrentMP += manaRegeneration;
+        if(playerStatus.CurrentHP<playerStatus.MaxHP){
+            playerStatus.CurrentHP = playerStatus.CurrentHP + healthRegeneration;
+        }
+        if(playerStatus.CurrentMP< playerStatus.MaxMP){
+            playerStatus.CurrentMP = playerStatus.CurrentMP + manaRegeneration;
+        }
+
+
     }
 
     private void Move()
@@ -362,7 +366,9 @@ public class Player : MonoBehaviour {
 
     public void Getkey()
     {
-    	PopupTextController.CreatePopupText("Door unlocked!", transform, Color.green);
+        //Debug.Log("player371"+health);
+        //PopupTextController.CreatePopupText("Door unlocked!", transform, Color.green);
+        Broadcast("Next level door unlocked!", Color.white);
     }
 
 
@@ -519,5 +525,17 @@ public class Player : MonoBehaviour {
         yield return new WaitForSeconds(0.8f);
         SceneManager.LoadScene(name);
         transitionPanel.SetActive(false);
+    }
+
+    private void Broadcast(string content, Color color){
+        GameObject canvas = GameObject.Find("Canvas");
+        GameObject text = (GameObject)Resources.Load("Prefabs/Text");
+        text = Instantiate(text);
+        text.transform.SetParent(canvas.transform, false);
+        Vector2 screenPosition = new Vector2(Screen.width / 2+100, Screen.height-100); 
+        text.transform.position = screenPosition;
+        text.GetComponent<UnityEngine.UI.Text>().text = content;
+        text.GetComponent<UnityEngine.UI.Text>().color = color;
+        Destroy(text, 5);
     }
 }

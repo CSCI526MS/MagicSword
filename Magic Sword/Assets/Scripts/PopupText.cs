@@ -28,7 +28,6 @@ public class PopupText : MonoBehaviour {
         Destroy(gameObject, 0.5f);
         animator.GetComponent<Text>().text = newText;
         animator.GetComponent<Text>().color = newColor;
-        animator.GetComponent<Text>().fontSize = 100;
     }
 
 

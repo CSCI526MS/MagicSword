@@ -363,7 +363,8 @@ public class Player : MonoBehaviour {
     public void Getkey(int health)
     {
         //Debug.Log("player371"+health);
-        PopupTextController.CreatePopupText("Door unlocked!", transform, Color.green);
+        //PopupTextController.CreatePopupText("Door unlocked!", transform, Color.green);
+        Broadcast("Next level door unlocked!", Color.white);
     }
 
 
@@ -520,5 +521,17 @@ public class Player : MonoBehaviour {
         yield return new WaitForSeconds(0.8f);
         SceneManager.LoadScene(name);
         transitionPanel.SetActive(false);
+    }
+
+    private void Broadcast(string content, Color color){
+        GameObject canvas = GameObject.Find("Canvas");
+        GameObject text = (GameObject)Resources.Load("Prefabs/Text");
+        text = Instantiate(text);
+        text.transform.SetParent(canvas.transform, false);
+        Vector2 screenPosition = Camera.main.WorldToScreenPoint(new Vector2(1, gameObject.transform.position.y+2 ));
+        text.transform.position = screenPosition;
+        text.GetComponent<UnityEngine.UI.Text>().text = content;
+        text.GetComponent<UnityEngine.UI.Text>().color = color;
+        Destroy(text, 5);
     }
 }

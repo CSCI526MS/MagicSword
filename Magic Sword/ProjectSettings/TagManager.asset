@@ -13,9 +13,9 @@ TagManager:
   - Loot
   - Enemy
   - Enemy
-  - door
   - Transition
   - InventoryUI
+  - Gate
   layers:
   - Default
   - TransparentFX

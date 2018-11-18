@@ -22,6 +22,10 @@ public class Stat {
     {
         get
         {
+            if (hpValue > hpMaxValue)
+            {
+                hpValue = hpMaxValue;
+            }
             return hpValue;
         }
 
@@ -55,6 +59,10 @@ public class Stat {
     {
         get
         {
+            if (mpValue > mpMaxValue)
+            {
+                mpValue = mpMaxValue;
+            }
             return mpValue;
         }
 

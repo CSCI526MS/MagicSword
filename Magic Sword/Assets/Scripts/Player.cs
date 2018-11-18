@@ -222,8 +222,14 @@ public class Player : MonoBehaviour {
 
     private void Regeneration()
     {
-        playerStatus.CurrentHP += healthRegeneration;
-        playerStatus.CurrentMP += manaRegeneration;
+        if(playerStatus.CurrentHP<playerStatus.MaxHP){
+            playerStatus.CurrentHP = playerStatus.CurrentHP + healthRegeneration;
+        }
+        if(playerStatus.CurrentMP< playerStatus.MaxMP){
+            playerStatus.CurrentMP = playerStatus.CurrentMP + manaRegeneration;
+        }
+
+
     }
 
     private void Move()

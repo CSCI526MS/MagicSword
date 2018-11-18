@@ -64,18 +64,6 @@ public class DataLoader : MonoBehaviour
         InventorySlot[] inventorySlots = FindObjectsOfType<InventorySlot>();
         EquipmentSlot[] equipmentSlots = FindObjectsOfType<EquipmentSlot>();
         GlobalStatic.keyStatus = gameData.keyStatus;
-        int level;
-        switch (SceneManager.GetActiveScene().name)
-        {
-            case "LevelOne": level = 0; break;
-            case "LevelTwo":level = 1; break;
-            case "LevelThree":level = 2; break;
-            default:level = 0; break;
-        }
-        if(gameData.keyStatus[level])
-        {
-            Destroy(GameObject.FindWithTag("Gate"));
-        }
         for (int i = 0; i < GlobalStatic.inventorySlotNum; i++)
         {
             Debug.Log(gameData.inventorySlots[i].itemId);

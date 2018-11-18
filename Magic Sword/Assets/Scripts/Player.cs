@@ -528,7 +528,7 @@ public class Player : MonoBehaviour {
         GameObject text = (GameObject)Resources.Load("Prefabs/Text");
         text = Instantiate(text);
         text.transform.SetParent(canvas.transform, false);
-        Vector2 screenPosition = Camera.main.WorldToScreenPoint(new Vector2(1, gameObject.transform.position.y+2 ));
+        Vector2 screenPosition = new Vector2(Screen.width / 2+100, Screen.height-100); 
         text.transform.position = screenPosition;
         text.GetComponent<UnityEngine.UI.Text>().text = content;
         text.GetComponent<UnityEngine.UI.Text>().color = color;

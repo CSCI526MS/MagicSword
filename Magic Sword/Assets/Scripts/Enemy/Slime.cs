@@ -6,6 +6,8 @@ public class Slime : Enemy {
 
     protected override void Initialize() {
         health = 60;
+        speed = 1;
+        attackPoint = 10;
         rangedAttackType = false;
         legendaryBar = 100;
         epicBar = 90;

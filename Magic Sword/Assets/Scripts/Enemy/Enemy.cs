@@ -7,7 +7,8 @@ using UnityEngine.SceneManagement;
 public class Enemy : MonoBehaviour {
 
     protected int health;
-    private float speed;
+    protected float speed;
+    protected int attackPoint;
     private float MonsterAttackCooldown;
     private Animator animator;
     private bool move;
@@ -66,7 +67,6 @@ public class Enemy : MonoBehaviour {
         animator = GetComponent<Animator>();
         attackCooldown = 0;
         Initialize();
-        speed = 1;
         move = true;
         direction = Vector2.down;
         moveDirection = 2;
@@ -194,7 +194,7 @@ public class Enemy : MonoBehaviour {
     protected virtual void Initialize(){
         //health =
         //speed =
-        //TODO: damage =
+        //attackPoint =
         //rangedAttackType =
     }
 
@@ -256,7 +256,7 @@ public class Enemy : MonoBehaviour {
             FindObjectOfType<AudioManager>().Play("slime_bite");
             isAttack = true;
             attackCooldown = ATTACK_COOLDOWN_TIME;
-            FindObjectOfType<Player>().TakeDamage(10);
+            FindObjectOfType<Player>().TakeDamage(attackPoint);
         }
 
     }

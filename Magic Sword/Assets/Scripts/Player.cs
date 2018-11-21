@@ -368,7 +368,7 @@ public class Player : MonoBehaviour {
     {
         //Debug.Log("player371"+health);
         //PopupTextController.CreatePopupText("Door unlocked!", transform, Color.green);
-        Broadcast("Next level door unlocked!", Color.white);
+        Broadcast("Next level door unlocked!", Color.green);
     }
 
 

@@ -39,7 +39,7 @@ public class EnemyArrow : MonoBehaviour {
         if (collision.gameObject.name == "Player")
         {
 
-            GameObject.Find("Player").GetComponent<Player>().TakeDamage(10);
+            GameObject.Find("Player").GetComponent<Player>().TakeDamage(5);
         }
         FindObjectOfType<AudioManager>().Play("arrow_hit");
         Destroy(gameObject);

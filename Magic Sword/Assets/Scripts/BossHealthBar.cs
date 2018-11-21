@@ -28,6 +28,7 @@ public class BossHealthBar : MonoBehaviour {
     {
         fillAmount = 1;
         actualAmount = 1;
+        gameObject.SetActive(false);
     }
 
     // Update is called once per frame

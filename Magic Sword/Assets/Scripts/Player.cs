@@ -165,8 +165,6 @@ public class Player : MonoBehaviour {
             footstepSound.Play();
         }
 
-
-
         if (Input.GetMouseButtonDown(0) && !UnityEngine.EventSystems.EventSystem.current.IsPointerOverGameObject())
         {
             Vector3 castPoint;
@@ -332,7 +330,10 @@ public class Player : MonoBehaviour {
 
     void OnCollisionStay2D(Collision2D collision) {
         if (collision.gameObject.tag == "Portal") {
-            SceneManager.LoadScene("LevelTwo");
+            if(SceneManager.GetActiveScene().name == "LevelOne")
+                SceneManager.LoadScene("LevelTwo");
+            else if(SceneManager.GetActiveScene().name == "LevelTwo")
+                SceneManager.LoadScene("LevelThree");
         }
     }
 

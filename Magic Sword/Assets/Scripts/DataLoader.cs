@@ -89,7 +89,6 @@ public class DataLoader : MonoBehaviour
                 };
             }
             else {
-                Debug.Log(i);
                 inventory.itemList[i] = null;
                 inventoryUI.inventory.inventorySlots[i].Item = null;
             }

@@ -369,7 +369,7 @@ public class Player : MonoBehaviour {
     {
         //Debug.Log("player371"+health);
         //PopupTextController.CreatePopupText("Door unlocked!", transform, Color.green);
-        Broadcast("Next level door unlocked!", Color.green);
+        Broadcast("Next level door unlocked!", Color.green, 5f, 100);
     }
 
 
@@ -389,6 +389,7 @@ public class Player : MonoBehaviour {
             damage = (int)(damage * (0.2+20/(float)(playerStatus.Defense+25)));
             playerStatus.CurrentHP -= damage;
             if (playerStatus.CurrentHP<=0) {
+                Broadcast("Game Over", Color.red, 1.5f, 180);
                 FindObjectOfType<AudioManager>().Play("game_over");
                 StartCoroutine(LoadScene("MainMenu"));
             }
@@ -528,15 +529,15 @@ public class Player : MonoBehaviour {
         transitionPanel.SetActive(false);
     }
 
-    private void Broadcast(string content, Color color){
+    private void Broadcast(string content, Color color, float time, int delta){
         GameObject canvas = GameObject.Find("Canvas");
         GameObject text = (GameObject)Resources.Load("Prefabs/Text");
         text = Instantiate(text);
         text.transform.SetParent(canvas.transform, false);
-        Vector2 screenPosition = new Vector2(Screen.width / 2+100, Screen.height-100); 
+        Vector2 screenPosition = new Vector2(Screen.width / 2+delta, Screen.height-100); 
         text.transform.position = screenPosition;
         text.GetComponent<UnityEngine.UI.Text>().text = content;
         text.GetComponent<UnityEngine.UI.Text>().color = color;
-        Destroy(text, 5);
+        Destroy(text, time);
     }
 }

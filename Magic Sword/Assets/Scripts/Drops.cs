@@ -27,7 +27,7 @@ public class Drops : MonoBehaviour {
         EquippableItem helmet_item_1 = GenerateItem("helmet_1", new int[]{0, 0, 0, 30}, EquipmentType.Helmet);
 
         // boots
-        EquippableItem boots_item_0 = GenerateItem("boots_0", new int[]{0, 10, 0, 0}, EquipmentType.Boots);
+        EquippableItem boots_item_0 = GenerateItem("boots_0", new int[]{0, 50, 0, 0}, EquipmentType.Boots);
 
         // armor
         EquippableItem armor_item_0 = GenerateItem("armor_0", new int[]{0, 0, 0, 10}, EquipmentType.Armor);
@@ -60,20 +60,20 @@ public class Drops : MonoBehaviour {
         return item;
     }
 
-	public virtual void OnCollisionEnter2D(Collision2D coll) {
-		if (coll.gameObject.name == "Player") {
-            FindObjectOfType<AudioManager>().Play("pick_up");
-            if (item.equipmentType == EquipmentType.Consume) {
-                coll.gameObject.SendMessage("RestoreHealth", item.properties[0]);
-                Destroy(gameObject);
-                return;
-            }
-            bool success = FindObjectOfType<Inventory>().AddItem(this.item);
-			if(success){
-				Destroy(gameObject);
-			}
-		}
-	}
+    public virtual void OnCollisionEnter2D(Collision2D coll) {
+      if (coll.gameObject.name == "Player") {
+              FindObjectOfType<AudioManager>().Play("pick_up");
+              if (item.equipmentType == EquipmentType.Consume) {
+                  coll.gameObject.SendMessage("RestoreHealth", item.properties[0]);
+                  Destroy(gameObject);
+                  return;
+              }
+              bool success = FindObjectOfType<Inventory>().AddItem(this.item);
+        if(success){
+          Destroy(gameObject);
+        }
+      }
+    }
 
     public virtual void SetItem(string id, float deviation) {
         gameObject.tag = "Loot";

@@ -35,6 +35,7 @@ public class FallingSlime : Enemy {
     {
         health = 100;
         speed = 1;
+        attackPoint = 10;
         rangedAttackType = false;
         legendaryBar = 101;
         epicBar = 101;

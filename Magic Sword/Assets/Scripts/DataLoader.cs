@@ -59,6 +59,7 @@ public class DataLoader : MonoBehaviour
         player.playerStatus.manaBar = manaBar;
         player.playerStatus.healthBar = healthBar;
         player.playerStatus.CurrentHP = gameData.playerStatus.hpValue;
+        Debug.Log("DEBUG!   " + gameData.playerStatus.hpValue);
         player.playerStatus.CurrentMP = gameData.playerStatus.hpValue;
         GlobalStatic.inventoryUI.SetActive(true);
         Inventory inventory = FindObjectOfType<Inventory>();

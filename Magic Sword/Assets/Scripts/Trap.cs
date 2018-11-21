@@ -8,6 +8,7 @@ public class Trap : MonoBehaviour
     private bool attack;
     private float timeStart = 0;
     private bool startTiming = false;
+    private bool stab = false;
     private List<GameObject> objectsOnTrap = new List<GameObject>();
 
 
@@ -27,12 +28,12 @@ public class Trap : MonoBehaviour
             startTiming = true;
             timeStart = Time.time;
         }
-        if (startTiming && Time.time - timeStart > 0.15){
+        if (!stab && startTiming && Time.time - timeStart > 0.15){
             FindObjectOfType<AudioManager>().Play("trap");
         }
-        if (startTiming && Time.time - timeStart > 0.6)
+        if (!stab && startTiming && Time.time - timeStart > 0.3)
         {
-            startTiming = false;
+            stab = true;
             foreach (GameObject obj in objectsOnTrap)
             {
                 if(obj.tag == "Player"){
@@ -43,6 +44,10 @@ public class Trap : MonoBehaviour
 
 
             }
+        }
+        if (startTiming && Time.time - timeStart > 0.6){
+            startTiming = false;
+            stab = false;
         }
     }
 
@@ -57,13 +62,20 @@ public class Trap : MonoBehaviour
 
     void OnTriggerEnter2D(Collider2D collider1)
     {
-        attack = true;
         objectsOnTrap.Add(collider1.gameObject);
       
     }
+
+    void OnTriggerStay2D(Collider2D collider1)
+    {
+        if(!attack){
+            attack = true;
+        }
+
+    }
+
     void OnTriggerExit2D(Collider2D collider1){
         attack = false;
-        startTiming = false;
         objectsOnTrap.Remove(collider1.gameObject);
 
     }

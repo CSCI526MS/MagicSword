@@ -25,6 +25,7 @@ public class Player : MonoBehaviour {
     private bool isCoolDown;
     private bool isImmune;
     private bool invincible = false;
+    private bool dead = false;
 
     [SerializeField]
     public Stat playerStatus;
@@ -112,8 +113,9 @@ public class Player : MonoBehaviour {
         footstepSound = Array.Find(FindObjectOfType<AudioManager>().sounds, s => s.name=="footstep").source;
     }
 
-    private void Initialize()
+    public void Initialize()
     {
+        dead = false;
         playerStatus.Speed = 6;
         playerStatus.Attack = 10;
         playerStatus.Defense = 0;
@@ -122,7 +124,7 @@ public class Player : MonoBehaviour {
         playerStatus.CurrentMP = 100;
         playerStatus.MaxMP = 100;
         healthRegeneration = 0;
-        manaRegeneration = 3;
+        manaRegeneration = 2;
     }
 
 	// Update is called once per frame
@@ -134,7 +136,7 @@ public class Player : MonoBehaviour {
         Attack();
         CoolDown();
         AttackDirection();
-        if (isAttack)
+        if (dead || isAttack)
         {
             speed = 0;
         } 
@@ -392,6 +394,7 @@ public class Player : MonoBehaviour {
                 Broadcast("Game Over", Color.red, 1.5f, 180);
                 FindObjectOfType<AudioManager>().Play("game_over");
                 StartCoroutine(LoadScene("MainMenu"));
+                dead = true;
             }
             PopupTextController.CreatePopupText(damage.ToString(), transform, Color.red);
             isImmune = true;

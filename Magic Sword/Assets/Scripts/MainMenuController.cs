@@ -10,6 +10,7 @@ public class MainMenuController : MonoBehaviour {
         FindObjectOfType<AudioManager>().Play("select");
         LoadDataFromLocal(0);
         SceneManager.LoadScene("LevelOne");
+        GameObject.Find("Player").GetComponent<Player>().Initialize();
     }
 
     public void ContinueGame() {

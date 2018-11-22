@@ -46,7 +46,7 @@ public class ManaBar : MonoBehaviour {
         {
             if (shakingTimer>0)
             {
-                transform.position = originalPosition + Random.insideUnitCircle * 3;
+                transform.position = originalPosition + Random.insideUnitCircle * 5;
             }
             else
             {
@@ -69,7 +69,8 @@ public class ManaBar : MonoBehaviour {
     {
         if (barContent.fillAmount < actualAmount)
         {
-            barContent.fillAmount += 1.0f / waitTime * Time.deltaTime;
+            //barContent.fillAmount += 1.0f / waitTime * Time.deltaTime;
+            barContent.fillAmount = actualAmount;
         }
         if (barContent.fillAmount > actualAmount)
         {

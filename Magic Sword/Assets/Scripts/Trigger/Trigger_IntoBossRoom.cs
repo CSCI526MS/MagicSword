@@ -10,6 +10,7 @@ public class Trigger_IntoBossRoom : MonoBehaviour {
         {
             GameObject boss = GameObject.Find("Boss");
             boss.GetComponent<Boss>().Awake();
+            GameObject.Find("BossHealthBar").SetActive(true);
         }
     }
 }

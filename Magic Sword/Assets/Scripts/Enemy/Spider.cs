@@ -8,7 +8,7 @@ public class Spider : Enemy {
     {
         health = 100;
         speed = 2;
-        attackPoint = 10;
+        attackPoint = 15;
         rangedAttackType = false;
         legendaryBar = 100;
         epicBar = 90;

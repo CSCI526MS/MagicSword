@@ -476,7 +476,7 @@ Transform:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 199982754}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0.2, y: 69.7, z: -10}
+  m_LocalPosition: {x: -0.52, y: -0.47, z: -10}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
@@ -623,15 +623,15 @@ RectTransform:
   m_GameObject: {fileID: 415493955}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalScale: {x: 0.95944506, y: 0.9476, z: 0.9476}
   m_Children: []
   m_Father: {fileID: 1984847230}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 10.096, y: 7.9774}
-  m_SizeDelta: {x: 730.19, y: 38.845}
+  m_AnchoredPosition: {x: -1.7, y: 7.9774}
+  m_SizeDelta: {x: 733, y: 38.8}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &415493957
 MonoBehaviour:
@@ -2327,7 +2327,7 @@ Tilemap:
   - first: {x: 7, y: 3, z: 0}
     second:
       m_TileIndex: 2
-      m_TileSpriteIndex: 48
+      m_TileSpriteIndex: 79
       m_TileMatrixIndex: 0
       m_TileColorIndex: 0
       m_ObjectToInstantiate: {fileID: 0}
@@ -2597,7 +2597,7 @@ Tilemap:
   - first: {x: 6, y: 4, z: 0}
     second:
       m_TileIndex: 15
-      m_TileSpriteIndex: 44
+      m_TileSpriteIndex: 73
       m_TileMatrixIndex: 0
       m_TileColorIndex: 0
       m_ObjectToInstantiate: {fileID: 0}
@@ -8627,7 +8627,7 @@ Tilemap:
   - first: {x: -9, y: 23, z: 0}
     second:
       m_TileIndex: 46
-      m_TileSpriteIndex: 50
+      m_TileSpriteIndex: 60
       m_TileMatrixIndex: 0
       m_TileColorIndex: 0
       m_ObjectToInstantiate: {fileID: 0}
@@ -9302,7 +9302,7 @@ Tilemap:
   - first: {x: -6, y: 25, z: 0}
     second:
       m_TileIndex: 43
-      m_TileSpriteIndex: 49
+      m_TileSpriteIndex: 57
       m_TileMatrixIndex: 0
       m_TileColorIndex: 0
       m_ObjectToInstantiate: {fileID: 0}
@@ -13829,7 +13829,7 @@ Tilemap:
   - first: {x: 359, y: 48, z: 0}
     second:
       m_TileIndex: 62
-      m_TileSpriteIndex: 51
+      m_TileSpriteIndex: 53
       m_TileMatrixIndex: 0
       m_TileColorIndex: 0
       m_ObjectToInstantiate: {fileID: 0}

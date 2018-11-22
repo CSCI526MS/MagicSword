@@ -8,7 +8,7 @@ public class Rat : Enemy {
     {
         health = 80;
         speed = 3;
-        attackPoint = 15;
+        attackPoint = 10;
         rangedAttackType = false;
         legendaryBar = 100;
         epicBar = 90;

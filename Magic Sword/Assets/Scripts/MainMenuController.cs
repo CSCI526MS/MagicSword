@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using System.IO;
 
 public class MainMenuController : MonoBehaviour {
 
@@ -38,7 +39,6 @@ public class MainMenuController : MonoBehaviour {
         }
         else
         {
-            dataLoader.SetUI();
             SceneManager.LoadScene("LevelOne");
         }
     }

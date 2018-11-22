@@ -11,6 +11,11 @@ public class Trigger_IntoBossRoom : MonoBehaviour {
             GameObject boss = GameObject.Find("Boss");
             boss.GetComponent<Boss>().Awake();
             GameObject.Find("BossHealthBar").SetActive(true);
+            GameObject gate = GameObject.Find("Gate");
+            gate.GetComponent<SpriteRenderer>().enabled = true;
+            gate.GetComponent<BoxCollider2D>().enabled = true;
+            Destroy(gameObject);
+
         }
     }
 }

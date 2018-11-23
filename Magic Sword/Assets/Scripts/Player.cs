@@ -1,5 +1,6 @@
 using System.Collections;
 using UnityEngine;
+using UnityEngine.UI;
 using UnityEngine.SceneManagement;
 using UnityEngine.Audio;
 using System;
@@ -60,6 +61,7 @@ public class Player : MonoBehaviour {
     public Camera camera;
     public Animator transition;
     private GameObject transitionPanel;
+    public Text messageText;
 
     // for sprite flash (while immune)
     float flashTimer = 0;
@@ -371,7 +373,7 @@ public class Player : MonoBehaviour {
     {
         //Debug.Log("player371"+health);
         //PopupTextController.CreatePopupText("Door unlocked!", transform, Color.green);
-        Broadcast("Next level door unlocked!", Color.green, 5f, 100);
+        Broadcast("Next level door unlocked!", Color.green);
     }
 
 
@@ -391,11 +393,9 @@ public class Player : MonoBehaviour {
             damage = (int)(damage * (0.2+20/(float)(playerStatus.Defense+25)));
             playerStatus.CurrentHP -= damage;
             if (playerStatus.CurrentHP<=0) {
-                Broadcast("Game Over", Color.red, 1.5f, 180);
                 FindObjectOfType<AudioManager>().Play("game_over");
-                StartCoroutine(LoadScene("MainMenu"));
-                GlobalStatic.background.SetActive(true);
                 dead = true;
+                PlayTransisionAnimation("GAME OVER");
             }
             PopupTextController.CreatePopupText(damage.ToString(), transform, Color.red);
             isImmune = true;
@@ -525,23 +525,31 @@ public class Player : MonoBehaviour {
         invincible = b;
     }
 
-    IEnumerator LoadScene(string name) {
+    IEnumerator LoadScene() {
         transitionPanel.SetActive(true);
         transition.SetTrigger("start");
-        yield return new WaitForSeconds(0.8f);
-        SceneManager.LoadScene(name);
+        yield return new WaitForSeconds(1.5f);
+        Time.timeScale = 0f;
+    }
+
+    private void PlayTransisionAnimation(string text) {
+        messageText.text = text;
+        StartCoroutine(LoadScene());
+    }
+
+    private void DisablePanel() {
         transitionPanel.SetActive(false);
     }
 
-    private void Broadcast(string content, Color color, float time, int delta){
+    private void Broadcast(string content, Color color){
         GameObject canvas = GameObject.Find("Canvas");
         GameObject text = (GameObject)Resources.Load("Prefabs/Text");
         text = Instantiate(text);
         text.transform.SetParent(canvas.transform, false);
-        Vector2 screenPosition = new Vector2(Screen.width / 2+delta, Screen.height-100); 
+        Vector2 screenPosition = new Vector2(Screen.width / 2+100, Screen.height-100); 
         text.transform.position = screenPosition;
         text.GetComponent<UnityEngine.UI.Text>().text = content;
         text.GetComponent<UnityEngine.UI.Text>().color = color;
-        Destroy(text, time);
+        Destroy(text, 5);
     }
 }

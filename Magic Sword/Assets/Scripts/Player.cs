@@ -4,8 +4,10 @@ using UnityEngine.UI;
 using UnityEngine.SceneManagement;
 using UnityEngine.Audio;
 using System;
+using UnityEngine.EventSystems;
 
-public class Player : MonoBehaviour {
+public class Player : MonoBehaviour
+{
 
     // Next update in second
     private int nextUpdate = 1;
@@ -85,7 +87,7 @@ public class Player : MonoBehaviour {
     public GameObject flame;
 
     // Use this for initialization
-    void Start ()
+    void Start()
     {
         DontDestroyOnLoad(this.gameObject);
         Initialize();
@@ -112,7 +114,7 @@ public class Player : MonoBehaviour {
             transform.position = initPosition;
             initPosition = new Vector3(0, 0, 0);
         };
-        footstepSound = Array.Find(FindObjectOfType<AudioManager>().sounds, s => s.name=="footstep").source;
+        footstepSound = Array.Find(FindObjectOfType<AudioManager>().sounds, s => s.name == "footstep").source;
     }
 
     public void Initialize()
@@ -129,8 +131,8 @@ public class Player : MonoBehaviour {
         manaRegeneration = 2;
     }
 
-	// Update is called once per frame
-	void Update ()
+    // Update is called once per frame
+    void Update()
     {
         direction = joystick.Direction;
         Animation();
@@ -141,7 +143,7 @@ public class Player : MonoBehaviour {
         if (dead || isAttack)
         {
             speed = 0;
-        } 
+        }
         else
         {
             speed = playerStatus.Speed;
@@ -165,49 +167,74 @@ public class Player : MonoBehaviour {
             immuneTimer -= Time.deltaTime;
         }
 
-        if (isMove && !footstepSound.isPlaying) {
+        if (isMove && !footstepSound.isPlaying)
+        {
             footstepSound.Play();
         }
 
-        if (Input.GetMouseButtonDown(0) && !UnityEngine.EventSystems.EventSystem.current.IsPointerOverGameObject() && !joystick.isTouched())
+        Vector2 joystickPosition = new Vector2(joystick.handle.anchoredPosition.x, joystick.handle.anchoredPosition.y);
+
+        Touch[] touches = Input.touches;
+        Vector3 castPoint;
+        if (joystick.isTouched())
         {
-            Vector3 castPoint;
-            castPoint = Input.mousePosition;
-            castPoint.z = 0.0f;
-            Vector3 shootDirection = Camera.main.ScreenToWorldPoint(castPoint);
-            touchDirection = shootDirection - transform.position;
-            touchDirection.Normalize();
-            if (isCoolDown)
+            if (touches.Length > 1)
             {
-                if (currentSkill == CurrentSkill.FireBall && playerStatus.CurrentMP >= SKILL1_MANA_COST)
+                if (Input.GetTouch(1).phase == TouchPhase.Began && !EventSystem.current.IsPointerOverGameObject(Input.GetTouch(1).fingerId))
                 {
-                    FireBallAttack();
-                    isAttack = true;
-                    isCoolDown = false;
-                    FireBallButton.SetCurrentCoolDown(0);
+                    castPoint = touches[1].position;
+                    castPoint.z = 0.0f;
+                    Cast(castPoint);
                 }
-                else if (currentSkill == CurrentSkill.Meteor && playerStatus.CurrentMP >= SKILL2_MANA_COST)
-                {
-                    MeteorAttack();
-                    isAttack = true;
-                    isCoolDown = false;
-                    MeteorButton.SetCurrentCoolDown(0);
-                }
-                else if (currentSkill == CurrentSkill.Flame && playerStatus.CurrentMP >= SKILL3_MANA_COST)
-                {
-                    FlameAttack();
-                    isAttack = true;
-                    isCoolDown = false;
-                    FlameButton.SetCurrentCoolDown(0);
-                }
-                else
-                {
-                    OutOfMana();
-                }
-                DirectionUpdate(new Vector2(castPoint.x - Screen.width / 2, castPoint.y - Screen.height / 2));
             }
-		}
+        }
+        else if (touches.Length > 0 && Input.GetTouch(0).phase == TouchPhase.Began && !EventSystem.current.IsPointerOverGameObject(Input.GetTouch(0).fingerId))
+        {
+            castPoint = touches[0].position;
+            castPoint.z = 0.0f;
+            Cast(castPoint);
+           
+        }
+
+
     }
+
+    private void Cast(Vector2 castPoint){
+        Vector3 shootDirection = Camera.main.ScreenToWorldPoint(castPoint);
+        touchDirection = shootDirection - transform.position;
+        touchDirection.Normalize();
+        if (isCoolDown)
+        {
+            if (currentSkill == CurrentSkill.FireBall && playerStatus.CurrentMP >= SKILL1_MANA_COST)
+            {
+                FireBallAttack();
+                isAttack = true;
+                isCoolDown = false;
+                FireBallButton.SetCurrentCoolDown(0);
+            }
+            else if (currentSkill == CurrentSkill.Meteor && playerStatus.CurrentMP >= SKILL2_MANA_COST)
+            {
+                MeteorAttack(shootDirection);
+                isAttack = true;
+                isCoolDown = false;
+                MeteorButton.SetCurrentCoolDown(0);
+            }
+            else if (currentSkill == CurrentSkill.Flame && playerStatus.CurrentMP >= SKILL3_MANA_COST)
+            {
+                FlameAttack();
+                isAttack = true;
+                isCoolDown = false;
+                FlameButton.SetCurrentCoolDown(0);
+            }
+            else
+            {
+                OutOfMana();
+            }
+            //DirectionUpdate(new Vector2(castPoint.x - Screen.width / 2, castPoint.y - Screen.height / 2));
+            DirectionUpdate(new Vector2(shootDirection.x - gameObject.transform.position.x, shootDirection.y - gameObject.transform.position.y));
+        }
+    }
+
 
     private void LateUpdate()
     {
@@ -243,8 +270,10 @@ public class Player : MonoBehaviour {
         {
             isMove = false;
         }
+        if(!isAttack){
+            DirectionUpdate(direction);
+        }
 
-        DirectionUpdate(direction);
 
     }
 
@@ -499,23 +528,23 @@ public class Player : MonoBehaviour {
         clone.transform.parent = gameObject.transform;
     }
 
-    private void MeteorAttack() {
+    private void MeteorAttack(Vector2 shootPosition) {
         playerStatus.CurrentMP -= SKILL2_MANA_COST;
         Vector3 touchPoint;
-        touchPoint = Input.mousePosition;
+        touchPoint = shootPosition;
         touchPoint.z = 0.0f;
-        Debug.DrawLine(transform.position, Camera.main.ScreenToWorldPoint(touchPoint), Color.red, 3);
+        //Debug.DrawLine(transform.position, Camera.main.ScreenToWorldPoint(touchPoint), Color.red, 3);
         Vector2 castPoint;
-        RaycastHit2D barrier = Physics2D.Linecast(transform.position, Camera.main.ScreenToWorldPoint(touchPoint), 1 << LayerMask.NameToLayer("Wall"));
+        RaycastHit2D barrier = Physics2D.Linecast(transform.position, touchPoint, 1 << LayerMask.NameToLayer("Wall"));
 
         if (barrier.collider) {// if there is a barrier between player and cast point;
-            castPoint = Camera.main.WorldToScreenPoint(barrier.point);
+            castPoint = barrier.point;
         }
         else{
             castPoint = touchPoint;
         }
-        DirectionUpdate(new Vector2(castPoint.x - Screen.width / 2, castPoint.y - Screen.height / 2));
-        castPoint = Camera.main.ScreenToWorldPoint(castPoint);
+        //DirectionUpdate(new Vector2(castPoint.x - Screen.width / 2, castPoint.y - Screen.height / 2));
+        //castPoint = Camera.main.ScreenToWorldPoint(castPoint);
 
         GameObject newMeteor = Instantiate(meteor) as GameObject;
         FindObjectOfType<Meteor>().Create(castPoint);

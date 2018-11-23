@@ -204,6 +204,7 @@ public class Boss : MonoBehaviour {
             dead = true;
             player.GetComponent<Player>().SetInvincible(true);
             gameObject.GetComponent<CapsuleCollider2D>().enabled = false;
+            player.SendMessage("PlayTransisionAnimation", "congratulations!\nYou Win!");
         }
     }
 

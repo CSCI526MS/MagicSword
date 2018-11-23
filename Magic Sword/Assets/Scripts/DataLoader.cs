@@ -23,8 +23,8 @@ public class DataLoader : MonoBehaviour
         root = Application.streamingAssetsPath;
 #endif
         GlobalStatic.canvas.SetActive(false);
-        GlobalStatic.player.GetComponent<SpriteRenderer>().enabled = false;
-        GlobalStatic.inventoryUI.SetActive(false);
+        //GlobalStatic.player.GetComponent<SpriteRenderer>().enabled = false;
+        //GlobalStatic.inventoryUI.SetActive(false);
     }
 
     public bool LoadGameData(int mode)
@@ -56,10 +56,10 @@ public class DataLoader : MonoBehaviour
     public void LoadPlayerProgress()
     {
         GlobalStatic.background = GameObject.FindGameObjectWithTag("Background");
-        GlobalStatic.background.SetActive(false);
-        GlobalStatic.inventoryUI.SetActive(true);
+        //GlobalStatic.background.SetActive(false);
+        //GlobalStatic.inventoryUI.SetActive(true);
         GlobalStatic.canvas.SetActive(true);
-        GlobalStatic.player.SetActive(true);
+        //GlobalStatic.player.SetActive(true);
         GlobalStatic.inventoryUI.SetActive(true);
         Player player = FindObjectOfType<Player>();
         player.initPosition = gameData.coordinate;

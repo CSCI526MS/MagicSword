@@ -317,12 +317,12 @@ public class Enemy : MonoBehaviour {
             else if (random < rareBar)
             {
                 int ind = (int)Random.Range(0, (float)(common.Length - 0.000001));
-                id = epic[ind];
+                id = common[ind];
             }
             else if (random < epicBar)
             {
                 int ind = (int)Random.Range(0, (float)(rare.Length - 0.000001));
-                id = legendary[ind];
+                id = rare[ind];
             }
             else if (random < legendaryBar)
             {

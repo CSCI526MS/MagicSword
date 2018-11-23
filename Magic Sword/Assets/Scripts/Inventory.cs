@@ -59,11 +59,7 @@ public class Inventory : MonoBehaviour {
 	}
 
     private void OnValidate() {
-        Debug.Log("itemsParent ");
         if (itemsParent != null) {
-
-            Debug.Log("inventorySlots ");
-            // itemsParent = GameObject.FindWithTag("InventoryPanel");
             inventorySlots = itemsParent.GetComponentsInChildren<InventorySlot>();
         }
 

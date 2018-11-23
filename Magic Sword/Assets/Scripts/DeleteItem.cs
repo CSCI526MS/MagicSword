@@ -7,7 +7,6 @@ public class DeleteItem : MonoBehaviour {
   private static InventoryUI inventoryUI;
   
   void Start() {
-    Debug.Log("should confirm delete button");
     if (inventoryUI == null)
     {
         inventoryUI = FindObjectOfType<InventoryUI>();

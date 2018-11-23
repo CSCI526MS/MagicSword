@@ -13,6 +13,6 @@ public class Rat : Enemy {
         legendaryBar = 100;
         epicBar = 90;
         rareBar = 60;
-        commonBar = 30;
+        commonBar = 10;
     }
 }

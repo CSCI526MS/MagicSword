@@ -18,9 +18,9 @@ public class Drops : MonoBehaviour {
         EquippableItem hp_potion_2 = GenerateItem("hp_potion_2", new int[]{70, 0, 0, 0}, EquipmentType.Consume);
         
         // weapon
-        EquippableItem weapon_item_0 = GenerateItem("weapon_0", new int[]{0, 0, 10, 0}, EquipmentType.Weapon);
-        EquippableItem weapon_item_1 = GenerateItem("weapon_1", new int[]{0, 0, 30, 0}, EquipmentType.Weapon);
-        EquippableItem weapon_item_2 = GenerateItem("weapon_2", new int[]{0, 0, 70, 0}, EquipmentType.Weapon);
+        EquippableItem weapon_item_0 = GenerateItem("weapon_0", new int[]{0, 0, 50, 0}, EquipmentType.Weapon);
+        EquippableItem weapon_item_1 = GenerateItem("weapon_1", new int[]{0, 0, 100, 0}, EquipmentType.Weapon);
+        EquippableItem weapon_item_2 = GenerateItem("weapon_2", new int[]{0, 0, 200, 0}, EquipmentType.Weapon);
         
         // helmets
         EquippableItem helmet_item_0 = GenerateItem("helmet_0", new int[]{0, 0, 0, 10}, EquipmentType.Helmet);

@@ -121,8 +121,8 @@ public class Player : MonoBehaviour {
         playerStatus.Speed = 6;
         playerStatus.Attack = 10;
         playerStatus.Defense = 0;
-        playerStatus.CurrentHP = 100;
-        playerStatus.MaxHP = 100;
+        playerStatus.CurrentHP = 1000;
+        playerStatus.MaxHP = 1000;
         playerStatus.CurrentMP = 100;
         playerStatus.MaxMP = 100;
         healthRegeneration = 0;

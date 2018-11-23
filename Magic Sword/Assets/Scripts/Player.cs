@@ -231,7 +231,7 @@ public class Player : MonoBehaviour
                 OutOfMana();
             }
             //DirectionUpdate(new Vector2(castPoint.x - Screen.width / 2, castPoint.y - Screen.height / 2));
-            DirectionUpdate(new Vector2(castPoint.x - gameObject.transform.position.x, castPoint.y - gameObject.transform.position.y));
+            DirectionUpdate(new Vector2(shootDirection.x - gameObject.transform.position.x, shootDirection.y - gameObject.transform.position.y));
         }
     }
 
@@ -270,8 +270,10 @@ public class Player : MonoBehaviour
         {
             isMove = false;
         }
+        if(!isAttack){
+            DirectionUpdate(direction);
+        }
 
-        DirectionUpdate(direction);
 
     }
 
@@ -531,18 +533,18 @@ public class Player : MonoBehaviour
         Vector3 touchPoint;
         touchPoint = shootPosition;
         touchPoint.z = 0.0f;
-        Debug.DrawLine(transform.position, Camera.main.ScreenToWorldPoint(touchPoint), Color.red, 3);
+        //Debug.DrawLine(transform.position, Camera.main.ScreenToWorldPoint(touchPoint), Color.red, 3);
         Vector2 castPoint;
-        RaycastHit2D barrier = Physics2D.Linecast(transform.position, Camera.main.ScreenToWorldPoint(touchPoint), 1 << LayerMask.NameToLayer("Wall"));
+        RaycastHit2D barrier = Physics2D.Linecast(transform.position, touchPoint, 1 << LayerMask.NameToLayer("Wall"));
 
         if (barrier.collider) {// if there is a barrier between player and cast point;
-            castPoint = Camera.main.WorldToScreenPoint(barrier.point);
+            castPoint = barrier.point;
         }
         else{
             castPoint = touchPoint;
         }
-        DirectionUpdate(new Vector2(castPoint.x - Screen.width / 2, castPoint.y - Screen.height / 2));
-        castPoint = Camera.main.ScreenToWorldPoint(castPoint);
+        //DirectionUpdate(new Vector2(castPoint.x - Screen.width / 2, castPoint.y - Screen.height / 2));
+        //castPoint = Camera.main.ScreenToWorldPoint(castPoint);
 
         GameObject newMeteor = Instantiate(meteor) as GameObject;
         FindObjectOfType<Meteor>().Create(castPoint);

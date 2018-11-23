@@ -9,6 +9,7 @@ public class Trap : MonoBehaviour
     private float timeStart = 0;
     private bool startTiming = false;
     private bool stab = false;
+    private bool playSound = false;
     private List<GameObject> objectsOnTrap = new List<GameObject>();
 
 
@@ -28,8 +29,9 @@ public class Trap : MonoBehaviour
             startTiming = true;
             timeStart = Time.time;
         }
-        if (!stab && startTiming && Time.time - timeStart > 0.15){
+        if (!playSound && !stab && startTiming && Time.time - timeStart > 0.15){
             FindObjectOfType<AudioManager>().Play("trap");
+            playSound = true;
         }
         if (!stab && startTiming && Time.time - timeStart > 0.3)
         {
@@ -48,6 +50,7 @@ public class Trap : MonoBehaviour
         if (startTiming && Time.time - timeStart > 0.6){
             startTiming = false;
             stab = false;
+            playSound = false;
         }
     }
 

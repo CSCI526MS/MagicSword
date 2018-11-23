@@ -394,6 +394,7 @@ public class Player : MonoBehaviour {
                 Broadcast("Game Over", Color.red, 1.5f, 180);
                 FindObjectOfType<AudioManager>().Play("game_over");
                 StartCoroutine(LoadScene("MainMenu"));
+                GlobalStatic.background.SetActive(true);
                 dead = true;
             }
             PopupTextController.CreatePopupText(damage.ToString(), transform, Color.red);

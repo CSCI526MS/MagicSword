@@ -16,6 +16,9 @@ TagManager:
   - Transition
   - InventoryUI
   - Gate
+  - door
+  - MainUICanvas
+  - Background
   layers:
   - Default
   - TransparentFX

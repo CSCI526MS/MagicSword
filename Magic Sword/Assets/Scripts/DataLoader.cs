@@ -10,7 +10,8 @@ public class DataLoader : MonoBehaviour
     private readonly string gameDataFileName = "data.json";
     private readonly string newGameDataFileName = "data.default.json";
     private string root;
-    private static GameObject inventoryUI;
+    public InventoryUI inventoryUI;
+    public Inventory inventory;
 
     void Start()
     {
@@ -21,10 +22,9 @@ public class DataLoader : MonoBehaviour
 #else
         root = Application.streamingAssetsPath;
 #endif
-        if (inventoryUI == null)
-        {
-            inventoryUI = GameObject.FindWithTag("InventoryUI");
-        }
+        GlobalStatic.canvas.SetActive(false);
+        GlobalStatic.player.GetComponent<SpriteRenderer>().enabled = false;
+        GlobalStatic.inventoryUI.SetActive(false);
     }
 
     public bool LoadGameData(int mode)
@@ -55,6 +55,12 @@ public class DataLoader : MonoBehaviour
 
     public void LoadPlayerProgress()
     {
+        GlobalStatic.background = GameObject.FindGameObjectWithTag("Background");
+        GlobalStatic.background.SetActive(false);
+        GlobalStatic.inventoryUI.SetActive(true);
+        GlobalStatic.canvas.SetActive(true);
+        GlobalStatic.player.SetActive(true);
+        GlobalStatic.inventoryUI.SetActive(true);
         Player player = FindObjectOfType<Player>();
         player.initPosition = gameData.coordinate;
         ManaBar manaBar = player.playerStatus.manaBar;
@@ -65,15 +71,16 @@ public class DataLoader : MonoBehaviour
         Debug.Log(gameData.playerStatus.hpValue);
         player.playerStatus.CurrentHP = gameData.playerStatus.hpValue;
         player.playerStatus.CurrentMP = gameData.playerStatus.mpValue;
-        GlobalStatic.inventoryUI.SetActive(true);
-        Inventory inventory = FindObjectOfType<Inventory>();
-        InventoryUI inventoryUI = FindObjectOfType<InventoryUI>();
+        inventory = FindObjectOfType<Inventory>();
+        inventoryUI = FindObjectOfType<InventoryUI>();
+        Debug.Log(inventoryUI);
+        Debug.Log(inventoryUI.inventory);
+        Debug.Log(inventoryUI.inventory.inventorySlots);
         InventorySlot[] inventorySlots = FindObjectsOfType<InventorySlot>();
         EquipmentSlot[] equipmentSlots = FindObjectsOfType<EquipmentSlot>();
         GlobalStatic.keyStatus = gameData.keyStatus;
         for (int i = 0; i < GlobalStatic.inventorySlotNum; i++)
         {
-            Debug.Log(gameData.inventorySlots[i].itemId);
             if (!gameData.inventorySlots[i].itemId.Equals("")){
                 ItemData newItemData = gameData.inventorySlots[i];
                 inventory.itemList[i] = new EquippableItem
@@ -132,6 +139,7 @@ public class DataLoader : MonoBehaviour
     }
 
     public void SetUI(){
-        inventoryUI.SetActive(false);
+        GlobalStatic.inventoryUI.SetActive(false);
+        GlobalStatic.player.GetComponent<SpriteRenderer>().enabled = true;
     }
 }

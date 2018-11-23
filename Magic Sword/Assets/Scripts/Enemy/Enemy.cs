@@ -299,7 +299,7 @@ public class Enemy : MonoBehaviour {
             default: id = "key_0"; level = 0; break;
         }
         
-        if (GameObject.FindGameObjectsWithTag("Slime").Length <= 7 && GlobalStatic.keyStatus[level] == false)
+        if (GameObject.FindGameObjectsWithTag("Slime").Length <= 5 && GlobalStatic.keyStatus[level] == false)
         {
 
             GlobalStatic.keyStatus[level] = true;

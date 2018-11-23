@@ -169,7 +169,7 @@ public class Player : MonoBehaviour {
             footstepSound.Play();
         }
 
-        if (Input.GetMouseButtonDown(0) && !UnityEngine.EventSystems.EventSystem.current.IsPointerOverGameObject())
+        if (Input.GetMouseButtonDown(0) && !UnityEngine.EventSystems.EventSystem.current.IsPointerOverGameObject() && !joystick.isTouched())
         {
             Vector3 castPoint;
             castPoint = Input.mousePosition;

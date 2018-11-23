@@ -26,8 +26,9 @@ public class Key : Drops {
             {
                 coll.gameObject.SendMessage("Getkey");
                 Destroy(gameObject);
-                var gate = GameObject.Find("Gate");
-                Destroy(gate);
+                GameObject gate = GameObject.Find("Gate");
+                gate.GetComponent<SpriteRenderer>().enabled = false;
+                gate.GetComponent<BoxCollider2D>().enabled = false;
                 return;
             }
         }

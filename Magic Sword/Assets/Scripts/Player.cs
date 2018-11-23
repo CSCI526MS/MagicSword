@@ -421,6 +421,7 @@ public class Player : MonoBehaviour
             playerStatus.CurrentHP -= damage;
             if (playerStatus.CurrentHP<=0) {
                 FindObjectOfType<AudioManager>().Play("game_over");
+                GlobalStatic.canvas.SetActive(false);
                 dead = true;
                 PlayTransisionAnimation("GAME OVER");
             }

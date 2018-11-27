@@ -605,7 +605,7 @@ GameObject:
   - component: {fileID: 220628241}
   - component: {fileID: 220628212}
   - component: {fileID: 220628199}
-  m_Layer: 0
+  m_Layer: 12
   m_Name: Grid
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -3093,7 +3093,7 @@ GameObject:
   - component: {fileID: 1259022396}
   - component: {fileID: 1259022398}
   - component: {fileID: 1259022397}
-  m_Layer: 0
+  m_Layer: 12
   m_Name: down
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -56602,7 +56602,7 @@ GameObject:
   - component: {fileID: 1283646169}
   - component: {fileID: 1283646171}
   - component: {fileID: 1283646170}
-  m_Layer: 0
+  m_Layer: 12
   m_Name: up
   m_TagString: Untagged
   m_Icon: {fileID: 0}

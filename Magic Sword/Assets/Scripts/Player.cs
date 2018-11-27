@@ -28,7 +28,6 @@ public class Player : MonoBehaviour
     private bool isCoolDown;
     private bool isImmune;
     private bool invincible = false;
-    private bool dead = false;
 
     [SerializeField]
     public Stat playerStatus;
@@ -43,7 +42,7 @@ public class Player : MonoBehaviour
     private Vector2 direction;
     private Vector2 touchDirection;
 
-    private readonly float ATTACK_COOLDOWN_TIME = 0.7f;
+    private readonly float ATTACK_COOLDOWN_TIME = 0.5f;
     private float skillCoolDownTime = 1f;
     private readonly float IMMUNE_TIME = 2f;
     private int speed;
@@ -73,9 +72,9 @@ public class Player : MonoBehaviour
     enum CurrentSkill { FireBall, Meteor, Flame };
     private CurrentSkill currentSkill;
     private Skill skill;
-    private readonly int SKILL1_MANA_COST = 5;
-    private readonly int SKILL2_MANA_COST = 20;
-    private readonly int SKILL3_MANA_COST = 15;
+    private readonly int SKILL1_MANA_COST = 1;
+    private readonly int SKILL2_MANA_COST = 15;
+    private readonly int SKILL3_MANA_COST = 20;
 
     // meteor
     public GameObject meteor;
@@ -119,7 +118,6 @@ public class Player : MonoBehaviour
 
     public void Initialize()
     {
-        dead = false;
         playerStatus.Speed = 6;
         playerStatus.Attack = 10;
         playerStatus.Defense = 0;
@@ -128,7 +126,7 @@ public class Player : MonoBehaviour
         playerStatus.CurrentMP = 100;
         playerStatus.MaxMP = 100;
         healthRegeneration = 0;
-        manaRegeneration = 2;
+        manaRegeneration = 3;
     }
 
     // Update is called once per frame
@@ -140,7 +138,7 @@ public class Player : MonoBehaviour
         Attack();
         CoolDown();
         AttackDirection();
-        if (dead || isAttack)
+        if (isAttack)
         {
             speed = 0;
         }
@@ -424,7 +422,6 @@ public class Player : MonoBehaviour
             if (playerStatus.CurrentHP<=0) {
                 FindObjectOfType<AudioManager>().Play("game_over");
                 GlobalStatic.canvas.SetActive(false);
-                dead = true;
                 PlayTransisionAnimation("GAME OVER");
             }
             PopupTextController.CreatePopupText(damage.ToString(), transform, Color.red);

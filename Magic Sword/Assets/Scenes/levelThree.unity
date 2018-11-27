@@ -1369,7 +1369,7 @@ GameObject:
   - component: {fileID: 428221517}
   - component: {fileID: 428221519}
   - component: {fileID: 428221520}
-  m_Layer: 0
+  m_Layer: 12
   m_Name: Map 2 down
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -22917,7 +22917,7 @@ GameObject:
   - component: {fileID: 1267747066}
   - component: {fileID: 1267747068}
   - component: {fileID: 1267747067}
-  m_Layer: 0
+  m_Layer: 12
   m_Name: Grid
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -23826,7 +23826,7 @@ GameObject:
   - component: {fileID: 1396763660}
   - component: {fileID: 1396763662}
   - component: {fileID: 1396763661}
-  m_Layer: 0
+  m_Layer: 12
   m_Name: Map 2 up
   m_TagString: Untagged
   m_Icon: {fileID: 0}

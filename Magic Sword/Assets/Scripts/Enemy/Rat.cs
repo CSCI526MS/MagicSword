@@ -6,7 +6,7 @@ public class Rat : Enemy {
 
     protected override void Initialize()
     {
-        health = 80;
+        health = 60;
         speed = 3;
         attackPoint = 10;
         rangedAttackType = false;

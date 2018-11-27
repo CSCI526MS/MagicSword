@@ -6,7 +6,7 @@ public class GoblinSniper : Enemy {
 
     protected override void Initialize()
     {
-        health = 40;
+        health = 25;
         speed = 1;
         attackPoint = 5;
         rangedAttackType = true;

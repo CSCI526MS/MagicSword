@@ -6,7 +6,7 @@ public class Spider : Enemy {
 
     protected override void Initialize()
     {
-        health = 100;
+        health = 50;
         speed = 2;
         attackPoint = 15;
         rangedAttackType = false;

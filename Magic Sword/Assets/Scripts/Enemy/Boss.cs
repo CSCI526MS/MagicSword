@@ -93,7 +93,7 @@ public class Boss : MonoBehaviour {
 
     private void initialize(){
         awake = false;
-        health = 10;
+        health = 1000;
         speed = 1;
         healthBar.MaxValue = health;
         moveDirection = 2;

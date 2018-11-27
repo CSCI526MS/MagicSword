@@ -5,7 +5,7 @@ using UnityEngine;
 public class Slime : Enemy {
 
     protected override void Initialize() {
-        health = 60;
+        health = 40;
         speed = 1;
         attackPoint = 10;
         rangedAttackType = false;

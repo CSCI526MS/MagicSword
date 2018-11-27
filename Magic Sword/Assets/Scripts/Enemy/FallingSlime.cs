@@ -33,7 +33,7 @@ public class FallingSlime : Enemy {
 
     protected override void Initialize()
     {
-        health = 100;
+        health = 60;
         speed = 1;
         attackPoint = 10;
         rangedAttackType = false;

@@ -33,7 +33,7 @@ public class DataSaver : MonoBehaviour
         string filePath = Path.Combine(root, gameDataFileName);
         if (!File.Exists(filePath))
         {
-            File.Create(filePath);
+            File.Create(filePath).Dispose();
         }
         File.WriteAllText(filePath, dataAsJson);
     }
@@ -49,7 +49,6 @@ public class DataSaver : MonoBehaviour
         gameData.keyStatus = GlobalStatic.keyStatus;
         for (int i = 0; i < GlobalStatic.inventorySlotNum; i++)
         {
-            Debug.Log(i);
             if (inventorySlots[i].item != null)
             {
                 gameData.inventorySlots[i].itemId = inventorySlots[i].item.itemId;
@@ -64,7 +63,6 @@ public class DataSaver : MonoBehaviour
         }
         for (int i = 0; i < GlobalStatic.equipmentSlotNum; i++)
         {
-            Debug.Log(equipmentSlots[i].item);
             if (equipmentSlots[i].item != null)
             {
                 gameData.equipmentSlots[i].itemId = equipmentSlots[i].item.itemId;

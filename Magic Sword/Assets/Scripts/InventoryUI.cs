@@ -96,7 +96,6 @@ public class InventoryUI : MonoBehaviour {
 
                 if (selectedSlot != null)
                 {
-                    Debug.Log("click selectedSlot first time");
                     // update selected slot UI
                     EquippableItem selectedItem = selectedSlot.Item as EquippableItem;
                     Sprite tmpicon = selectedItem.icon;
@@ -189,12 +188,10 @@ public class InventoryUI : MonoBehaviour {
 			}
 			
       if (draggedSlot == selectedSlot) {
-				Debug.Log("this draggedSlot is selectedSlot");
 				selectedSlot = dropItemSlot;
         
 			}
       else if (dropItemSlot == selectedSlot) {
-			 	Debug.Log("this draggedSlot is selectedSlot");
 			 	selectedSlot = draggedSlot;
 			 }
 
@@ -227,7 +224,6 @@ public class InventoryUI : MonoBehaviour {
 	{
 		if (inventory.RemoveItemFromSlots(item))
 		{
-            Debug.Log("Removed");
 			EquippableItem previousItem;
 			if (equipmentPanel.AddItem(item, out previousItem))
 			{

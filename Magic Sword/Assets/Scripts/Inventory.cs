@@ -9,10 +9,6 @@ public class Inventory : MonoBehaviour {
     [SerializeField] GameObject itemsParent;
 
     public bool AddItem (EquippableItem item) {
-		// Debug.Log("item put in the bag");
-        Debug.Log("item.EquipmentType = " + item.equipmentType);
-        Debug.Log("item.hp = " + item.properties[0]);
-        Debug.Log("item.itemId = " + item.itemId);
         for (int i = 0; i < inventorySlots.Length; i++) {
             if (inventorySlots[i].Item == null) {
                 inventorySlots[i].Item = item;

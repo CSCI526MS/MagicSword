@@ -26,7 +26,7 @@ GameObject:
   - component: {fileID: 114884242838838434}
   m_Layer: 9
   m_Name: FallingSlime
-  m_TagString: Slime
+  m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -108,6 +108,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 673fb3c7cefd84a9ba23c6ac2067eef9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  legendaryBar: 0
+  epicBar: 0
+  rareBar: 0
+  commonBar: 0
   projectile: {fileID: 0}
 --- !u!212 &212249696070335090
 SpriteRenderer:

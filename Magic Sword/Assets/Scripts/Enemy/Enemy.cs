@@ -92,18 +92,6 @@ public class Enemy : MonoBehaviour {
             Animation();
             MonsterAttacks();
 
-            //direction = target.position - transform.position;
-            //float distanceSquare = direction.x * direction.x + direction.y * direction.y;
-            //move = (distanceSquare < 64 && distanceSquare > 2) ? true : false;
-
-            //moveDirection = getMoveDirection(direction);
-            //if (move)
-            //{
-            //    transform.position = Vector2.MoveTowards(transform.position, target.position, speed * Time.deltaTime);
-            //}
-            //Debug.Log(lastSpot);
-
-
             // if enemy not aware and player is in sight
             if (!aware && Vector2.Distance(transform.position, GameObject.Find("Player").transform.position) < 10 && !Physics2D.Linecast(transform.position, player.position, 1 << LayerMask.NameToLayer("Wall")).collider)
             {
@@ -287,21 +275,21 @@ public class Enemy : MonoBehaviour {
     public void DropItems()
     {
         int random = Random.Range(0, 100);
-        Debug.Log("random" + random);
+
         string id;
         int level;
       
         switch (SceneManager.GetActiveScene().name)
         {
             case "LevelOne": id = "key_0"; level = 0; break;
-            case "LevelTwo": id = "key_1"; level = 1;   break;
+            case "LevelTwo": id = "key_1"; level = 1; break;
             case "LevelThree": id = "key_2"; level = 2; break;
             default: id = "key_0"; level = 0; break;
         }
-        
-        if (GameObject.FindGameObjectsWithTag("Slime").Length <= 5 && GlobalStatic.keyStatus[level] == false)
+        Debug.Log(FindObjectsOfType<Enemy>().Length);
+        Debug.Log(GlobalStatic.keyStatus[2]);
+        if (FindObjectsOfType<Enemy>().Length <= 5 && GlobalStatic.keyStatus[level] == false)
         {
-
             GlobalStatic.keyStatus[level] = true;
             GameObject key = (GameObject)Resources.Load("Prefabs/key");
             key = Instantiate(key) as GameObject;

@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class Key : Drops {
     public override void SetItem(string id, float deviation)
@@ -26,7 +27,15 @@ public class Key : Drops {
             {
                 coll.gameObject.SendMessage("Getkey");
                 Destroy(gameObject);
-                GameObject gate = GameObject.Find("Gate");
+                string gateName;
+                switch(SceneManager.GetActiveScene().name)
+                {
+                    case "LevelOne": gateName = "Gate_1"; break;
+                    case "LevelTwo": gateName = "Gate_2"; break;
+                    case "LevelThree": gateName = "Gate_3"; break;
+                    default: gateName = ""; break;
+                }
+                GameObject gate = GameObject.Find(gateName);
                 gate.GetComponent<SpriteRenderer>().enabled = false;
                 gate.GetComponent<BoxCollider2D>().enabled = false;
                 return;

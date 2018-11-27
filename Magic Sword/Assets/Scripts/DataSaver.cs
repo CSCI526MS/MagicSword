@@ -78,11 +78,13 @@ public class DataSaver : MonoBehaviour
         }
         switch (SceneManager.GetActiveScene().name){
             case "LevelOne":
-                gameData.level = 1;break;
+                gameData.level = 1; break;
             case "LevelTwo":
-                gameData.level = 2;break;
+                gameData.level = 2; break;
+            case "LevelThree":
+                gameData.level = 3; break;
             default:
-                gameData.level = 1;break;
+                gameData.level = 1; break;
         }
     }
 }

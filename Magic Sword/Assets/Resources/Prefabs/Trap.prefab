@@ -23,7 +23,7 @@ GameObject:
   - component: {fileID: 95863313154544882}
   - component: {fileID: 114756948322213416}
   - component: {fileID: 61760922773669648}
-  m_Layer: 9
+  m_Layer: 18
   m_Name: Trap
   m_TagString: Trap
   m_Icon: {fileID: 0}
@@ -131,7 +131,7 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: 8
+  m_SortingOrder: 7
   m_Sprite: {fileID: 21300432, guid: 60be683c2c17447faaf54db8900cbf21, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0

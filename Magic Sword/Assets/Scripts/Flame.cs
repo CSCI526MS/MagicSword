@@ -29,9 +29,10 @@ public class Flame : MonoBehaviour {
             enemies[i].GetComponent<Enemy>().TakeDamage(attack);
         }
 
-        Collider2D boss = Physics2D.OverlapCircle(transform.position, 2.8f, bossLayer);
-        if (boss != null) {
-            boss.GetComponent<Boss>().TakeDamage(attack);
+        Collider2D[] boss = Physics2D.OverlapCircleAll(transform.position, 2.8f, bossLayer);
+        for (int i = 0; i < boss.Length; i++)
+        {
+            boss[i].GetComponent<Boss>().TakeDamage(attack);
         }
     }
 }

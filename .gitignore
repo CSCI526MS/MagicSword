@@ -39,3 +39,5 @@ Magic Sword/ProjectSettings/ProjectVersion.txt
 Magic Sword/Assets/Scripts/.DS_Store
 Magic Sword/Assets/.DS_Store
 Magic Sword/.DS_Store
+*.meta
+*.meta

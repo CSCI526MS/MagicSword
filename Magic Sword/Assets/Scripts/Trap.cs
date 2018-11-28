@@ -33,14 +33,14 @@ public class Trap : MonoBehaviour
             FindObjectOfType<AudioManager>().Play("trap");
             playSound = true;
         }
-        if (!stab && startTiming && Time.time - timeStart > 0.3)
+        if (!stab && attack && startTiming && Time.time - timeStart > 0.3)
         {
             stab = true;
             foreach (GameObject obj in objectsOnTrap)
             {
-                if(obj.tag == "Player"){
+                if(objectsOnTrap.Contains(obj) && obj.tag == "Player"){
                     GameObject.Find("Player").GetComponent<Player>().TakeDamage(5);
-                }else if(obj.layer == LayerMask.NameToLayer("Enemy")){
+                }else if(objectsOnTrap.Contains(obj) &&  obj.layer == LayerMask.NameToLayer("Enemy")){
                     obj.GetComponent<Enemy>().TakeDamage(5);
                 }
 

@@ -39,7 +39,7 @@ public class FallingSlime : Enemy {
         rangedAttackType = false;
         legendaryBar = 101;
         epicBar = 101;
-        rareBar = 101;
-        commonBar = 100;
+        rareBar = 100;
+        commonBar = 50;
     }
 }

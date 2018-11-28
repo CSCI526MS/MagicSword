@@ -119,7 +119,7 @@ public class Boss : MonoBehaviour {
     }
 
     private void SummonMinions(){
-        for (int i = 0; i < 3;i++){
+        for (int i = 0; i < 4;i++){
             GameObject slime = (GameObject)Resources.Load("Prefabs/Enemy/FallingSlime");
 
             float randomX = Random.Range(minX, maxX);

@@ -1207,7 +1207,7 @@ GameObject:
   - component: {fileID: 415493958}
   - component: {fileID: 415493957}
   m_Layer: 5
-  m_Name: barContent
+  m_Name: bossBarContent
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

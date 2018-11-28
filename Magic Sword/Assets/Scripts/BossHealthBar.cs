@@ -29,6 +29,8 @@ public class BossHealthBar : MonoBehaviour {
         fillAmount = 1;
         actualAmount = 1;
         //gameObject.SetActive(false);
+        gameObject.GetComponent<Image>().enabled = false;
+        GameObject.Find("bossBarContent").GetComponent<Image>().enabled = false;
     }
 
     // Update is called once per frame

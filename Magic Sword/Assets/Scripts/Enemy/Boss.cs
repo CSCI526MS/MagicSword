@@ -119,7 +119,7 @@ public class Boss : MonoBehaviour {
     }
 
     private void SummonMinions(){
-        for (int i = 0; i < 5;i++){
+        for (int i = 0; i < 3;i++){
             GameObject slime = (GameObject)Resources.Load("Prefabs/Enemy/FallingSlime");
 
             float randomX = Random.Range(minX, maxX);
@@ -204,6 +204,7 @@ public class Boss : MonoBehaviour {
             dead = true;
             player.GetComponent<Player>().SetInvincible(true);
             gameObject.GetComponent<CapsuleCollider2D>().enabled = false;
+            GlobalStatic.canvas.SetActive(false);
             player.SendMessage("PlayTransisionAnimation", "congratulations!\nYou Win!");
         }
     }

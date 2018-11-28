@@ -20,6 +20,7 @@ public class MainMenuController : MonoBehaviour {
         switch (GlobalStatic.crossSceneLevel){
             case 1: SceneManager.LoadScene("LevelOne");break;
             case 2: SceneManager.LoadScene("LevelTwo"); break;
+            case 3: SceneManager.LoadScene("LevelThree"); break;
             default: SceneManager.LoadScene("LevelOne"); break;
         }
         
@@ -27,7 +28,6 @@ public class MainMenuController : MonoBehaviour {
 
 	public void QuitGame() {
         FindObjectOfType<AudioManager>().Play("select");
-		Debug.Log("QUIT!");
 		Application.Quit();
 	}
 

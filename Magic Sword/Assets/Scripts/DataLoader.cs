@@ -37,6 +37,9 @@ public class DataLoader : MonoBehaviour
         else if (mode == 1)
         {
             filePath = Path.Combine(root, gameDataFileName);
+            if (!File.Exists(filePath)){
+                return false;
+            }
         }
         if (!File.Exists(filePath))
         {
